@@ -1,25 +1,30 @@
 module memInerf_sram_tb ();
 
     // Declare clock and reset signals
-    reg clk, reset_n;
+    logic clk, reset_n;
 
     // Declare signals for memInerf module inputs
-    reg store, load;
-    reg [15:0] result;
-    reg [13:0] addr;
+    logic store, load;
+    logic [15:0] result;
+    logic [13:0] addr;
+    wire [15:0] datatofrommem;
 
     // Declare signals for memInerf module outputs
-    reg mem_done;
-    reg [7:0] datatoinst;
-    reg [13:0] addrout;
+    logic mem_done;
+    logic [7:0] datatoinst;
+    logic [13:0] addrout;
+
+    logic [15:0] memin;
     
+ 
+    assign datatofrommem = (store == 1'b1) ? memin : 'z;
     
     // Instantiate  top
     top dut (.*);
 
     initial begin
         clk = 1'b0;
-        forever #5 clk = ~clk;
+        forever #1 clk = ~clk;
     end
 
 
@@ -32,13 +37,13 @@ module memInerf_sram_tb ();
     // Test case 1: Memory write
 
         #10;
-        result = 16'h34;
         addr = 14'h0A;
         store = 1'b1;
-        // #10;
-        // store = 0;
-        // #10;
-        // assert(mem_done === 1) else $error("Test case 1 failed: Memory write operation failed");
+        memin = 16'h34;
+        #10;
+        store = 0;
+        #10;
+        assert(mem_done === 1) else $error("Test case 1 failed: Memory write operation failed");
 
 
     // Test case 2: Memory read
@@ -55,8 +60,8 @@ module memInerf_sram_tb ();
 
     // Stop the simulation
 
-        #100;
-        // $finish;
+        #10;
+        $finish;
     end
 
 endmodule

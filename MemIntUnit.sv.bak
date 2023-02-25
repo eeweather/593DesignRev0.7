@@ -34,15 +34,21 @@ response.
 */
 
 module memInerf (
-    input logic clk, reset_n, store, load, mem_resp,
-    input logic [15:0] result,
-    input logic [13:0] addr,
-    inout logic [15:0] datatofrommem,
-    output logic mem_done,
-    output logic [7:0] datatoinst,
-    output logic write_req, read_req,
-    output logic [13:0] addrout
+    input logic clk, reset_n,//from top
+    input logic store, load, //from inst unit
+    input logic mem_resp, //from mss
+    input logic [15:0] result, //from inst unit
+    input logic [13:0] addr, // from inst unit
+    inout logic [15:0] datatofrommem, // to and from mss
+    output logic mem_done, // to instunit
+    output logic [7:0] datatoinst, // to instunit
+    output logic write_req, read_req, // to  mss
+    output logic [13:0] addrout // to mss
 );
+
+assign datatofrommem = (!reset_n)? '0 : (store)? result: datatofrommem;
+
+
 
 always_ff @(posedge clk) begin
     mem_done <=0;
@@ -64,7 +70,7 @@ always_ff @(posedge clk) begin
         read_req <=1;
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
-            datatoinst<=datatofrommem;
+            datatoinst<=datatofrommem[7:0];
             //end with read_req and raise mem_done
             read_req <= 0;
             mem_done <=1; 
@@ -85,8 +91,6 @@ always_ff @(posedge clk) begin
         end
     end        
 end
-
-assign datatofrommem = (!reset_n)? '0 : (store)? result: 'z;
 
 
 endmodule : memInerf

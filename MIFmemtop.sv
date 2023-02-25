@@ -5,15 +5,16 @@ module top (
     input logic store, load,
     input logic [15:0] result,
     input logic [13:0] addr,
-    inout logic [15:0] datatofrommem,
 
     // Declare signals for memInerf module outputs
     output logic mem_done,
     output [7:0] datatoinst
     );
-    wire logic [13:0] addrout;
-    wire logic write_req, read_req;
-    wire logic mem_resp;
+
+    wire [15:0] datatofrommem;
+    wire [13:0] addrout;
+    wire write_req, read_req;
+    wire mem_resp;
 
 
 
