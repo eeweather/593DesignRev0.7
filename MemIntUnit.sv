@@ -46,9 +46,8 @@ module memInerf (
     output logic [13:0] addrout // to mss
 );
 
-assign datatofrommem = (!reset_n)? '0 : (store)? result: datatofrommem;
-
-
+//assign datatofrommem = (!reset_n)? '0 : 16'bz;
+assign datatofrommem = (store)? result: 16'bz;
 
 always_ff @(posedge clk) begin
     mem_done <=0;
@@ -70,7 +69,7 @@ always_ff @(posedge clk) begin
         read_req <=1;
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
-            datatoinst<=datatofrommem[7:0];
+            //datatoinst<=datatofrommem[7:0];
             //end with read_req and raise mem_done
             read_req <= 0;
             mem_done <=1; 
