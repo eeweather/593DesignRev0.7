@@ -87,7 +87,7 @@ module instructionUnit (
 
 
     always_ff @(posedge clk) begin : send_instruction
-        if (reset_n) begin
+        if (!reset_n) begin
             index = '0;
             regA <= '0;
             regB <='0;
