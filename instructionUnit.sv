@@ -50,7 +50,7 @@ module instructionUnit (
     input logic [15:0] alu_result,    //results from ALU
     output logic start,              //connects to ALU593 to start operation
     output logic [7:0] A, B,         //connect to ALU593
-    output logic [4:0] op,           //connect to ALU593
+    output alu_opcode_t  op,           //connect to ALU593
     output logic [13:0] Addr,        //address to main memory
     output logic [15:0] result,     //results to be sent to main memory - connect to mem interface unit
     output logic store, load        //issue store/load signal to mem interface unit
@@ -60,11 +60,13 @@ module instructionUnit (
     logic [7:0] regA, regB;            //internal registers for operand A and B
     logic [18:0] insArray[0 : 999];   //instruction array 
     logic [18:0] instr;               //current instruction
-    logic [3:0] opcode;              //decoded binary opcode
-    alu_opcode_t enumOp;             //enumerated opcode type after parsing
+    alu_opcode_t opcode;              //decoded  opcode
     logic [13:0] addr;              //decoded address
     logic loadReg;                  //decoded Load = 0 loads reg A. Load = 1 loads reg B
     int fd;                         //file descriptor
+    int count;                      //line count for reading file
+    int index;                      //instruction array index
+ 
    
    //load instructions from file into array 
     always_comb begin : file_parse
@@ -72,59 +74,55 @@ module instructionUnit (
         if (!fd) $display("File was not opened successfully");
         
         for(int i = 0; i < 1000; i++) begin
-            $fscanf(fd,"%x",insArray[i]);    
-            $display("Array[%x] = %x", i, insArray[i]); //printing for debug purposes
+            count = $fscanf(fd,"%b",insArray[i]);    
+           // $display("Array[%d] = %b", i, insArray[i]); //printing for debug purposes
         end   
     end : file_parse
 
-    always_comb begin : instruction_decode
-        instr = insArray[index];    //get current instuction from array
-        opcode = instr[18:15];      //get unenumerated opcode
-        addr = instr[14:1];         //get address
-        loadReg = instr[0];         //get reg A or B
-        $cast(enumOp, opcode);      //cast opcode to enumerated type
-
-        start = 1'b0;
-
-    end : instruction_decode
+ 
+    assign instr = insArray[index];    //get current instuction from array
+    assign opcode = alu_opcode_t'(instr[18:15]);      //get unenumerated opcode
+    assign addr = instr[14:1];         //get address
+    assign loadReg = instr[0];         //get reg A or B
 
 
-    //  keep load/store high until mem_done signal recieved.
-    //on every done signal index + 
-
-
-    always_ff @(posedge clk) begin
+    always_ff @(posedge clk) begin : send_instruction
         if (reset_n) begin
             index = '0;
             regA <= '0;
             regB <='0;
+            start <='0;
+            load <='0;
+            store <= '0;
         end
         else if (mem_done) begin    //load appropriate register when mem_done signal is asserted
             if (loadReg)              
-                regB <= data;
-            else(loadB)
-                regB <= data;
+                regB <= data;       
+            else
+                regA <= data;
+            load <= 1'b0;       //deassert load/store signals
+            store <= 1'b0;
+            index++;            //increment instruction array index
 		end
+        else if (opcode == op_load) begin   //load operation
+            load <= 1'b1;                   //assert load signal for mem IF
+            Addr <= addr;                   //supply address to mem IF
+        end
+        else if (opcode == op_store) begin  
+            store <= 1'b1;                  //assert store signal for mem IF
+            Addr <= addr;                   //supply address to mem IF
+            result <= alu_result;           //results to be stored in mem
+        end
         else if (alu_done)  begin //alu done signal recieved, send next op
             op <= opcode;
-            a <= regA;
-            b <= regB;
-            start <= 1'b1;
-            arrayindex++;
+            A <= regA;
+            B <= regB;
+            start <= 1'b1;       //assert ALU start signal
+            index++;             //increment instruction array index
         end
-        else if (enumOp == op_load) begin
-            load <= 1'b1;
-            Addr <= addr;
-        end
-        else if (enumOp == op_store) begin
-            store <= 1'b1;
-            Addr <= addr;
-            Result <= alu_result;
-        end
+      
 
-        
-
-    end
+    end : send_instruction
 
  
 
