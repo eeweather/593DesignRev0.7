@@ -81,7 +81,7 @@ module instructionUnit (
 
  
     assign instr = insArray[index];    //get current instuction from array
-    assign opcode = alu_opcode_t'(instr[18:15]);      //get unenumerated opcode
+    assign opcode = alu_opcode_t'(instr[18:15]);      //cast to opcode enum
     assign addr = instr[14:1];         //get address
     assign loadReg = instr[0];         //get reg A or B
 
