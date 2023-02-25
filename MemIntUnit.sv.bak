@@ -44,10 +44,6 @@ module memInerf (
     output logic [13:0] addrout
 );
 
-assign datatofrommem = (!reset_n)? '0 : (store)? result: datatofrommem;
-
-
-
 always_ff @(posedge clk) begin
     mem_done <=0;
     //if reset reset
@@ -89,6 +85,8 @@ always_ff @(posedge clk) begin
         end
     end        
 end
+
+assign datatofrommem = (!reset_n)? '0 : (store)? result: 'z;
 
 
 endmodule : memInerf
