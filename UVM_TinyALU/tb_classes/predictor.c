@@ -11,7 +11,7 @@
 #include "svdpi.h"
 
 
- short predictor (svBitVecVal a, svBitVecVal b, svBitVecVal* op_set){
+short predictor (svBitVecVal a, svBitVecVal b, svBitVecVal* op_set){
     short result = 1;
    
    switch (*op_set){
