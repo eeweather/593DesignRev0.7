@@ -15,7 +15,6 @@ short predictor (svBitVecVal a, svBitVecVal b, svBitVecVal* op_set){
     short result = 1;
    
    switch (*op_set){
-    printf("Op set in C is %d", *op_set);
         case  1 :
             result = a + b; 
             break;

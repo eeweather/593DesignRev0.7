@@ -1,7 +1,7 @@
 # 
 # do ./run.do
 # QuestaSim-64 vlog 2019.2_1 Compiler 2019.05 May 13 2019
-# Start time: 18:49:47 on Feb 25,2023
+# Start time: 19:08:46 on Feb 25,2023
 # vlog tinyalu_dut/tinyalu.sv 
 # -- Compiling module tinyalu
 # -- Compiling module single_cycle
@@ -9,10 +9,10 @@
 # 
 # Top level modules:
 # 	tinyalu
-# End time: 18:49:47 on Feb 25,2023, Elapsed time: 0:00:00
+# End time: 19:08:46 on Feb 25,2023, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # QuestaSim-64 vlog 2019.2_1 Compiler 2019.05 May 13 2019
-# Start time: 18:49:47 on Feb 25,2023
+# Start time: 19:08:46 on Feb 25,2023
 # vlog -f tb.f 
 # -- Compiling package tinyalu_pkg
 # -- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
@@ -22,17 +22,17 @@
 # 
 # Top level modules:
 # 	top
-# End time: 18:49:48 on Feb 25,2023, Elapsed time: 0:00:01
+# End time: 19:08:47 on Feb 25,2023, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
 # QuestaSim-64 vlog 2019.2_1 Compiler 2019.05 May 13 2019
-# Start time: 18:49:48 on Feb 25,2023
+# Start time: 19:08:47 on Feb 25,2023
 # vlog tb_classes/predictor.c -dpicpppath /usr/bin/gcc -ccflags "-c -Werror-implicit-function-declaration -O2" 
 # ** Note: (vlog-7082) For C/C++ auto compile, choosing compiler /usr/bin/gcc set by the -dpicpppath switch.
 # -- Compiling DPI/PLI C file tb_classes/predictor.c
-# End time: 18:49:48 on Feb 25,2023, Elapsed time: 0:00:00
+# End time: 19:08:47 on Feb 25,2023, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # QuestaSim-64 vopt 2019.2_1 Compiler 2019.05 May 13 2019
-# Start time: 18:49:49 on Feb 25,2023
+# Start time: 19:08:47 on Feb 25,2023
 # vopt top -o top_optimized "+acc" "+cover=sbfec+tinyalu(rtl)." 
 # 
 # Top level modules:
@@ -58,10 +58,10 @@
 # -- Optimizing module top(fast)
 # -- Optimizing interface tinyalu_bfm(fast)
 # Optimized design name is top_optimized
-# End time: 18:49:53 on Feb 25,2023, Elapsed time: 0:00:04
+# End time: 19:08:52 on Feb 25,2023, Elapsed time: 0:00:05
 # Errors: 0, Warnings: 0
 # vsim top_optimized -dpicpppath /usr/bin/gcc -coverage "+UVM_TESTNAME=parallel_test" -voptargs="+acc" 
-# Start time: 18:49:46 on Feb 25,2023
+# Start time: 19:08:45 on Feb 25,2023
 # //  Questa Sim-64
 # //  Version 2019.2_1 linux_x86_64 May 13 2019
 # //
@@ -87,7 +87,7 @@
 # Loading work.single_cycle(fast)
 # Loading work.three_cycle(fast)
 # ** Note: (vsim-7082) For C/C++ auto compile, choosing compiler /usr/bin/gcc set by the -dpicpppath switch.
-# Loading /tmp/vvan@mo.ece.pdx.edu_dpi_6237/linux_x86_64_gcc-4.8.5/vsim_auto_compile.so
+# Loading /tmp/vvan@mo.ece.pdx.edu_dpi_19829/linux_x86_64_gcc-4.8.5/vsim_auto_compile.so
 # Loading /pkgs/mentor/questa/2019.2_1/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so
 # 1
 # ----------------------------------------------------------------
@@ -161,7 +161,7 @@
 # 1
 # Break in Task uvm_pkg/uvm_root::run_test at /pkgs/mentor/questa/2019.2_1/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/base/uvm_root.svh line 430
 # QuestaSim-64 vcover 2019.2_1 Coverage Utility 2019.05 May 13 2019
-# Start time: 18:49:55 on Feb 25,2023
+# Start time: 19:08:53 on Feb 25,2023
 # vcover report tinyalu.ucdb -cvg -details 
 # Coverage Report by instance with details
 # 
@@ -367,7 +367,7 @@
 # 
 # Total Coverage By Instance (filtered view): 100.00%
 # 
-# End time: 18:49:55 on Feb 25,2023, Elapsed time: 0:00:00
+# End time: 19:08:53 on Feb 25,2023, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# End time: 18:49:55 on Feb 25,2023, Elapsed time: 0:00:09
+# End time: 19:08:53 on Feb 25,2023, Elapsed time: 0:00:08
 # Errors: 0, Warnings: 0
