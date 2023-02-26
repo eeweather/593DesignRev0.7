@@ -11,10 +11,10 @@ module top (
     output [7:0] datatoinst
     );
 
-    wire [15:0] datatofrommem;
-    wire [13:0] addrout;
-    wire write_req, read_req;
-    wire mem_resp;
+    tri [15:0] datatofrommem;
+    logic [13:0] addrout;
+    logic write_req, read_req;
+    logic mem_resp;
 
 
 

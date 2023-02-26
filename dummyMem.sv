@@ -1,5 +1,5 @@
 module sram_single_port #(
-	parameter DATA_WIDTH = 8,
+	parameter DATA_WIDTH = 16,
 	parameter ADDR_WIDTH = 14
 ) (
 	input logic reset_n, clk,
@@ -14,17 +14,20 @@ module sram_single_port #(
 	assign data = (re) ? mem[addr] : 'z;
 
 	always_ff @(posedge clk) begin
-        mem_resp = 0;
+     
 		if (!reset_n) begin
 			for (int i=0; i<$size(mem); ++i) // Clear ram on reset.
 				mem[i] <= '0;
 		end
-		else if (we) begin
-			mem[addr] = data;
-            mem_resp = 1;
+		else if (mem_resp) begin
+		   mem_resp <=0;
+		end
+                else if (we) begin
+			mem[addr] <= data;
+            		mem_resp <= 1;
 		end
         else if (re) begin
-            mem_resp = 1;
+            mem_resp <= 1;
         end
     end
 endmodule
