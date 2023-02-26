@@ -20,12 +20,12 @@ module ALU593 (
 	multi_cycle  alu_multi  (.A(A), .B(B), .op(op), .clk(clk), .reset_n(reset_n), .start(start_multi), .done(done_multi), .result(result_multi));
 	
 	always_comb begin
-			error = '0;
 		case(op)
 			op_mul, op_sp0, op_sp1, op_sp2: begin
 				start_multi = start;
 				done = done_multi;
 				result = result_multi;
+				error = '0;
 			end
 			op_res1, op_res2, op_res3: begin
 				error = '1;
@@ -35,18 +35,13 @@ module ALU593 (
 				start_single = start;
 				done = done_single;
 				result = result_single;
+				error = '0;
 			end
 		endcase
 
-	end
+	end 
 
 
-   // assign start_single = start & ~op[2];    
-	//assign start_mult = (start & op[2] & ~op[3]);
-	//assign error = ((op == op_res1) || (op == op_res2) || (op == op_res3));
-	//assign done = (op[2] & ~op[3]) ? done_multi : done_single;
-	//assign result = (op[2] & ~op[3]) ? result_multi : result_single;
-	
 endmodule : ALU593
 
 
@@ -111,7 +106,6 @@ module multi_cycle (input [7:0] A,
 			result <= 0;
 		end 
 		else begin // Pipeline Stage 1
-			
 			a_int  <= A;
 			b_int  <= B;
 			done3  <= start & !done;

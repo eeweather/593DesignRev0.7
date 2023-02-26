@@ -81,17 +81,19 @@ module alu_top();
         op_load, op_store : predicted_result = 'x;
       endcase // case (op_set)
     
-    if ((op_set == op_res1)||(op_set == op_res2)||(op_set == op_res3)) 
+    if ((op_set == op_res1) || (op_set == op_res2) || (op_set == op_res3)) begin
 	   	        if (predicted_result != error)
 		             $error ("FAILED: Illegal opcode used and no error flag raised");
-    if ((op_set != op_nop) && (op_set != op_nop1))
-        if (predicted_result != result)
+    end
+    else if ((op_set != op_nop) && (op_set != op_nop1)) begin
+        if (predicted_result != result) begin
              $error ("FAILED: A: %0h  B: %0h  op: %s result: %0h predicted result: %0h",
                 A, B, op_set.name(), result, predicted_result);
-        else
-             $display("Results: A: %0h  B: %0h  op: %s result: %0h predicted result: %0h",
-                A, B, op_set.name(), result, predicted_result);
-
+        end else begin
+            $display("Results: A: %0h  B: %0h  op: %s result: %0h predicted result: %0h",
+               A, B, op_set.name(), result, predicted_result);
+        end
+    end
 
    end : scoreboard
    
