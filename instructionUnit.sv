@@ -23,24 +23,7 @@ mem_done=1; wait for next mem_resp; mif.data gets loaded into register B.
  Store 0x12; send store request to MIU with result[15:0], addr[13:0]; wait for mem_resp
 */
 
-typedef enum logic [3:0] {
-		op_nop    = 4'b0000,
-		op_add    = 4'b0001, // Add A, B
-		op_and    = 4'b0010, // And A, B
-		op_xor    = 4'b0011, // Xor  A, B
-		op_mul    = 4'b0100, // Multiply A, B      (3 cycle)
-		op_sp0    = 4'b0101, // Function A + 2 * B (3+1 cycle)
-		op_sp1    = 4'b0110, // Function 2 * A     (3 cycle)
-		op_sp2    = 4'b0111, // Function 3 * A     (3 cycle)
-		op_load   = 4'b1000, // Load Memory to Register
-		op_store  = 4'b1001, // Store Register to Memory
-		op_shl    = 4'b1010, // shift left 3 bits
-		op_shr    = 4'b1011, //shift right 3 bits
-		op_res2   = 4'b1100,
-		op_res3   = 4'b1101,
-		op_rst    = 4'b1110, // using reserved 4 as new reset opcode
-		op_nop1   = 4'b1111
-	} alu_opcode_t;
+import tinyalu_pkg::*;
 
 module instructionUnit (
 	input logic clk, reset_n,
@@ -86,9 +69,10 @@ module instructionUnit (
     assign loadReg = instr[0];         //get reg A or B
 
 
+    //unsure of all the timing requirements, and which of these things should be sequential in always_ff block
     always_ff @(posedge clk) begin : send_instruction
         if (!reset_n) begin
-            index = '0;
+            index <= '0;
             regA <= '0;
             regB <='0;
             start <='0;
@@ -119,6 +103,11 @@ module instructionUnit (
             B <= regB;
             start <= 1'b1;       //assert ALU start signal
             index++;             //increment instruction array index
+        end
+        else begin
+            regA <= regA;          //maintain register values?
+            regB <= regB;
+            start <= 1'b0;          //deassrt alu start
         end
       
 
