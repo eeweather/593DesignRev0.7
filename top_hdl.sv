@@ -1,3 +1,5 @@
+//NOTE: this has not been tested yet for validity. Many errors are assumed. First a basic test will need to be created for just 1/4 of the system, TODO tomorrow
+
 module top_hdl();
 import tinyalu_pkg::*;
 
