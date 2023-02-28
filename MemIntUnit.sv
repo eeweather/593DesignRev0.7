@@ -39,7 +39,8 @@ module memInerf (
     input logic mem_resp, //from mss
     input logic [15:0] result, //from inst unit
     input logic [13:0] addr, // from inst unit
-    inout logic [15:0] datatofrommem, // to and from mss
+    input logic [7:0] datafrommem, //from mss
+    output logic [15:0] datatomem, // to mss
     output logic mem_done, // to instunit
     output logic [7:0] datatoinst, // to instunit
     output logic write_req, read_req, // to  mss
@@ -52,7 +53,7 @@ logic newload;
 
 
 //assign datatofrommem = (!reset_n)? '0 : 16'bz;
-assign datatofrommem = (store)? result: 16'hz;
+//assign datatofrommem = (store)? result: 16'hz;
 
 always_ff @(posedge clk) begin
     //if reset reset
@@ -66,7 +67,7 @@ always_ff @(posedge clk) begin
         counter = 0;
         newstore = 0;
         newload = 0;
- //       datatofrommem <= 0;
+        datatomem <= 0;
     end
     // load signal comes in
     else if (load) begin
@@ -85,7 +86,7 @@ always_ff @(posedge clk) begin
 	end
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
-            datatoinst<=datatofrommem[7:0];
+            datatoinst<=datafrommem;
             //end with read_req and raise mem_done
             read_req <= 0;
             mem_done <=1; 
@@ -103,6 +104,7 @@ always_ff @(posedge clk) begin
         //set write_req
 	//mem_done <=0;
         addrout<=addr;
+        datatomem<=result;
 	if (counter == 1) begin
         write_req<=1;
 	mem_done<=0;

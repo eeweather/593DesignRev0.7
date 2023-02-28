@@ -5,13 +5,14 @@ module sram_single_port #(
 	input logic reset_n, clk,
 	input logic re, we,
 	input logic [ADDR_WIDTH-1:0] addr,
-	inout logic [DATA_WIDTH-1:0] data,
+	input logic [DATA_WIDTH-1:0] datafrommif,
+	output logic [7:0] datatomif,
     output logic mem_resp
 );
 
 	reg [DATA_WIDTH-1:0] mem [ADDR_WIDTH-1:0];
 
-	assign data = (re) ? mem[addr] : 'z;
+//	assign data = (re) ? mem[addr] : 'z;
 
 	always_ff @(posedge clk) begin
      
@@ -22,12 +23,13 @@ module sram_single_port #(
 		else if (mem_resp) begin
 		   mem_resp <=0;
 		end
-                else if (we) begin
-			mem[addr] <= data;
-            		mem_resp <= 1;
+        else if (we) begin
+			mem[addr] <= datafrommif;
+            mem_resp <= 1;
 		end
         else if (re) begin
-            mem_resp <= 1;
+            datatomif <= mem[addr];
+			mem_resp <= 1;
         end
     end
 endmodule
