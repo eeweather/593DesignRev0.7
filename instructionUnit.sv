@@ -82,7 +82,7 @@ module instructionUnit (
         else if (mem_done) begin    //load appropriate register when mem_done signal is asserted
             if (loadReg)              
                 regB <= data;       
-            else
+            else 
                 regA <= data;
             load <= 1'b0;       //deassert load/store signals
             store <= 1'b0;

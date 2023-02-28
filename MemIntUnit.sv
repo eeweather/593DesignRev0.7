@@ -48,8 +48,7 @@ module memInerf (
 );
 
 logic [3:0] counter;
-logic newstore;
-logic newload;
+
 
 
 //assign datatofrommem = (!reset_n)? '0 : 16'bz;
@@ -65,16 +64,15 @@ always_ff @(posedge clk) begin
         read_req <=0;
         datatoinst <= 0;
         counter = 0;
-        newstore = 0;
-        newload = 0;
         datatomem <= 0;
     end
     // load signal comes in
     else if (load) begin
         counter++;
+	    mem_done <=0;
 	if (counter>9) begin
-	     counter<=0;
-	    newstore <=0;
+	    counter<=0;
+        mem_done <=1; 
 	end
         // read addr, put on addrout
 	//mem_done <=0;
@@ -82,22 +80,21 @@ always_ff @(posedge clk) begin
         //set read_req
 	if (counter == 1) begin
         read_req<=1;
-	mem_done <=0;
 	end
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
             datatoinst<=datafrommem;
             //end with read_req and raise mem_done
             read_req <= 0;
-            mem_done <=1; 
         end
     end
     // store signal comes in
     else if (store) begin
+	    mem_done<=0;
         counter++;
 	if (counter>9) begin
-	     counter<=0;
-	    newstore <=0;
+	    counter<=0;
+        mem_done<=1;
 	end
         // read addr onto addrout
         // put result onto datatofrommem
@@ -107,14 +104,15 @@ always_ff @(posedge clk) begin
         datatomem<=result;
 	if (counter == 1) begin
         write_req<=1;
-	mem_done<=0;
 	end
         // when mem_resp goes high raise mem_done and lower all else
         if (mem_resp) begin
-            mem_done<=1;
             write_req<=0;
         end
-    end      
+    end 
+    else begin
+        mem_done<=0;
+    end     
 end
 
 
