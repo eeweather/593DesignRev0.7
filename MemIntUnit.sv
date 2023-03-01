@@ -78,7 +78,7 @@ always_ff @(posedge clk) begin
 	//mem_done <=0;
         addrout<=addr;
         //set read_req
-	if (counter == 1) begin
+	if (counter == 2) begin
         read_req<=1;
 	end
         if (mem_resp) begin
@@ -102,7 +102,7 @@ always_ff @(posedge clk) begin
 	//mem_done <=0;
         addrout<=addr;
         datatomem<=result;
-	if (counter == 1) begin
+	if (counter == 2) begin
         write_req<=1;
 	end
         // when mem_resp goes high raise mem_done and lower all else
@@ -112,6 +112,8 @@ always_ff @(posedge clk) begin
     end 
     else begin
         mem_done<=0;
+        write_req<=0;
+        read_req<=0;
     end     
 end
 
