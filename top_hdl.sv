@@ -33,7 +33,7 @@ import tinyalu_pkg::*;
  
    instructionUnit IU0 	(.clk(clk), .reset_n(reset_n), .mem_done(proc_if_0.mem_done), .alu_done(proc_if_0.alu_done), .data(proc_if_0.datatoinst), 
 	                 .alu_result(proc_if_0.alu_result), .start(proc_if_0.IU_start), .A(proc_if_0.IU_A), .B(proc_if_0.IU_B), .op(proc_if_0.op), 
-			 .Addr(proc_if_0.addr), .result(proc_if_0.IU_result), .store(proc_if_0.store), .load(proc_if_0.load));
+			 .addr(proc_if_0.addr), .result(proc_if_0.IU_result), .store(proc_if_0.store), .load(proc_if_0.load));
    
    //TODO: just for fun, remove for testing
    initial begin

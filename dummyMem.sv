@@ -3,7 +3,7 @@ module sram_single_port #(
 	parameter ADDR_WIDTH = 14
 ) (
 	input logic reset_n, clk,
-	input logic re, we,
+	input logic re, we, preload,
 	input logic [ADDR_WIDTH-1:0] addr,
 	input logic [DATA_WIDTH-1:0] datafrommif,
 	output logic [7:0] datatomif,
@@ -12,13 +12,12 @@ module sram_single_port #(
 
 	reg [DATA_WIDTH-1:0] mem [ADDR_WIDTH-1:0];
 
-//	assign data = (re) ? mem[addr] : 'z;
-
 	always_ff @(posedge clk) begin
      
 		if (!reset_n) begin
+	        //$readmemh("mempreload.mem", mem);
 			for (int i=0; i<$size(mem); ++i) // Clear ram on reset.
-				mem[i] <= '0;
+				mem[i] <= i;
 		end
 		else if (mem_resp) begin
 		   mem_resp <=0;

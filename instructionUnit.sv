@@ -34,7 +34,7 @@ module instructionUnit (
     output logic start,              //connects to ALU593 to start operation
     output logic [7:0] A, B,         //connect to ALU593
     output alu_opcode_t  op,           //connect to ALU593
-    output logic [13:0] Addr,        //address to main memory
+    output logic [13:0] addr,        //address to main memory
     output logic [15:0] result,     //results to be sent to main memory - connect to mem interface unit
     output logic store, load        //issue store/load signal to mem interface unit
 );
@@ -44,7 +44,7 @@ module instructionUnit (
     logic [18:0] insArray[0 : 999];   //instruction array 
     logic [18:0] instr;               //current instruction
     alu_opcode_t opcode;              //decoded  opcode
-    logic [13:0] addr;              //decoded address
+    logic [13:0] decode_addr;              //decoded address
     logic loadReg;                  //decoded Load = 0 loads reg A. Load = 1 loads reg B
     int fd;                         //file descriptor
     int count;                      //line count for reading file
@@ -53,7 +53,7 @@ module instructionUnit (
    
    //load instructions from file into array 
     always_comb begin : file_parse
-        fd = $fopen("./test.txt", "r");
+        fd = $fopen("/u/ew22/ECE593/593DesignRev0.7/test.txt", "r");
         if (!fd) $display("File was not opened successfully");
         
         for(int i = 0; i < 1000; i++) begin
@@ -65,7 +65,7 @@ module instructionUnit (
  
     assign instr = insArray[index];    //get current instuction from array
     assign opcode = alu_opcode_t'(instr[18:15]);      //cast to opcode enum
-    assign addr = instr[14:1];         //get address
+    assign decode_addr = instr[14:1];         //get address
     assign loadReg = instr[0];         //get reg A or B
 
 
@@ -80,39 +80,38 @@ module instructionUnit (
             store <= '0;
         end
         else if (mem_done) begin    //load appropriate register when mem_done signal is asserted
-            if (loadReg)              
-                regB <= data;       
-            else 
-                regA <= data;
-            load <= 1'b0;       //deassert load/store signals
-            store <= 1'b0;
-            index++;            //increment instruction array index
-		end
+                if (loadReg)              
+                    regB <= data;       
+                else 
+                    regA <= data;
+                load <= 1'b0;       //deassert load/store signals
+                store <= 1'b0;
+                index++;            //increment instruction array index
+            end
         else if (opcode == op_load) begin   //load operation
-            load <= 1'b1;                   //assert load signal for mem IF
-            Addr <= addr;                   //supply address to mem IF
-        end
-        else if (opcode == op_store) begin  
-            store <= 1'b1;                  //assert store signal for mem IF
-            Addr <= addr;                   //supply address to mem IF
-            result <= alu_result;           //results to be stored in mem
-        end
-        else if (alu_done)  begin //alu done signal recieved, send next op
-            op <= opcode;
-            A <= regA;
-            B <= regB;
-            start <= 1'b1;       //assert ALU start signal
-            index++;             //increment instruction array index
+                load <= 1'b1;                   //assert load signal for mem IF
+                addr <= decode_addr;                   //supply address to mem IF
+		    end
+            else if (opcode == op_store) begin  
+                store <= 1'b1;                  //assert store signal for mem IF
+                addr <= decode_addr;                   //supply address to mem IF
+                result <= alu_result;           //results to be stored in mem
+            end
+        
+        
+            else if (alu_done)  begin //alu done signal recieved, send next op
+                start <= 1'b0;       //assert ALU start signal
+                index++;             //increment instruction array index
+                regA <= regA;          //maintain register values?
+                regB <= regB;
         end
         else begin
-            regA <= regA;          //maintain register values?
-            regB <= regB;
-            start <= 1'b0;          //deassrt alu start
+                op <= opcode;
+                A <= regA;
+                B <= regB;
+            start <= 1'b1;          //deassrt alu start
         end
       
-
     end : send_instruction
-
- 
 
 endmodule : instructionUnit
