@@ -3,7 +3,6 @@ module memory_subsystem
    parameter MEM_SIZE = 16*1024,  // 16KB
    parameter DATA_SIZE = 2,       
    parameter BLOCK_SIZE = 2,     
-   parameter LATENCY = 10,        // 10 cycle latency
    parameter NUM_PROCESSORS = 4  
 )(
    input logic clk,                 
@@ -45,33 +44,34 @@ assign current_proc_req = {processor_req_3, processor_req_2, processor_req_1, pr
 assign {processor_resp_3, processor_resp_2, processor_resp_1, processor_resp_0} = current_proc_resp;
 
 //arbitration interstitial signals
-reg [3:0] requestor, grant;
+reg [3:0] requestor=0, grant;
 
 //rr arbitration
 always @(posedge clk) begin
    if(current_proc_req != 4'b0000) begin
-      grant <= current_proc_req[requestor];
-      requestor <= (requestor + 1) % 4;
-   end else grant <= 0;
+      grant = current_proc_req[requestor];
+      requestor = (requestor + 1) % 4;
+   end else grant = 0;
 end
 
 //memory write/read functionality
 always @(posedge clk) begin
    //reset
-   if (!reset_n) initialize_memory();
+   if (reset_n) initialize_memory();
    //write
    else if (mem_write_req) begin
-      #LATENCY memory[addr] <= mem_write_data;
-      memory_coherency[addr] <= M;
-      current_proc_resp <= current_proc_req;
+      memory[addr] = mem_write_data;
+      memory_coherency[addr] = M;
+      current_proc_resp = current_proc_req;
+      //UNIT TEST DEBUG MESSAGE VV
+      //$display("write: memory[%0d] = %d \tmem_write_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_write_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
    //read
    end else if (mem_read_req) begin
       //TODO: determine what to do for reads of M memory and when to update
-      if (memory_coherency[addr] == M) mem_read_data = 'x; //bad data is bad
-      else begin
-	      #LATENCY mem_read_data <= memory[addr];
-	      current_proc_resp <= current_proc_req;
-      end
+	      mem_read_data = memory[addr];
+	      current_proc_resp = current_proc_req;
+     //UNIT TEST DEBUG MESSAGE VV 
+     //$display("read: memory[%0d] = %d \tmem_read_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_read_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
    end
 end
 
