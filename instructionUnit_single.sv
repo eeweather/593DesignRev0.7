@@ -36,7 +36,7 @@ module instructionUnit (
     output alu_opcode_t  op,           //connect to ALU593
     output logic [13:0] addr,        //address to main memory
     output logic [15:0] result,     //results to be sent to main memory - connect to mem interface unit
-    output logic store, load        //issue store/load signal to mem interface unit
+    output logic store, load, done       //issue store/load signal to mem interface unit
 );
 
     //internal signals
@@ -50,20 +50,9 @@ module instructionUnit (
     int count;                      //line count for reading file
     int index;                      //instruction array index
  
-   
-   //load instructions from file into array 
-    always_comb begin : file_parse
-        fd = $fopen("/u/ew22/ECE593/593DesignRev0.7/test.txt", "r");
-        if (!fd) $display("File was not opened successfully");
-        
-        for(int i = 0; i < 1000; i++) begin
-            count = $fscanf(fd,"%b",insArray[i]);    
-           // $display("Array[%d] = %b", i, insArray[i]); //printing for debug purposes
-        end   
-    end : file_parse
 
  
-    assign instr = insArray[index];    //get current instuction from array
+    assign instr = bfm.instr;    //get current instuction from array
     assign opcode = alu_opcode_t'(instr[18:15]);      //cast to opcode enum
     assign decode_addr = instr[14:1];         //get address
     assign loadReg = instr[0];         //get reg A or B
@@ -78,6 +67,7 @@ module instructionUnit (
             start <='0;
             load <='0;
             store <= '0;
+            done <= 0;
         end
         else if (mem_done) begin    //load appropriate register when mem_done signal is asserted
                 if (loadReg)              
@@ -86,7 +76,7 @@ module instructionUnit (
                     regA <= data;
                 load <= 1'b0;       //deassert load/store signals
                 store <= 1'b0;
-                index++;            //increment instruction array index
+                done <= 1;            //increment instruction array index
             end
         else if (opcode == op_load) begin   //load operation
                 load <= 1'b1;                   //assert load signal for mem IF
@@ -100,7 +90,7 @@ module instructionUnit (
         
         else if (alu_done)  begin //alu done signal recieved, send next op
             start <= 1'b0;       //assert ALU start signal
-            index++;             //increment instruction array index
+            done <= 1;             //increment instruction array index
             regA <= regA;          //maintain register values?
             regB <= regB;
         end
@@ -109,6 +99,7 @@ module instructionUnit (
                 A <= regA;
                 B <= regB;
             start <= 1'b1;          //deassrt alu start
+            done <=0;
         end
       
     end : send_instruction
