@@ -8,6 +8,10 @@
 // Adapted from "The UVM Primer" by Ray Salemi
 
 package tinyalu_pkg;
+	`include "uvm_macros.svh"
+	import uvm_pkg::*;
+
+	parameter INSTR_WIDTH = 19; // Width of Instruction
 
     typedef enum logic [3:0] {
 		op_nop    = 4'b0000,
@@ -20,14 +24,49 @@ package tinyalu_pkg;
 		op_sp2    = 4'b0111, // Function 3 * A     (3 cycle)
 		op_load   = 4'b1000, // Load Memory to Register
 		op_store  = 4'b1001, // Store Register to Memory
-		op_shl    = 4'b1010, // shift left 3 bits
-		op_shr    = 4'b1011, //shift right 3 bits
+		op_shl    = 4'b1010, // shift regA left 3 bits
+		op_shr    = 4'b1011, //shift regA right 3 bits
 		op_res1   = 4'b1100,
 		op_res2   = 4'b1101,
 		op_res3   = 4'b1110, 
 		op_nop1   = 4'b1111
 	} alu_opcode_t;
 
+	typedef logic [INSTR_WIDTH-1:0] instruction_t;
+
+	typedef class agent_config;
+	typedef class agent;
+	typedef class coverage_collector;
+	typedef class driver;
+	typedef class env_config;
+	typedef class env;
+	typedef class evaluator;
+	typedef class item_base;
+	typedef class monitor;
+	typedef class predictor;
+	typedef class scoreboard;
+	typedef class sequence_base;
+	typedef class test_base;
+	typedef class item_alu;
+	typedef class sequence_alu;
+	typedef class test_alu;
+
+	`include "../tb/agent_config.svh"
+	`include "../tb/agent.svh"
+	`include "../tb/coverage_collector.svh"
+	`include "../tb/driver.svh"
+	`include "../tb/env_config.svh"
+	`include "../tb/env.svh"
+	`include "../tb/evaluator.svh"
+	`include "../tb/item_base.svh"
+	`include "../tb/monitor.svh"
+	`include "../tb/predictor.svh"
+	`include "../tb/scoreboard.svh"
+	`include "../tb/sequence_base.svh"
+	`include "../tb/test_base.svh"
+	`include "../tb/test_alu.svh"
+	`include "../tb/sequence_alu.svh"
+	`include "../tb/item_alu.svh"
 
 
 
