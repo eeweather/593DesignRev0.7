@@ -17,6 +17,6 @@ int			 	monitor_verbosity	= UVM_DEBUG;
 bit			 	enable_coverage		= 1;
 int			 	num_items		= 1;
 uvm_sequencer #(item_base) 	sqr;
-virtual tinycpu_bfm	 	vif;
+virtual tinyalu_bfm	 	vif;
 
 endclass: agent_config
