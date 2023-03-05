@@ -25,11 +25,8 @@ virtual function void build_phase(uvm_phase phase);
 endfunction: build_phase
 
 virtual task run_phase(uvm_phase phase);
-	item_base tx;
-	int dump;
-
-	//vif.preload_memory(8'hFF, 4'b0); 						//testing preload memory
-	//vif.preload_registers(1'b1, 2'b10, 2'b11, 3'b100);		//testing preload registers
+	item_base instr;
+	
 	forever begin
 		//get the next item from the sequencer (through the port) and send it to the DUT using the virtual interface
 		seq_item_port.get_next_item(instr);		
