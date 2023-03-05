@@ -15,17 +15,23 @@ function new(string name, uvm_component parent);
 	super.new(name, parent);
 endfunction
 
-virtual tinycpu_bfm bfm;
+
+virtual tinycpu_bfm vif;
 
 virtual function void build_phase(uvm_phase phase);
+	agent_config agent_cfg;
 
-	if(!uvm_config_db #(virtual tinyalu_bfm)::get(null, "*","bfm", bfm))
-        `uvm_fatal("DRIVER", "Failed to get BFM")
+	//if there isn't an agent_config, it's time to throw a fit (or end simulation, whichever comes first)
+	if (!uvm_config_db #(agent_config)::get(this, "", "agent_cfg", agent_cfg)) `uvm_fatal(get_type_name(), "no agent_cfg in uvm_config_db")
+	
+	//get the virtual interface (tinycpu_bfm) from the agent_config
+	vif = agent_cfg.vif;
 
 endfunction: build_phase
 
 virtual task run_phase(uvm_phase phase);
 	item_base instr;
+
 	
 	forever begin
 		//get the next item from the sequencer (through the port) and send it to the DUT using the virtual interface
