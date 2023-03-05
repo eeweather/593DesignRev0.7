@@ -13,22 +13,32 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-module top;
+module top_single;
    import uvm_pkg::*;
    import   tinyalu_pkg::*;
-`include "tinyalu_macros.svh"
 `include "uvm_macros.svh"
    
-   tinyalu_bfm       bfm();
-   alumifiu_dut DUT (.instr(bfm.instr), .clk(bfm.clk), .reset_n(bfm.reset_n), .done(bfm.done));
+   tinyalu_bfm       vif();
+   alumifiu_dut DUT (.instr(vif.instr), .clk(vif.clk), .reset_n(vif.reset_n), .done(vif.done));
 
 
 initial begin
-   uvm_config_db #(virtual tinyalu_bfm)::set(null, "*", "bfm", bfm);
-   run_test();
+   uvm_config_db #(virtual tinyalu_bfm)::set(null, "*", "vif", vif);
+
 end
 
-endmodule : top
+
+initial begin
+        $dumpfile("top_single.vcd");
+        $dumpvars(0, vif, DUT);
+
+        #100;
+        $finish();
+
+        
+    end
+
+endmodule : top_single
 
      
    
