@@ -43,7 +43,6 @@ module instructionUnit (
     //internal signals
     logic [7:0] regA, regB;            //internal registers for operand A and B
     logic [18:0] insArray[0 : 999];   //instruction array 
-    logic [18:0] instr;               //current instruction
     alu_opcode_t opcode;              //decoded  opcode
     logic [13:0] decode_addr;              //decoded address
     logic loadReg;                  //decoded Load = 0 loads reg A. Load = 1 loads reg B

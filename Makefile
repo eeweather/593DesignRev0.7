@@ -2,8 +2,8 @@ all: comp opt psim
 
 comp:  
 	vlog tinyalu_pkg.sv bfm_singleinstr.sv
-	vlog ALU593.sv instructionUnit_single.sv MemIntUnit.sv dummyMem.sv 
-	vlog tb/top_hvl.sv
+	vlog ALU593.sv instructionUnit_single.sv MemIntUnit.sv dummyMem.sv ALUMIFIU_dut.sv
+	vlog tb/top_hvl.sv top_single.sv
 
 opt:    
 	vopt top_hvl top_single -o top_opt +debug -designfile +cover=bcesf -coverexcludedefault

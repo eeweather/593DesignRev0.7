@@ -1,10 +1,13 @@
-module alumifiu_dut( 
+import tinyalu_pkg::*;
+
+
+
+module alumifiu_dut ( 
     input instruction_t instr,
     input logic clk, reset_n,
     output logic done
 );
 
-    import tinyalu_pkg::*;
 
     logic [7:0] A, B;
     alu_opcode_t  op;
@@ -34,7 +37,7 @@ module alumifiu_dut(
 );
 
 instructionUnit instunit (
-    .instr(.instr),
+    .instr(instr),
     .clk(clk), 
     .reset_n(reset_n),
     .mem_done(mem_done),         //memory interface done done signal

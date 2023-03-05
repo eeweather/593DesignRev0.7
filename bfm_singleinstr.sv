@@ -24,11 +24,9 @@ interface tinyalu_bfm;
    bit          start;
    wire         done;
    wire [15:0]  result;
-   operation_t  op_set;
    instruction_t  instr;
 
 
-   assign op = op_set;
 
    task reset_alu();
       reset_n = 1'b0;
@@ -38,28 +36,27 @@ interface tinyalu_bfm;
       start = 1'b0;
    endtask : reset_alu
    
-   task send_instruction (input instruction_t i_instr)
+   task send_instruction (input instruction_t i_instr);
         @(negedge clk);
         do
         //nothing
             @(negedge clk);
-        while(done==0)
+        while(done==0);
         instr = i_instr;
 
    endtask : send_instruction
-   
-   monitor monitor_h;
 
-   function operation_t op2enum();
-      case(op)
-        3'b000 : return no_op;
-        3'b001 : return add_op;
-        3'b010 : return and_op;
-        3'b011 : return xor_op;
-        3'b100 : return mul_op;
-        default : $fatal("Illegal operation on op bus");
-      endcase // case (op)
-   endfunction : op2enum
+
+//    function operation_t op2enum();
+//       case(op)
+//         3'b000 : return no_op;
+//         3'b001 : return add_op;
+//         3'b010 : return and_op;
+//         3'b011 : return xor_op;
+//         3'b100 : return mul_op;
+//         default : $fatal("Illegal operation on op bus");
+//       endcase // case (op)
+//    endfunction : op2enum
 
 
 //    always @(posedge clk) begin : op_monitor
@@ -89,6 +86,15 @@ interface tinyalu_bfm;
 //       end : result_monitor_block
 //    end : result_monitor_thread
    
+task get_an_input(tinyalu_pkg::item_base tx);
+	  //  tx.inst = inst.inst;
+    endtask : get_an_input
+
+    
+    task get_an_output(tinyalu_pkg::item_base tx);
+	//   tx.inst = inst.inst;
+    endtask : get_an_output
+
 
    initial begin
       clk = 0;

@@ -16,7 +16,7 @@ function new(string name, uvm_component parent);
 endfunction
 
 
-virtual tinycpu_bfm vif;
+virtual tinyalu_bfm vif;
 
 virtual function void build_phase(uvm_phase phase);
 	agent_config agent_cfg;
@@ -30,13 +30,13 @@ virtual function void build_phase(uvm_phase phase);
 endfunction: build_phase
 
 virtual task run_phase(uvm_phase phase);
-	item_base instr;
+	item_base inst;
 
 	
 	forever begin
 		//get the next item from the sequencer (through the port) and send it to the DUT using the virtual interface
-		seq_item_port.get_next_item(instr);		
-		vif.send_instruction(instr.instr); 
+		seq_item_port.get_next_item(inst);		
+		vif.send_instruction(inst.inst); 
 		seq_item_port.item_done();
 
 	end

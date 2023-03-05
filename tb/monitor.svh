@@ -17,7 +17,7 @@ function new(string name, uvm_component parent);
 endfunction
 
 agent_config agent_cfg;
-virtual tinycpu_bfm vif;
+virtual tinyalu_bfm vif;
 
 uvm_analysis_port #(item_base) dut_in_tx_port;
 uvm_analysis_port #(item_base) dut_out_tx_port;
