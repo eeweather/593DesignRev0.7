@@ -15,11 +15,9 @@
 		super.new(name);
 	endfunction
 
-	//rand instruction_t inst;
+	//a randomized 19 bit instruction
 	rand instruction_t inst;
-	addr_t addr = 1'b1;
 	
-	shortint unsigned result;  //uvm book keeps a result var here, not sure if useful in our approach?
 
 	//the following virtual functions must be overwritten from uvm_sequence_items and do what their names suggest
 	virtual function void do_copy(uvm_object rhs);

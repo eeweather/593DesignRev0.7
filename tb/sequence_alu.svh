@@ -23,31 +23,15 @@ class sequence_alu extends uvm_sequence #(item_base);
 		this.start(sqr);
 	endtask: init_start
 
-	//the body task is where transactions (or sequence items, or whatever) are created, randomized, and started/finished
+	//generate a sequence of 10 ALU transactions
 	task body();
 		
-		alu_opcode_t opcode; 
-		alu_opcode_t orOp;	
-		orOp = op_or;
-		opcode = opcode.first();
-
-		tx = item_alu::type_id::create("tx");
-		
-		//iterate thru ALU opcodes add thru spec2
-		for (int i = 1; i < 8; i++) begin
+		repeat (10) begin
+			tx = item_alu::type_id::create("tx");
 			start_item(tx);
-			if(!tx.randomize()) `uvm_fatal(get_type_name(), "tx.randomize failed");	 //randomize instruction
-			tx.inst[15:12] = opcode.next();	//but modify opcode to iterate through all ALU ops		
-			tx.addr = i;							
+			if(!tx.randomize()) `uvm_fatal(get_type_name(), "tx.randomize failed")
 			finish_item(tx);
-			//`uvm_info("ALU SEQ", $sformatf("Opcode = %b", opcode) , UVM_MEDIUM);
-		end
-
-		//get that OR op in there too
-		start_item(tx);
-		if(!tx.randomize()) `uvm_fatal(get_type_name(), "tx.randomize failed");
-		tx.inst[15:12] = orOp;
-		finish_item(tx);
+		end		
 	
 	endtask: body
 
