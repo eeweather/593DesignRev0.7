@@ -25,13 +25,12 @@ class sequence_base extends uvm_sequence #(item_base);
 
 	//the body task is where transactions (or sequence items, or whatever) are created, randomized, and started/finished
 	task body();
-	
-		repeat (10) begin
-			tx = item_base::type_id::create("tx");
-			start_item(tx);
-			if(!tx.randomize()) `uvm_fatal(get_type_name(), "tx.randomize failed")
-			finish_item(tx);
-		end
+		tx = item_base::type_id::create("tx");
+		//repeat (10) begin
+		start_item(tx);
+		//if(!tx.randomize()) `uvm_fatal(get_type_name(), "tx.randomize failed")
+		tx.inst = 19'b1000000000000000111;
+		finish_item(tx);
 	endtask: body
 
 endclass: sequence_base

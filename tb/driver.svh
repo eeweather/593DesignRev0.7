@@ -32,6 +32,8 @@ endfunction: build_phase
 virtual task run_phase(uvm_phase phase);
 	item_base inst;
 
+	vif.reset_alu();
+
 	
 	forever begin
 		//get the next item from the sequencer (through the port) and send it to the DUT using the virtual interface
