@@ -36,7 +36,7 @@ virtual task run_phase(uvm_phase phase);
 	forever begin
 		//get the next item from the sequencer (through the port) and send it to the DUT using the virtual interface
 		seq_item_port.get_next_item(instr);		
-		vif.send_instruction(instr); 
+		vif.send_instruction(instr.instr); 
 		seq_item_port.item_done();
 
 	end
