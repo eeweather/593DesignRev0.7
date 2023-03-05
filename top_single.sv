@@ -32,7 +32,7 @@ initial begin
         $dumpfile("top_single.vcd");
         $dumpvars(0, vif, DUT);
 
-        #100;
+        #10000;
         $finish();
 
         

@@ -53,9 +53,11 @@ module instructionUnit (
 
  
     assign opcode = alu_opcode_t'(instr[18:15]);      //cast to opcode enum
+    
     assign decode_addr = instr[14:1];         //get address
     assign loadReg = instr[0];         //get reg A or B
 
+    assign done = mem_done || alu_done;
 
     //unsure of all the timing requirements, and which of these things should be sequential in always_ff block
     always_ff @(posedge clk) begin : send_instruction
@@ -66,7 +68,7 @@ module instructionUnit (
             start <='0;
             load <='0;
             store <= '0;
-            done <= 0;
+            //done <= 0;
         end
         else if (mem_done) begin    //load appropriate register when mem_done signal is asserted
                 if (loadReg)              
@@ -75,7 +77,7 @@ module instructionUnit (
                     regA <= data;
                 load <= 1'b0;       //deassert load/store signals
                 store <= 1'b0;
-                done <= 1;            //increment instruction array index
+                //done <= 1;            //increment instruction array index
             end
         else if (opcode == op_load) begin   //load operation
                 load <= 1'b1;                   //assert load signal for mem IF
@@ -89,7 +91,7 @@ module instructionUnit (
         
         else if (alu_done)  begin //alu done signal recieved, send next op
             start <= 1'b0;       //assert ALU start signal
-            done <= 1;             //increment instruction array index
+            //done <= 1;             //increment instruction array index
             regA <= regA;          //maintain register values?
             regB <= regB;
         end
@@ -98,7 +100,7 @@ module instructionUnit (
                 A <= regA;
                 B <= regB;
             start <= 1'b1;          //deassrt alu start
-            done <=0;
+            //done <=0;
         end
       
     end : send_instruction

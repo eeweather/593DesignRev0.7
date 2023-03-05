@@ -27,9 +27,18 @@ class sequence_base extends uvm_sequence #(item_base);
 	task body();
 		tx = item_base::type_id::create("tx");
 		//repeat (10) begin
-		start_item(tx);
 		//if(!tx.randomize()) `uvm_fatal(get_type_name(), "tx.randomize failed")
+		start_item(tx);
 		tx.inst = 19'b1000000000000000111;
+		finish_item(tx);
+		start_item(tx);
+		tx.inst = 19'b1000000000000000010;
+		finish_item(tx);
+		start_item(tx);
+		tx.inst = 19'b0001000000000000000;
+		finish_item(tx);
+		start_item(tx);
+		tx.inst = 19'b1001000000000000101;
 		finish_item(tx);
 	endtask: body
 

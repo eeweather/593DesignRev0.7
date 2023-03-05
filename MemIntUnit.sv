@@ -63,7 +63,7 @@ always_ff @(posedge clk) begin
         write_req <= 0;
         read_req <=0;
         datatoinst <= 0;
-        counter = 0;
+        counter <= 0;
         datatomem <= 0;
     end
     // load signal comes in
@@ -72,7 +72,7 @@ always_ff @(posedge clk) begin
 	    mem_done <=0;
 	if (counter>9) begin
 	    counter<=0;
-        mem_done <=1; 
+            mem_done <=1; 
 	end
         // read addr, put on addrout
 	//mem_done <=0;

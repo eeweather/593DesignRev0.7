@@ -26,10 +26,13 @@ interface tinyalu_bfm;
    wire [15:0]  result;
    instruction_t  instr;
 
+   //
+   bit reset_start;
 
 
    task reset_alu();
       reset_n = 1'b0;
+      reset_start =1'b1;
       @(negedge clk);
       @(negedge clk);
       reset_n = 1'b1;
@@ -38,11 +41,16 @@ interface tinyalu_bfm;
    
    task send_instruction (input instruction_t i_instr);
         @(negedge clk);
-        do
+        /* DK3/5
+	do
         //nothing
             @(negedge clk);
-        while(done==0);
-        instr = i_instr;
+        while(done != 1 || !reset_start);
+        */
+        wait(done || reset_start);
+        wait(!done || reset_start);
+	instr = i_instr;
+	reset_start = 1'b0;
 
    endtask : send_instruction
 
