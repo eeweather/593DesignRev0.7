@@ -40,7 +40,8 @@ endtask: run_phase
    endfunction : connect_phase
 
    function void write_to_monitor(instruction_t instr);
-      sequence_item cmd;
+   
+      sequence_item instr;
       `uvm_info ("COMMAND MONITOR", $sformatf("MONITOR: instr: %19b",
                 instr), UVM_HIGH);
       instr = new("instr");
