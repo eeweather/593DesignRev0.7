@@ -26,6 +26,7 @@ mem_done=1; wait for next mem_resp; mif.data gets loaded into register B.
 import tinyalu_pkg::*;
 
 module instructionUnit (
+    input instruction_t instr,
 	input logic clk, reset_n,
     input logic mem_done,          //memory interface done done signal
     input logic alu_done,          //AlU is done and ready for next opcode
@@ -52,7 +53,6 @@ module instructionUnit (
  
 
  
-    assign instr = bfm.instr;    //get current instuction from array
     assign opcode = alu_opcode_t'(instr[18:15]);      //cast to opcode enum
     assign decode_addr = instr[14:1];         //get address
     assign loadReg = instr[0];         //get reg A or B

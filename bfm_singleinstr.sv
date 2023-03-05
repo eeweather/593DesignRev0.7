@@ -48,7 +48,7 @@ interface tinyalu_bfm;
 
    endtask : send_instruction
    
-   command_monitor command_monitor_h;
+   monitor monitor_h;
 
    function operation_t op2enum();
       case(op)
@@ -62,32 +62,32 @@ interface tinyalu_bfm;
    endfunction : op2enum
 
 
-   always @(posedge clk) begin : op_monitor
-      static bit in_command = 0;
-      if (start) begin : start_high
-        if (!in_command) begin : new_command
-           command_monitor_h.write_to_monitor(A, B, op2enum());
-           in_command = (op2enum() != no_op);
-        end : new_command
-      end : start_high
-      else // start low
-        in_command = 0;
-   end : op_monitor
+//    always @(posedge clk) begin : op_monitor
+//       static bit in_command = 0;
+//       if (start) begin : start_high
+//         if (!in_command) begin : new_command
+//            command_monitor_h.write_to_monitor(A, B, op2enum());
+//            in_command = (op2enum() != no_op);
+//         end : new_command
+//       end : start_high
+//       else // start low
+//         in_command = 0;
+//    end : op_monitor
 
-   always @(negedge reset_n) begin : rst_monitor
-      if (command_monitor_h != null) //guard against VCS time 0 negedge
-        command_monitor_h.write_to_monitor($random,0,rst_op);
-   end : rst_monitor
+//    always @(negedge reset_n) begin : rst_monitor
+//       if (command_monitor_h != null) //guard against VCS time 0 negedge
+//         command_monitor_h.write_to_monitor($random,0,rst_op);
+//    end : rst_monitor
    
-   result_monitor  result_monitor_h;
+//    result_monitor  result_monitor_h;
 
-   initial begin : result_monitor_thread
-      forever begin : result_monitor_block
-         @(posedge clk) ;
-         if (done) 
-           result_monitor_h.write_to_monitor(result);
-      end : result_monitor_block
-   end : result_monitor_thread
+//    initial begin : result_monitor_thread
+//       forever begin : result_monitor_block
+//          @(posedge clk) ;
+//          if (done) 
+//            result_monitor_h.write_to_monitor(result);
+//       end : result_monitor_block
+//    end : result_monitor_thread
    
 
    initial begin

@@ -98,7 +98,7 @@ module instructionUnit (
             result <= alu_result;           //results to be stored in mem
         end
         
-        else if (alu_done)  begin //alu done signal recieved, send next op
+        else if (alu_done) begin //alu done signal recieved, send next op
             start <= 1'b0;       //assert ALU start signal
             index++;             //increment instruction array index
             regA <= regA;          //maintain register values?
