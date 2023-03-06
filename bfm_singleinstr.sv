@@ -55,8 +55,8 @@ task get_an_input(tinyalu_pkg::item_base tx);
 
     
     task get_an_output(tinyalu_pkg::item_base tx);
-	wait(done || reset_start);
-        wait(!done || reset_start);
+	// wait(done || reset_start);
+   //      wait(!done || reset_start);
 	tx.inst = instr;
 	tx.A = A;
 	tx.B = B;
@@ -65,8 +65,8 @@ task get_an_input(tinyalu_pkg::item_base tx);
 
     task sample_instruction(tinyalu_pkg::item_base tx);
 	if (reset_n) begin
-	   wait(done || reset_start);
-           wait(!done || reset_start);
+	   // wait(done || reset_start);
+      //      wait(!done || reset_start);
 	   tx.inst = instr;
 	   tx.A = A;
 	   tx.B = B;

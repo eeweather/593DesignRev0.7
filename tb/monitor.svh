@@ -27,7 +27,7 @@ function void build_phase(uvm_phase phase);
 	//create ports, get virtual interface from agent_config if it exists
 	dut_in_tx_port = new("dut_in_tx_port", this);
 	dut_out_tx_port = new("dut_out_tx_port", this);
-	if (!uvm_config_db #(agent_config)::get(this, "", "agent_cfg", agent_cfg)) `uvm_fatal(get_type_name(), "no agent_cfg in uvm_config_db")
+	if (!uvm_config_db #(agent_config)::get(this, "", "agent_cfg", agent_cfg)) `uvm_fatal(get_type_name(), "no agent_cfg in uvm_config_db");
 	vif = agent_cfg.vif;
 
 endfunction: build_phase
@@ -43,12 +43,14 @@ endtask: run_phase
 
 virtual task get_sample();
 	item_base tx;
-	begin
-	//forever begin
-	tx = item_base::type_id::create("tx");
+	//begin
+	forever begin
+		@(vif.reset_start || vif.done) begin
+		tx = item_base::type_id::create("tx");
 		vif.sample_instruction(tx);
 		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
 		dut_in_tx_port.write(tx);
+		end
 	end
 endtask: get_sample
 
