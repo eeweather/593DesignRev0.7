@@ -50,6 +50,8 @@ package tinyalu_pkg;
 	typedef class item_alu;
 	typedef class item_multi;
 	typedef class item_single;
+	typedef class item_load;
+	typedef class item_store;
 	typedef class item_valid;
 	typedef class sequence_alu;
 	typedef class test_alu;
@@ -70,6 +72,8 @@ package tinyalu_pkg;
 	`include "tb/test_alu.svh"
 	`include "tb/sequence_alu.svh"
 	`include "tb/item_alu.svh"
+	`include "tb/item_load.svh"
+	`include "tb/item_store.svh"
 	`include "tb/item_multi.svh"
 	`include "tb/item_single.svh"
 	`include "tb/item_valid.svh"

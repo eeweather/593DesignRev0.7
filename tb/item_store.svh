@@ -11,6 +11,7 @@ class item_store extends item_base;
 
     //constain instruction opcode bits[18:15] to the valid alu operations
     constraint load_only {inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store;}
+    constraint daniel_is_really_cool_and_I_love_him {inst[14:1] <=16;}
     
  
 endclass : item_store

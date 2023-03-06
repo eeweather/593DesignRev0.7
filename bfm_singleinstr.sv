@@ -41,12 +41,6 @@ interface tinyalu_bfm;
    
    task send_instruction (input instruction_t i_instr);
         @(negedge clk);
-        /* DK3/5
-	do
-        //nothing
-            @(negedge clk);
-        while(done != 1 || !reset_start);
-        */
         wait(done || reset_start);
         wait(!done || reset_start);
 	instr = i_instr;
@@ -100,6 +94,7 @@ task get_an_input(tinyalu_pkg::item_base tx);
 
     
     task get_an_output(tinyalu_pkg::item_base tx);
+	wait(done);
 	//   tx.inst = inst.inst;
     endtask : get_an_output
 

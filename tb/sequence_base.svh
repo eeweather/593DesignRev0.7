@@ -17,6 +17,11 @@ class sequence_base extends uvm_sequence #(item_base);
 	agent_config agent_cfg;
 	
 	item_base tx;	
+	item_alu alu;
+	item_load load;
+	item_store store;
+
+
 
 	task init_start(input uvm_sequencer #(item_base) sqr, input agent_config agent_cfg);
 		this.agent_cfg = agent_cfg;
@@ -26,20 +31,24 @@ class sequence_base extends uvm_sequence #(item_base);
 	//the body task is where transactions (or sequence items, or whatever) are created, randomized, and started/finished
 	task body();
 		tx = item_base::type_id::create("tx");
-		//repeat (10) begin
-		//if(!tx.randomize()) `uvm_fatal(get_type_name(), "tx.randomize failed")
-		start_item(tx);
-		tx.inst = 19'b1000000000000000111;
-		finish_item(tx);
-		start_item(tx);
-		tx.inst = 19'b1000000000000000010;
-		finish_item(tx);
-		start_item(tx);
-		tx.inst = 19'b0001000000000000000;
-		finish_item(tx);
-		start_item(tx);
-		tx.inst = 19'b1001000000000000101;
-		finish_item(tx);
+		alu = item_alu::type_id::create("alu");
+		load = item_load::type_id::create("load");
+		store = item_store::type_id::create("store");
+	
+		repeat(2) begin
+			if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed")
+			start_item(load);
+			finish_item(load);
+		end
+		if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
+		start_item(alu);
+		finish_item(alu);
+
+		if(!store.randomize()) `uvm_fatal(get_type_name(), "fml.randomize failed")
+		start_item(store);
+		finish_item(store);
+
 	endtask: body
+
 
 endclass: sequence_base
