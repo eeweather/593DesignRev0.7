@@ -16,17 +16,16 @@
 interface tinyalu_bfm;
    import tinyalu_pkg::*;
 
-   wire [7:0]        A;
-   wire [7:0]        B;
+   byte        A;
+   byte        B;
    bit          clk;
    bit          reset_n;
    wire [2:0]   op;
    bit          start;
    wire         done;
-   wire [15:0]  result;
+   logic [15:0]  result;
    instruction_t  instr;
 
-   //
    bit reset_start;
 
 
@@ -48,56 +47,32 @@ interface tinyalu_bfm;
 
    endtask : send_instruction
 
-
-//    function operation_t op2enum();
-//       case(op)
-//         3'b000 : return no_op;
-//         3'b001 : return add_op;
-//         3'b010 : return and_op;
-//         3'b011 : return xor_op;
-//         3'b100 : return mul_op;
-//         default : $fatal("Illegal operation on op bus");
-//       endcase // case (op)
-//    endfunction : op2enum
-
-
-//    always @(posedge clk) begin : op_monitor
-//       static bit in_command = 0;
-//       if (start) begin : start_high
-//         if (!in_command) begin : new_command
-//            command_monitor_h.write_to_monitor(A, B, op2enum());
-//            in_command = (op2enum() != no_op);
-//         end : new_command
-//       end : start_high
-//       else // start low
-//         in_command = 0;
-//    end : op_monitor
-
-//    always @(negedge reset_n) begin : rst_monitor
-//       if (command_monitor_h != null) //guard against VCS time 0 negedge
-//         command_monitor_h.write_to_monitor($random,0,rst_op);
-//    end : rst_monitor
-   
-//    result_monitor  result_monitor_h;
-
-//    initial begin : result_monitor_thread
-//       forever begin : result_monitor_block
-//          @(posedge clk) ;
-//          if (done) 
-//            result_monitor_h.write_to_monitor(result);
-//       end : result_monitor_block
-//    end : result_monitor_thread
-   
 task get_an_input(tinyalu_pkg::item_base tx);
-	  //  tx.inst = inst.inst;
+	wait(done || reset_start);
+        wait(!done || reset_start);
+	tx.inst = instr;
     endtask : get_an_input
 
     
     task get_an_output(tinyalu_pkg::item_base tx);
-	wait(done);
-	//   tx.inst = inst.inst;
+	wait(done || reset_start);
+        wait(!done || reset_start);
+	tx.inst = instr;
+	tx.A = A;
+	tx.B = B;
+	tx.result = result;
     endtask : get_an_output
 
+    task sample_instruction(tinyalu_pkg::item_base tx);
+	if (reset_n) begin
+	   wait(done || reset_start);
+           wait(!done || reset_start);
+	   tx.inst = instr;
+	   tx.A = A;
+	   tx.B = B;
+	   tx.result = result;
+	end
+    endtask : sample_instruction
 
    initial begin
       clk = 0;
@@ -108,6 +83,5 @@ task get_an_input(tinyalu_pkg::item_base tx);
          end
       join_none
    end
-
 
 endinterface : tinyalu_bfm

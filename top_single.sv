@@ -19,7 +19,7 @@ module top_single;
 `include "uvm_macros.svh"
    
    tinyalu_bfm       vif();
-   alumifiu_dut DUT (.instr(vif.instr), .clk(vif.clk), .reset_n(vif.reset_n), .done(vif.done), .A(vif.A), .B(vif.B));
+   alumifiu_dut DUT (.instr(vif.instr), .clk(vif.clk), .reset_n(vif.reset_n), .done(vif.done));
 
 
 initial begin
@@ -32,8 +32,8 @@ initial begin
         $dumpfile("top_single.vcd");
         $dumpvars(0, vif, DUT);
 
-        #10000;
-        $finish();
+//        #10000;
+//        $finish();
 
         
     end

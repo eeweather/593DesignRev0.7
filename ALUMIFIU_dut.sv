@@ -5,8 +5,7 @@ import tinyalu_pkg::*;
 module alumifiu_dut ( 
     input instruction_t instr,
     input logic clk, reset_n,
-    output logic done,
-    output logic [7:0] A, B
+    output logic done
 );
 
 

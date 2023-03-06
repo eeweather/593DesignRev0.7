@@ -33,11 +33,24 @@ function void build_phase(uvm_phase phase);
 endfunction: build_phase
 
 virtual task run_phase(uvm_phase phase);
-//	fork
-//		get_inputs();
-//		get_outputs();
-//	join
+/*	fork
+		get_inputs();
+		get_outputs();
+	join
+	*/
+       get_sample();
 endtask: run_phase
+
+virtual task get_sample();
+	item_base tx;
+	begin
+	//forever begin
+	tx = item_base::type_id::create("tx");
+		vif.sample_instruction(tx);
+		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
+		dut_in_tx_port.write(tx);
+	end
+endtask: get_sample
 
 virtual task get_inputs();
 	item_base tx;
