@@ -1,0 +1,13 @@
+*.ucdb
+*.db
+*.wlf
+*.qdb
+*.qpg
+*.q*
+*.bin
+_info
+_vmake
+*.tfdb
+*.vcd
+*.visc*
+transcript
