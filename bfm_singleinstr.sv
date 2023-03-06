@@ -16,8 +16,8 @@
 interface tinyalu_bfm;
    import tinyalu_pkg::*;
 
-   byte         unsigned        A;
-   byte         unsigned        B;
+   wire [7:0]        A;
+   wire [7:0]        B;
    bit          clk;
    bit          reset_n;
    wire [2:0]   op;
