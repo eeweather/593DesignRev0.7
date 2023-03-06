@@ -3,7 +3,7 @@
 */
 
 class item_store extends item_base;
-    `uvm_object_utils(item_alu);
+    `uvm_object_utils(item_store);
 
     function new(string name="item_store");
 	    super.new(name);
