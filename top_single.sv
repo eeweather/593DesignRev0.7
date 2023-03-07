@@ -19,7 +19,7 @@ module top_single;
 `include "uvm_macros.svh"
    
    tinyalu_bfm       vif();
-   alumifiu_dut DUT (.instr(vif.instr), .clk(vif.clk), .reset_n(vif.reset_n), .done(vif.done));
+   alumifiu_dut DUT (.instr(vif.instr), .clk(vif.clk), .reset_n(vif.reset_n), .done(vif.done), .A(vif.A), .B(vif.B), .result(vif.result));
 
 
 initial begin

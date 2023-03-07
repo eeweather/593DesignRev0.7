@@ -5,16 +5,18 @@ import tinyalu_pkg::*;
 module alumifiu_dut ( 
     input instruction_t instr,
     input logic clk, reset_n,
-    output logic done
+    output logic done,
+    output logic [7:0] A, B,
+    output logic [15:0] result
 );
 
 
-    logic [7:0] A, B;
+    logic [7:0] A_in, B_in;
     alu_opcode_t  op;
     logic start, alu_done, mem_done, error, preload;
     logic [15:0] alu_result;
     reg store, load;
-    reg [15:0] result;
+    reg [15:0] result_in;
     reg [13:0] addr;
     reg [7:0] datatoinst;
     logic [15:0] datatomem;
@@ -23,12 +25,15 @@ module alumifiu_dut (
     logic write_req, read_req;
     logic mem_resp;
 
+assign A = A_in;
+assign B = B_in;
+assign result = result_in;
 
  ALU593 alu (
     .clk(clk), 
     .reset_n(reset_n),
-	.A(A),
-    .B(B), //from IU
+	.A(A_in),
+    .B(B_in), //from IU
 	.op(op), //from IU
 	.start(start), // from IU
 	.result(alu_result), //to IU
@@ -45,11 +50,11 @@ instructionUnit instunit (
     .data(datatoinst),           //receives data from Memory Interface unit
     .alu_result(alu_result),    //results from ALU
     .start(start),              //connects to ALU593 to start operation
-    .A(A),
-    .B(B),         //connect to ALU593
+    .A(A_in),
+    .B(B_in),         //connect to ALU593
     .op(op),           //connect to ALU593
     .addr(addr),        //address to main memory
-    .result(result),     //results to be sent to main memory - connect to mem interface unit
+    .result(result_in),     //results to be sent to main memory - connect to mem interface unit
     .store(store),
     .load(load),        //issue store/load signal to mem interface unit
     .done(done)
@@ -61,7 +66,7 @@ instructionUnit instunit (
         .store(store),
         .load(load),
         .mem_resp(mem_resp),
-        .result(result),
+        .result(result_in),
         .addr(addr),
         .datafrommem(datafrommem),
         .datatomem(datatomem),
