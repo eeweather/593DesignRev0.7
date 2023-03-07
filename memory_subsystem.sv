@@ -31,8 +31,8 @@ typedef enum bit [1:0] {
 } coherency_t;
 
 // Memory array
-logic [DATA_SIZE*8-1:0] memory [0:MEM_SIZE/BLOCK_SIZE-1];
-logic [1:0] memory_coherency [0:MEM_SIZE/BLOCK_SIZE-1];
+logic [DATA_SIZE*8-1:0] memory [MEM_SIZE/BLOCK_SIZE];
+logic [1:0] memory_coherency [MEM_SIZE/BLOCK_SIZE];
 
 
 //req and resp arrays for easier control
@@ -75,11 +75,12 @@ always @(posedge clk) begin
    end
 end
 
-task initialize_memory;
+task initialize_memory();
+int i;
 begin
-      for (int i=0; i<$size(memory); i++) begin
+      for (i=0; i<$size(memory); i++) begin
          memory[i] = '0;
-	 memory_coherency[i] = I;
+	      memory_coherency[i] = I;
       end
 end
 endtask

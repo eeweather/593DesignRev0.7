@@ -39,7 +39,7 @@ module memInerf (
     input logic mem_resp, //from mss
     input logic [15:0] result, //from inst unit
     input logic [13:0] addr, // from inst unit
-    input logic [7:0] datafrommem, //from mss
+    input logic [15:0] datafrommem, //from mss
     output logic [15:0] datatomem, // to mss
     output logic mem_done, // to instunit
     output logic [7:0] datatoinst, // to instunit
@@ -83,7 +83,8 @@ always_ff @(posedge clk) begin
 	end
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
-            datatoinst<=datafrommem;
+            // JBFIL: Add read of either byte based on lower address bits.
+            datatoinst <= addr[0] ? datafrommem[15:8] : datafrommem[7:0];
             //end with read_req and raise mem_done
             read_req <= 0;
         end

@@ -19,12 +19,14 @@ import tinyalu_pkg::*;
    //memory interface signals
    logic store;
    logic load;
-   wire [15:0] datatofrommem;
+   logic [15:0] datafrommem; //from mss
+   logic [15:0] datatomem; // to mss
    logic mem_done;
    logic [7:0] datatoinst;
    logic write_req;
    logic read_req;
    logic [13:0] addrout;
+   logic mem_resp;
 
    //IU signals
    logic alu_done;
@@ -35,27 +37,28 @@ import tinyalu_pkg::*;
    byte unsigned IU_B;
    bit IU_start;
 
+   // JBFIL: Disable due to multiple assign.
    //send_op task stolen from ALU593 for testing
-   task send_op(input byte iA, input byte iB, input alu_opcode_t iop, output shortint alu_result);
-      begin
-	 @(negedge clk);
-         op_set = iop;
-         A = iA;
-         B = iB;
-         start = 1'b1;
-         if (iop == op_nop) begin
-            @(posedge clk);
-            #1;
-            start = 1'b0;           
-         end else begin
-            do
-              @(negedge clk);
-            while (done == 0);
-            alu_result = result;
-            start = 1'b0;
-         end
-      end // else: !if(iop == rst_op)
+   // task send_op(input byte iA, input byte iB, input alu_opcode_t iop, output shortint alu_result);
+   //    begin
+	//  @(negedge clk);
+   //       op_set = iop;
+   //       A = iA;
+   //       B = iB;
+   //       start = 1'b1;
+   //       if (iop == op_nop) begin
+   //          @(posedge clk);
+   //          #1;
+   //          start = 1'b0;           
+   //       end else begin
+   //          do
+   //            @(negedge clk);
+   //          while (done == 0);
+   //          alu_result = result;
+   //          start = 1'b0;
+   //       end
+   //    end // else: !if(iop == rst_op)
       
-   endtask : send_op
+   // endtask : send_op
 
 endinterface : processor_if
