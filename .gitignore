@@ -13,3 +13,8 @@ _vmake
 transcript
 *.ucdb
 *.bin
+
+
+work/*
+jwork/*
+
