@@ -11,3 +11,5 @@ _vmake
 *.vcd
 *.visc*
 transcript
+*.ucdb
+*.bin
