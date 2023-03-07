@@ -45,7 +45,7 @@ virtual task get_sample();
 	item_base tx;
 	//begin
 	forever begin
-		@(vif.reset_start || vif.done) begin
+		@(vif.done) begin
 		tx = item_base::type_id::create("tx");
 		vif.sample_instruction(tx);
 		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
