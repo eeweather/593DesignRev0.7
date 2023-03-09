@@ -39,12 +39,17 @@ virtual task run_phase(uvm_phase phase);
 	item_base inst;
 
 	vif_0.reset_alu();
+	vif_1.reset_alu();
+	vif_2.reset_alu();
+	vif_3.reset_alu();
+	
 
 	
 	forever begin
 		//get the next item from the sequencer (through the port) and send it to the DUT using the virtual interface
 		seq_item_port.get_next_item(inst);		
 		vif_0.send_instruction(inst.inst); 
+		vif_1.send_instruction(inst.inst); 
 		seq_item_port.item_done();
 
 	end

@@ -72,15 +72,17 @@ module instructionUnit (
                 store = 0;
                 //done <= 1;            //increment instruction array index
             end
-        else if (opcode == op_load) begin   //load operation
-                load = 1;                   //assert load signal for mem IF
-                addr = decode_addr;                   //supply address to mem IF
-		    end
-        else if (opcode == op_store) begin  
-            store = 1'b1;                  //assert store signal for mem IF
-            addr = decode_addr;                   //supply address to mem IF
-           // result = alu_result;           //results to be stored in mem
-        end
+        // else if (opcode == op_load) begin   //load operation
+        //         load = 1;  
+        //         store = 1'b0;                 //assert load signal for mem IF
+        //         addr = decode_addr;                   //supply address to mem IF
+		//     end
+        // else if (opcode == op_store) begin  
+        //     store = 1'b1;  
+        //     load = 0;                  //assert store signal for mem IF
+        //     addr = decode_addr;                   //supply address to mem IF
+        //    // result = alu_result;           //results to be stored in mem
+        // end
         
         else if (alu_done)  begin //alu done signal recieved, send next op
             start = 1'b0;       //assert ALU start signal
@@ -90,12 +92,33 @@ module instructionUnit (
         end
         else begin
                 op <= opcode;
-                A = regA;
-                B = regB;
-            start = 1'b1;          //deassrt alu start
+            //start = 1'b1;          //deassrt alu start
             //done <=0;
         end
-      
+                A <= regA;
+                B <= regB;
+
+//ew 3/8
+
+        if (opcode == op_load) begin   //load operation
+                load <= 1;  
+                store <= 1'b0;                 //assert load signal for mem IF
+                addr <= decode_addr; 
+                start <= 0;                  //supply address to mem IF
+		    end
+        else if (opcode == op_store) begin  
+            start <= 0;                  //supply address to mem IF
+            store <= 1'b1;  
+            load <= 0;                  //assert store signal for mem IF
+            addr <= decode_addr;                   //supply address to mem IF
+           // result = alu_result;           //results to be stored in mem
+        end
+         else begin
+            if(!alu_done) start <= 1;
+            load <= 0;                  //assert store signal for mem IF
+            store <= 1'b0;                 //assert load signal for mem IF
+            //done <=0;
+        end
     end 
 
 endmodule : instructionUnit

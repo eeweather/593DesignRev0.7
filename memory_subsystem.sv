@@ -1,6 +1,6 @@
 module memory_subsystem
 #(
-   parameter MEM_SIZE = 16,//*1024,  // 16KB
+   parameter MEM_SIZE = 16*1024,  // 16KB
    parameter DATA_SIZE = 2,       
    parameter BLOCK_SIZE = 2  
 )(
@@ -59,35 +59,56 @@ always @(posedge clk) begin
       requestor = (requestor + 1) % 4;
       case (grant)
 	      0: begin
-		mem_write_data = mem_write_data_0;
+		//mem_write_data = mem_write_data_0;
 		mem_read_req = mem_read_req_0;
 		mem_write_req = mem_write_req_0;
 		addr = addr_0;
+		//mem_read_data_0 = mem_read_data;
+	      end
+	      1: begin
+		//mem_write_data = mem_write_data_1;
+		mem_read_req = mem_read_req_1;
+		mem_write_req = mem_write_req_1;
+		addr = addr_1;
+		//mem_read_data_1 = mem_read_data;
+	      end
+	      2: begin
+		//mem_write_data = mem_write_data_2;
+		mem_read_req = mem_read_req_2;
+		mem_write_req = mem_write_req_2;
+		addr = addr_2;
+		//mem_read_data_2 = mem_read_data;
+	      end
+	      3: begin
+		//mem_write_data = mem_write_data_3;
+		mem_read_req = mem_read_req_3;
+		mem_write_req = mem_write_req_3;
+		addr = addr_3;
+		//mem_read_data_3 = mem_read_data;
+	      end
+      endcase
+   end else grant = 0;
+end
+
+always @(negedge clk) begin
+    case (grant)
+	      0: begin
+		mem_write_data = mem_write_data_0;
 		mem_read_data_0 = mem_read_data;
 	      end
 	      1: begin
 		mem_write_data = mem_write_data_1;
-		mem_read_req = mem_read_req_1;
-		mem_write_req = mem_write_req_1;
-		addr = addr_1;
 		mem_read_data_1 = mem_read_data;
 	      end
 	      2: begin
 		mem_write_data = mem_write_data_2;
-		mem_read_req = mem_read_req_2;
-		mem_write_req = mem_write_req_2;
-		addr = addr_2;
 		mem_read_data_2 = mem_read_data;
 	      end
 	      3: begin
 		mem_write_data = mem_write_data_3;
-		mem_read_req = mem_read_req_3;
-		mem_write_req = mem_write_req_3;
-		addr = addr_3;
 		mem_read_data_3 = mem_read_data;
 	      end
       endcase
-   end else grant = 0;
 end
 
 //memory write/read functionality
