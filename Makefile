@@ -7,7 +7,7 @@ all: comp opt psim
 
 comp:  
 	vlog tinyalu_pkg.sv processor_if.sv
-	vlog ALU593.sv instructionUnit_single.sv MemIntUnit.sv memory_subsystem.sv ALUMIFIU_dut.sv
+	vlog ALU593.sv instructionUnit_single.sv memIntUnit.sv memory_subsystem.sv ALUMIFIU_dut.sv
 	vlog tb/top_hvl.sv top_hdl.sv
 opt:    
 	vopt top_hvl top_hdl -novopt -o top_opt -debug +designfile +cover=bcesf -coverexcludedefault
