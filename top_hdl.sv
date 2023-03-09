@@ -30,7 +30,7 @@ import tinyalu_pkg::*;
    
    alumifiu_dut PROC1 (
 	   .instr(vif_1.instr),
-	   .clk(vif_1.clk),
+	   .clk(vif_0.clk),
 	   .reset_n(vif_1.reset_n),
 	   .done(vif_1.done),
 	   .A(vif_1.A),
@@ -47,7 +47,7 @@ import tinyalu_pkg::*;
    
    alumifiu_dut PROC2 (
 	   .instr(vif_2.instr),
-	   .clk(vif_2.clk),
+	   .clk(vif_0.clk),
 	   .reset_n(vif_2.reset_n),
 	   .done(vif_2.done),
 	   .A(vif_2.A),
@@ -64,7 +64,7 @@ import tinyalu_pkg::*;
    
    alumifiu_dut PROC3 (
 	   .instr(vif_3.instr),
-	   .clk(vif_3.clk),
+	   .clk(vif_0.clk),
 	   .reset_n(vif_3.reset_n),
 	   .done(vif_3.done),
 	   .A(vif_3.A),
