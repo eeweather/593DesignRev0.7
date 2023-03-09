@@ -45,11 +45,21 @@ virtual task get_sample();
 	item_base tx;
 	//begin
 	forever begin
-		@(vif.done) begin
+		@(posedge vif.done) begin
+		@(negedge vif.done);
 		tx = item_base::type_id::create("tx");
 		vif.sample_instruction(tx);
-		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
+//		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
+	
+		//load hack, fix later!
+		if(tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load) begin
+			tx.result = 1'b1;
+			tx.A = 1'b0;
+			tx.B = 1'b0;
+		end
+	
 		dut_in_tx_port.write(tx);
+		dut_out_tx_port.write(tx);
 		end
 	end
 endtask: get_sample
@@ -74,8 +84,9 @@ virtual task get_outputs();
 	end
 endtask: get_outputs
 
+/*dk3/8
 virtual function void end_of_elaboration_phase(uvm_phase phase);
 	set_report_verbosity_level(agent_cfg.monitor_verbosity);
 endfunction: end_of_elaboration_phase
-
+*/
 endclass: monitor

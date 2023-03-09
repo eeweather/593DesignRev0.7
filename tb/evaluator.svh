@@ -53,11 +53,13 @@ class evaluator extends uvm_component;
 			
 			//if they match, party, if not, crash and burn
 			
-
-			if(actual_tx.compare(expected_tx)) match++;
+				if(actual_tx.compare(expected_tx)) begin
+				`uvm_info("Evaluator", $sformatf("MATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result), UVM_DEBUG)
+					match++;
+				end
 
 			else begin
-				`uvm_error("Evaluator", $sformatf("exp: %d does not match act: %d", expected_tx.result, actual_tx.result))
+				`uvm_error("Evaluator", $sformatf("MISMATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result))
 				mismatch++;
 			end
 		end

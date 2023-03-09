@@ -13,7 +13,7 @@ function new(string name="agent_config");
 endfunction
 
 uvm_active_passive_enum  	active			= UVM_PASSIVE;
-int			 	monitor_verbosity	= UVM_DEBUG;
+//dk3/8 int			 	monitor_verbosity	= UVM_DEBUG;
 bit			 	enable_coverage		= 1;
 int			 	num_items		= 1;
 uvm_sequencer #(item_base) 	sqr;

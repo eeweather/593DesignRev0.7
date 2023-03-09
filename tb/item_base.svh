@@ -48,10 +48,7 @@
 
 	virtual function string convert2string();
 		string s = super.convert2string();
-		$sformat(s, "\n inst: %0b", inst);
-		$sformat(s, "\n A: %0h", A);
-		$sformat(s, "\n B: %0h", B);
-		$sformat(s, "\n result: %0h", result);
+		$sformat(s, "\n inst: %0b \tA: %0h \tB: %0h \tresult: %0h", inst, A, B, result);
 		return s;
 	endfunction: convert2string
 
