@@ -4,9 +4,10 @@ top_hdl is the top file now. currently each processor has its own clock which is
 
 TODO:
 
-move clock and reset out of processor_if, perhaps into memory_if
+move clock and reset out of processor_if, perhaps into memory_if, then use memory_if clock and reset for all procs
 fix memory_subsystem logic
 send traffic on vif_1, vif_2, vif_3
 update driver, monitor, scoreboard, predictor, evaluator, coverage collector, for multiple processors
-run that bitch a bunch
+run that bitch a bunch (sequences and what not)
+update coverage to be more useful
 forget to add a bunch of things to the TODO list so it seems like there is less to do
