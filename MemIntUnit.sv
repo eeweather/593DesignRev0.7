@@ -44,11 +44,13 @@ module memInerf (
     output logic mem_done, // to instunit
     output logic [7:0] datatoinst, // to instunit
     output logic write_req, read_req, // to  mss
+    output logic cs, // chip select to mss
     output logic [13:0] addrout // to mss
 );
 
 logic [3:0] counter;
 
+assign cs = (write_req || read_req);
 
 
 //assign datatofrommem = (!reset_n)? '0 : 16'bz;
@@ -113,8 +115,8 @@ always_ff @(posedge clk) begin
     end 
     else begin
         mem_done<=0;
-        write_req<=0;
-        read_req<=0;
+        //write_req<=0;
+        //read_req<=0;
     end     
 end
 

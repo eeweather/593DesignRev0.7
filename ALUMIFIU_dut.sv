@@ -23,13 +23,15 @@ module alumifiu_dut (
     logic [7:0] datafrommem;
     logic [13:0] addrout;
     logic write_req, read_req;
-    logic mem_resp;
+    logic mem_resp_0;
+    logic cs_0; 
+    //cs_1, cs_2, cs_3;
 
 assign A = A_in;
 assign B = B_in;
 assign result = result_in;
 
- ALU593 alu (
+ ALU593 alu_0 (
     .clk(clk), 
     .reset_n(reset_n),
 	.A(A_in),
@@ -41,7 +43,7 @@ assign result = result_in;
 	.error(error) // just around  	
 );
 
-instructionUnit instunit (
+instructionUnit instunit_0 (
     .instr(instr),
     .clk(clk), 
     .reset_n(reset_n),
@@ -60,12 +62,12 @@ instructionUnit instunit (
     .done(done)
 );
 
- memInerf memInt (
+ memInerf memInt_0 (
         .clk(clk),
         .reset_n(reset_n),
         .store(store),
         .load(load),
-        .mem_resp(mem_resp),
+        .mem_resp(mem_resp_0),
         .result(result_in),
         .addr(addr),
         .datafrommem(datafrommem),
@@ -74,20 +76,39 @@ instructionUnit instunit (
         .datatoinst(datatoinst),
         .write_req(write_req),
         .read_req(read_req),
+        .cs(cs_0),
         .addrout(addrout)
     );
 
-    sram_single_port sram (
-        .reset_n(reset_n),
-        .clk(clk),
-        .re(read_req),
-        .we(write_req),
-        .preload(preload),
+    // sram_single_port sram (
+    //     .reset_n(reset_n),
+    //     .clk(clk),
+    //     .re(read_req),
+    //     .we(write_req),
+    //     .preload(preload),
+    //     .addr(addrout),
+    //     .datafrommif(datatomem),
+	//     .datatomif(datafrommem),
+    //     .mem_resp(mem_resp)
+    // );
+
+    memory_subsystem mss (
+        .clk(clk),                 
+        .reset_n(reset_n),              
+        .mem_write_data(datatomem),   
+        .processor_req_0(cs_0),                     	
+        .processor_req_1(0),   
+        .processor_req_2(0),  	
+        .processor_req_3(0),
+        .mem_read_req(read_req), 
+        .mem_write_req(write_req),  
         .addr(addrout),
-        .datafrommif(datatomem),
-	    .datatomif(datafrommem),
-        .mem_resp(mem_resp)
-    );
+        .mem_read_data(datafrommem),   
+        .processor_resp_0(mem_resp_0),
+        .processor_resp_1(),
+        .processor_resp_2(),
+        .processor_resp_3() 
+);
 
 
 endmodule: alumifiu_dut

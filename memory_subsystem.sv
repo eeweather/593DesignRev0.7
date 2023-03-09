@@ -1,6 +1,6 @@
 module memory_subsystem
 #(
-   parameter MEM_SIZE = 16*1024,  // 16KB
+   parameter MEM_SIZE = 16,//*1024,  // 16KB
    parameter DATA_SIZE = 2,       
    parameter BLOCK_SIZE = 2,     
    parameter NUM_PROCESSORS = 4  
@@ -64,14 +64,14 @@ always @(posedge clk) begin
       memory_coherency[addr] = M;
       current_proc_resp = current_proc_req;
       //UNIT TEST DEBUG MESSAGE VV
-      //$display("write: memory[%0d] = %d \tmem_write_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_write_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
+      $display("write: memory[%0d] = %d \tmem_write_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_write_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
    //read
    end else if (mem_read_req) begin
       //TODO: determine what to do for reads of M memory and when to update
 	      mem_read_data = memory[addr];
 	      current_proc_resp = current_proc_req;
      //UNIT TEST DEBUG MESSAGE VV 
-     //$display("read: memory[%0d] = %d \tmem_read_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_read_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
+     $display("read: memory[%0d] = %d \tmem_read_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_read_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
    end
 end
 
@@ -79,7 +79,7 @@ task initialize_memory();
 int i;
 begin
       for (i=0; i<$size(memory); i++) begin
-         memory[i] = '0;
+         memory[i] = i;
 	      memory_coherency[i] = I;
       end
 end

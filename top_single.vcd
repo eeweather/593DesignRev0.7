@@ -1,5 +1,5 @@
 $date
-	Mon Mar  6 20:10:49 2023
+	Wed Mar  8 18:40:14 2023
 $end
 $version
 	QuestaSim Version 2019.2_1
@@ -53,57 +53,58 @@ $var reg 14 2 addr [13:0] $end
 $var reg 14 3 addrout [13:0] $end
 $var reg 1 4 alu_done $end
 $var reg 16 5 alu_result [15:0] $end
-$var reg 8 6 datafrommem [7:0] $end
-$var reg 8 7 datatoinst [7:0] $end
-$var reg 16 8 datatomem [15:0] $end
-$var reg 1 9 done $end
-$var reg 1 : error $end
-$var reg 1 ; load $end
-$var reg 1 < mem_done $end
-$var reg 1 = mem_resp $end
-$var reg 1 > preload $end
-$var reg 1 ? read_req $end
-$var reg 16 @ result [15:0] $end
-$var reg 16 @ result_in [15:0] $end
-$var reg 1 A start $end
-$var reg 1 B store $end
-$var reg 1 C write_req $end
-$var reg 4 D op [3:0] $end
+$var reg 1 6 cs_0 $end
+$var reg 8 7 datafrommem [7:0] $end
+$var reg 8 8 datatoinst [7:0] $end
+$var reg 16 9 datatomem [15:0] $end
+$var reg 1 : done $end
+$var reg 1 ; error $end
+$var reg 1 < load $end
+$var reg 1 = mem_done $end
+$var reg 1 > mem_resp_0 $end
+$var reg 1 ? preload $end
+$var reg 1 @ read_req $end
+$var reg 16 A result [15:0] $end
+$var reg 16 A result_in [15:0] $end
+$var reg 1 B start $end
+$var reg 1 C store $end
+$var reg 1 D write_req $end
+$var reg 4 E op [3:0] $end
 
-$scope module alu $end
+$scope module alu_0 $end
 $var wire 8 0 A [7:0] $end
 $var wire 8 1 B [7:0] $end
 $var wire 1 . clk $end
 $var wire 1 / reset_n $end
 $var reg 16 5 result [15:0] $end
-$var reg 16 E result_multi [15:0] $end
-$var reg 16 F result_single [15:0] $end
-$var reg 1 G done $end
-$var reg 1 H done_multi $end
-$var reg 1 I done_single $end
-$var reg 1 J error $end
-$var reg 1 K start $end
-$var reg 1 L start_multi $end
-$var reg 1 M start_single $end
-$var wire 4 D op [3:0] $end
+$var reg 16 F result_multi [15:0] $end
+$var reg 16 G result_single [15:0] $end
+$var reg 1 H done $end
+$var reg 1 I done_multi $end
+$var reg 1 J done_single $end
+$var reg 1 K error $end
+$var reg 1 L start $end
+$var reg 1 M start_multi $end
+$var reg 1 N start_single $end
+$var wire 4 E op [3:0] $end
 
 $scope module alu_multi $end
 $var wire 8 0 A [7:0] $end
 $var wire 8 1 B [7:0] $end
 $var wire 1 . clk $end
 $var wire 1 / reset_n $end
-$var wire 1 N start $end
-$var reg 8 O a_int [7:0] $end
-$var reg 8 P b_int [7:0] $end
-$var reg 1 Q is_4cycle $end
-$var reg 16 R mult1 [15:0] $end
-$var reg 16 S mult2 [15:0] $end
-$var reg 16 E result [15:0] $end
-$var reg 1 H done $end
-$var reg 1 T done1 $end
-$var reg 1 U done2 $end
-$var reg 1 V done3 $end
-$var wire 4 D op [3:0] $end
+$var wire 1 O start $end
+$var reg 8 P a_int [7:0] $end
+$var reg 8 Q b_int [7:0] $end
+$var reg 1 R is_4cycle $end
+$var reg 16 S mult1 [15:0] $end
+$var reg 16 T mult2 [15:0] $end
+$var reg 16 F result [15:0] $end
+$var reg 1 I done $end
+$var reg 1 U done1 $end
+$var reg 1 V done2 $end
+$var reg 1 W done3 $end
+$var wire 4 E op [3:0] $end
 $upscope $end
 
 $scope module alu_single $end
@@ -111,70 +112,1628 @@ $var wire 8 0 A [7:0] $end
 $var wire 8 1 B [7:0] $end
 $var wire 1 . clk $end
 $var wire 1 / reset_n $end
-$var wire 1 W start $end
-$var reg 16 F result [15:0] $end
-$var reg 1 I done $end
-$var wire 4 D op [3:0] $end
+$var wire 1 X start $end
+$var reg 16 G result [15:0] $end
+$var reg 1 J done $end
+$var wire 4 E op [3:0] $end
 $upscope $end
 $upscope $end
 
-$scope module instunit $end
+$scope module instunit_0 $end
 $var wire 1 4 alu_done $end
 $var wire 16 5 alu_result [15:0] $end
 $var wire 1 . clk $end
-$var wire 8 7 data [7:0] $end
+$var wire 8 8 data [7:0] $end
 $var wire 19 % instr [18:0] $end
-$var wire 1 < mem_done $end
+$var wire 1 = mem_done $end
 $var wire 1 / reset_n $end
 $var reg 8 0 A [7:0] $end
 $var reg 8 1 B [7:0] $end
 $var reg 14 2 addr [13:0] $end
-$var reg 14 X decode_addr [13:0] $end
-$var reg 1 9 done $end
-$var reg 1 ; load $end
-$var reg 1 Y loadReg $end
-$var reg 8 Z regA [7:0] $end
-$var reg 8 [ regB [7:0] $end
-$var reg 16 @ result [15:0] $end
-$var reg 1 A start $end
-$var reg 1 B store $end
-$var integer 32 \ count $end
-$var integer 32 ] fd $end
-$var integer 32 ^ index $end
-$var reg 4 _ op [3:0] $end
-$var reg 4 ` opcode [3:0] $end
-
-$scope begin send_instruction $end
-$upscope $end
+$var reg 14 Y decode_addr [13:0] $end
+$var reg 1 : done $end
+$var reg 1 < load $end
+$var reg 1 Z loadReg $end
+$var reg 8 [ regA [7:0] $end
+$var reg 8 \ regB [7:0] $end
+$var reg 16 A result [15:0] $end
+$var reg 1 B start $end
+$var reg 1 C store $end
+$var integer 32 ] count $end
+$var integer 32 ^ fd $end
+$var integer 32 _ index $end
+$var reg 4 ` op [3:0] $end
+$var reg 4 a opcode [3:0] $end
 $upscope $end
 
-$scope module memInt $end
+$scope module memInt_0 $end
 $var wire 14 2 addr [13:0] $end
 $var wire 1 . clk $end
-$var wire 16 a datafrommem [15:0] $end
-$var wire 1 ; load $end
-$var wire 1 = mem_resp $end
+$var wire 16 b datafrommem [15:0] $end
+$var wire 1 < load $end
+$var wire 1 > mem_resp $end
 $var wire 1 / reset_n $end
-$var wire 16 @ result [15:0] $end
-$var wire 1 B store $end
+$var wire 16 A result [15:0] $end
+$var wire 1 C store $end
 $var reg 14 3 addrout [13:0] $end
-$var reg 4 b counter [3:0] $end
-$var reg 8 7 datatoinst [7:0] $end
-$var reg 16 8 datatomem [15:0] $end
-$var reg 1 < mem_done $end
-$var reg 1 ? read_req $end
-$var reg 1 C write_req $end
+$var reg 4 c counter [3:0] $end
+$var reg 1 6 cs $end
+$var reg 8 8 datatoinst [7:0] $end
+$var reg 16 9 datatomem [15:0] $end
+$var reg 1 d mem_done $end
+$var reg 1 @ read_req $end
+$var reg 1 D write_req $end
 $upscope $end
 
-$scope module sram $end
+$scope module mss $end
 $var wire 14 3 addr [13:0] $end
 $var wire 1 . clk $end
-$var wire 16 8 datafrommif [15:0] $end
-$var wire 1 > preload $end
-$var wire 1 ? re $end
+$var wire 1 @ mem_read_req $end
+$var wire 16 9 mem_write_data [15:0] $end
+$var wire 1 D mem_write_req $end
+$var wire 1 6 processor_req_0 $end
+$var wire 1 e processor_req_1 $end
+$var wire 1 f processor_req_2 $end
+$var wire 1 g processor_req_3 $end
 $var wire 1 / reset_n $end
-$var wire 1 C we $end
-$var parameter 32 c ADDR_WIDTH $end
-$var parameter 32 d DATA_WIDTH $end
-$var reg 8 6 datatomif [7:0] $end
-$var reg 1 = mem_resp $end
+$var parameter 32 h BLOCK_SIZE $end
+$var parameter 32 i DATA_SIZE $end
+$var parameter 32 j MEM_SIZE $end
+$var parameter 32 k NUM_PROCESSORS $end
+$var reg 4 l current_proc_req [3:0] $end
+$var reg 4 m current_proc_resp [3:0] $end
+$var reg 4 n grant [3:0] $end
+$var reg 16 o mem_read_data [15:0] $end
+$var reg 1 > processor_resp_0 $end
+$var reg 1 p processor_resp_1 $end
+$var reg 1 q processor_resp_2 $end
+$var reg 1 r processor_resp_3 $end
+$var reg 4 s requestor [3:0] $end
+
+$scope task initialize_memory $end
+$var integer 32 t i $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+z$
+z#
+z"
+x!
+0.
+0/
+0X
+0O
+04
+bx 7
+0;
+x=
+x?
+bx E
+bx 5
+0H
+0K
+0L
+0M
+0N
+bx P
+bx Q
+xR
+bx S
+bx T
+bx F
+0I
+0U
+0V
+0W
+bx G
+0J
+bx 0
+bx 1
+bx 2
+bx Y
+x:
+0<
+xZ
+b0 [
+b0 \
+bx A
+0B
+0C
+b0 ]
+b0 ^
+b0 _
+bx `
+bx a
+bzxxxxxxxx b
+bx 3
+bx c
+x6
+bx 8
+bx 9
+xd
+x@
+xD
+0e
+0f
+0g
+b10 h
+b10 i
+b10000 j
+b100 k
+b0x l
+bx m
+bx n
+bx o
+x>
+xp
+xq
+xr
+b0 s
+b0 t
+bx %
+bx &
+b0 '
+b0 (
+0)
+0*
+1+
+0,
+bx -
+$end
+#10
+1)
+1.
+b0 n
+b0 G
+b0 P
+b0 Q
+b0 S
+b0 T
+b0 F
+b0 3
+0D
+0@
+b0 8
+b0 c
+b0 9
+0d
+0=
+06
+b0 l
+0:
+b0 5
+0!
+b0 A
+b0 &
+#20
+0)
+0.
+#30
+1)
+1.
+#40
+0)
+0.
+1*
+1/
+b0 0
+b0 1
+1B
+1L
+1N
+1X
+b1000000000000001000 -
+#50
+1)
+1.
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+bx G
+bx 5
+bx A
+bx &
+#60
+0)
+0.
+b1000000000000001000 %
+0+
+b1000 a
+b100 Y
+0Z
+1<
+b100 2
+b1000000000000011000 -
+#70
+1)
+1.
+b1 c
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b100 3
+#80
+0)
+0.
+#90
+1)
+1.
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b10 c
+1@
+16
+b1 l
+#100
+0)
+0.
+#110
+1)
+1.
+b1 n
+b1 s
+b11 c
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#120
+0)
+0.
+#130
+1)
+1.
+b100 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#140
+0)
+0.
+#150
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b101 c
+#160
+0)
+0.
+#170
+1)
+1.
+b110 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#180
+0)
+0.
+#190
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b111 c
+#200
+0)
+0.
+#210
+1)
+1.
+b1000 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#220
+0)
+0.
+#230
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1001 c
+#240
+0)
+0.
+#250
+1)
+1.
+b1010 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b0 c
+1d
+1=
+1:
+0<
+1!
+#260
+0)
+0.
+#270
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+0d
+0=
+0:
+1<
+0!
+b1000000000000011000 %
+b1100 Y
+b1100 2
+b1010000001011010110 -
+#280
+0)
+0.
+#290
+1)
+1.
+b1 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1100 3
+#300
+0)
+0.
+#310
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b10 c
+#320
+0)
+0.
+#330
+1)
+1.
+b11 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#340
+0)
+0.
+#350
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b100 c
+#360
+0)
+0.
+#370
+1)
+1.
+b101 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#380
+0)
+0.
+#390
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b110 c
+#400
+0)
+0.
+#410
+1)
+1.
+b111 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#420
+0)
+0.
+#430
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1000 c
+#440
+0)
+0.
+#450
+1)
+1.
+b1001 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#460
+0)
+0.
+#470
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1010 c
+b0 c
+1d
+1=
+1:
+0<
+1!
+#480
+0)
+0.
+#490
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+0d
+0=
+0:
+1<
+0!
+b1010000001011010110 %
+b1010 a
+b101101011 Y
+b1010 `
+b1010 E
+0R
+b1001000000000011100 -
+#500
+0)
+0.
+#510
+1)
+1.
+1J
+b1 c
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+1H
+14
+1:
+0B
+0L
+1!
+0N
+0X
+b0 G
+b0 5
+b0 A
+b0 &
+#520
+0)
+0.
+#530
+1)
+1.
+0J
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b10 c
+0H
+04
+0:
+1B
+1L
+0!
+b1001000000000011100 %
+1N
+1X
+b1001 a
+b1110 Y
+1C
+b1110 2
+#540
+0)
+0.
+#550
+1)
+1.
+1J
+b11 c
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+1H
+14
+1:
+1!
+b1110 3
+#560
+0)
+0.
+#570
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b100 c
+#580
+0)
+0.
+#590
+1)
+1.
+b101 c
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#600
+0)
+0.
+#610
+1)
+1.
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b110 c
+#620
+0)
+0.
+#630
+1)
+1.
+b111 c
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#640
+0)
+0.
+#650
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1000 c
+#660
+0)
+0.
+#670
+1)
+1.
+b1001 c
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#680
+0)
+0.
+#690
+1)
+1.
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1010 c
+b0 c
+1d
+1=
+0<
+0C
+#700
+0)
+0.
+#710
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+0d
+0=
+1C
+#720
+0)
+0.
+#730
+1)
+1.
+b1 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#740
+0)
+0.
+#750
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b10 c
+1D
+#760
+0)
+0.
+#770
+1)
+1.
+b11 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#780
+0)
+0.
+#790
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b100 c
+#800
+0)
+0.
+#810
+1)
+1.
+b101 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#820
+0)
+0.
+#830
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b110 c
+#840
+0)
+0.
+#850
+1)
+1.
+b111 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#860
+0)
+0.
+#870
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1000 c
+#880
+0)
+0.
+#890
+1)
+1.
+b1001 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#900
+0)
+0.
+#910
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1010 c
+b0 c
+1d
+1=
+0C
+#920
+0)
+0.
+#930
+1)
+1.
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+0d
+0=
+1C
+#940
+0)
+0.
+#950
+1)
+1.
+b1 c
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#960
+0)
+0.
+#970
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b10 c
+#980
+0)
+0.
+#990
+1)
+1.
+b11 c
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1000
+0)
+0.
+#1010
+1)
+1.
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b100 c
+#1020
+0)
+0.
+#1030
+1)
+1.
+b101 c
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1040
+0)
+0.
+#1050
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b110 c
+#1060
+0)
+0.
+#1070
+1)
+1.
+b111 c
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1080
+0)
+0.
+#1090
+1)
+1.
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1000 c
+#1100
+0)
+0.
+#1110
+1)
+1.
+b1001 c
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1120
+0)
+0.
+#1130
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1010 c
+b0 c
+1d
+1=
+0C
+#1140
+0)
+0.
+#1150
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+0d
+0=
+1C
+#1160
+0)
+0.
+#1170
+1)
+1.
+b1 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1180
+0)
+0.
+#1190
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b10 c
+#1200
+0)
+0.
+#1210
+1)
+1.
+b11 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1220
+0)
+0.
+#1230
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b100 c
+#1240
+0)
+0.
+#1250
+1)
+1.
+b101 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1260
+0)
+0.
+#1270
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b110 c
+#1280
+0)
+0.
+#1290
+1)
+1.
+b111 c
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1300
+0)
+0.
+#1310
+1)
+1.
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1000 c
+#1320
+0)
+0.
+#1330
+1)
+1.
+b1001 c
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1340
+0)
+0.
+#1350
+1)
+1.
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1010 c
+b0 c
+1d
+1=
+0C
+#1360
+0)
+0.
+#1370
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+0d
+0=
+1C
+#1380
+0)
+0.
+#1390
+1)
+1.
+b1 c
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1400
+0)
+0.
+#1410
+1)
+1.
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b10 c
+#1420
+0)
+0.
+#1430
+1)
+1.
+b11 c
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1440
+0)
+0.
+#1450
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b100 c
+#1460
+0)
+0.
+#1470
+1)
+1.
+b101 c
+b1 n
+b1 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1480
+0)
+0.
+#1490
+1)
+1.
+b0 n
+b10 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b110 c
+#1500
+0)
+0.
+#1510
+1)
+1.
+b111 c
+b11 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+#1520
+0)
+0.
+#1530
+1)
+1.
+b0 s
+b0 t
+b1 t
+b10 t
+b11 t
+b100 t
+b101 t
+b110 t
+b111 t
+b1000 t
+b1000 c
