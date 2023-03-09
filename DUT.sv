@@ -2,19 +2,12 @@ import tinyalu_pkg::*;
 
 
 
-module alumifiu_dut ( 
+module DUT ( 
     input instruction_t instr,
     input logic clk, reset_n,
     output logic done,
     output logic [7:0] A, B,
-    output logic [15:0] result,
-    output logic [15:0] datatomem,
-    input logic [7:0] datafrommem,
-    output logic cs,
-    output logic read_req,
-    output logic write_req,
-    output logic [13:0] addrout,
-    input logic mem_resp
+    output logic [15:0] result
 );
 
 
@@ -24,14 +17,23 @@ module alumifiu_dut (
     logic [15:0] alu_result;
     reg store, load;
     reg [15:0] result_in;
-    reg [13:0] addr;
+    reg [13:0] addr_0, addr_1, addr_2, addr_3;
     reg [7:0] datatoinst;
+    logic [15:0] datatomem;
+    logic [7:0] datafrommem;
+    logic [13:0] addrout;
+    logic write_req, read_req;
+    logic mem_resp;
+    logic cs_0;
 
 assign A = A_in;
 assign B = B_in;
 assign result = result_in;
 
- ALU593 ALU (
+processor PROC1 (instr, clk, reset_n, done, A, B, result);
+
+
+ ALU593 alu_0 (
     .clk(clk), 
     .reset_n(reset_n),
 	.A(A_in),
@@ -43,7 +45,7 @@ assign result = result_in;
 	.error(error) // just around  	
 );
 
-instructionUnit instunit (
+instructionUnit instunit_0 (
     .instr(instr),
     .clk(clk), 
     .reset_n(reset_n),
@@ -62,12 +64,12 @@ instructionUnit instunit (
     .done(done)
 );
 
- memInerf memInt (
+ memInerf memInt_0 (
         .clk(clk),
         .reset_n(reset_n),
         .store(store),
         .load(load),
-        .mem_resp(mem_resp),
+        .mem_resp(mem_resp_0),
         .result(result_in),
         .addr(addr),
         .datafrommem(datafrommem),
@@ -76,8 +78,39 @@ instructionUnit instunit (
         .datatoinst(datatoinst),
         .write_req(write_req),
         .read_req(read_req),
-        .cs(cs),
+        .cs(cs_0),
         .addrout(addrout)
     );
 
+    // sram_single_port sram (
+    //     .reset_n(reset_n),
+    //     .clk(clk),
+    //     .re(read_req),
+    //     .we(write_req),
+    //     .preload(preload),
+    //     .addr(addrout),
+    //     .datafrommif(datatomem),
+	//     .datatomif(datafrommem),
+    //     .mem_resp(mem_resp)
+    // );
+
+/*
+    memory_subsystem mss (
+        .clk(clk),                 
+        .reset_n(reset_n),              
+        .mem_write_data(datatomem),   
+        .processor_req_0(cs_0),                     	
+        .processor_req_1(0),   
+        .processor_req_2(0),  	
+        .processor_req_3(0),
+        .mem_read_req(read_req), 
+        .mem_write_req(write_req),  
+        .addr(addrout),
+        .mem_read_data(datafrommem),   
+        .processor_resp_0(mem_resp_0),
+        .processor_resp_1(),
+        .processor_resp_2(),
+        .processor_resp_3() 
+);
+*/
 endmodule: alumifiu_dut

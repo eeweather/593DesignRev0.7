@@ -1,51 +1,124 @@
-//NOTE: this is not yet fully tested. While there are no compilation errors,
-//there will be errors with multiple continuous drivers of op, result, and
-//addrout. All three are modified by multiple subcomponents.
-//TODO: resolve
-
-module top_hdl();
+module top_hdl;
+import uvm_pkg::*;
 import tinyalu_pkg::*;
+`include "uvm_macros.svh"
 
-   //testbench signals, placed in top for fun, but will be inputs to top_hdl at some point
-   bit         		clk;
-   bit         		reset_n;
 
-   memory_if m_if();
    //one interface per processor
-   processor_if proc_if_0 (m_if.clk, m_if.reset_n);
-   processor_if proc_if_1 (m_if.clk, m_if.reset_n);
-   processor_if proc_if_2 (m_if.clk, m_if.reset_n);
-   processor_if proc_if_3 (m_if.clk, m_if.reset_n);
+   processor_if vif_0();
+   processor_if vif_1();
+   processor_if vif_2();
+   processor_if vif_3();
 
-   memory_subsystem MEM (.clk(m_if.clk), .reset_n(m_if.reset_n), .mem_write_data(m_if.mem_write_data), .processor_req_0(proc_if_0.processor_req), 
-	   		 .processor_req_1(proc_if_1.processor_req), .processor_req_2(proc_if_2.processor_req), .processor_req_3(proc_if_3.processor_req), 
-			 .mem_read_req(m_if.mem_read_req), .mem_write_req(m_if.mem_write_req), .addr(proc_if_0.addrout), 
-			 .mem_read_data(m_if.mem_read_data), .processor_resp_0(proc_if_0.processor_resp), .processor_resp_1(proc_if_1.processor_resp),
-			 .processor_resp_2(proc_if_2.processor_resp), .processor_resp_3(proc_if_3.processor_resp));
+   alumifiu_dut PROC0 (
+	   .instr(vif_0.instr),
+	   .clk(vif_0.clk),
+	   .reset_n(vif_0.reset_n),
+	   .done(vif_0.done),
+	   .A(vif_0.A),
+	   .B(vif_0.B),
+	   .result(vif_0.result),
+	   .datatomem(vif_0.datatomem),
+	   .datafrommem(vif_0.datafrommem),
+	   .read_req(vif_0.read_req),
+	   .write_req(vif_0.write_req),
+	   .addrout(vif_0.addrout),
+	   .mem_resp(vif_0.mem_resp),
+	   .cs(vif_0.cs)
+   );
 
-   ALU593 ALU0 		(.clk(m_if.clk), .reset_n(m_if.reset_n), .A(proc_if_0.A), .B(proc_if_0.B), .op(proc_if_0.op), .start(proc_if_0.start), .done(proc_if_0.done), 
-	        	 .result(proc_if_0.result), .error(proc_if_0.error));
-
-
-   memInerf MI0 	(.clk(m_if.clk), .reset_n(m_if.reset_n), .store(proc_if_0.store), .load(proc_if_0.load), .mem_resp(proc_if_0.processor_req), 
-	                 .result(proc_if_0.IU_result), .addr(proc_if_0.addr), .datatofrommem(proc_if_0.datatofrommem), .mem_done(proc_if_0.mem_done), 
-			 .datatoinst(proc_if_0.datatoinst), .write_req(m_if.mem_write_req), .read_req(m_if.mem_read_req), .addrout(proc_if_0.addrout));
- 
-   instructionUnit IU0 	(.clk(clk), .reset_n(reset_n), .mem_done(proc_if_0.mem_done), .alu_done(proc_if_0.alu_done), .data(proc_if_0.datatoinst), 
-	                 .alu_result(proc_if_0.alu_result), .start(proc_if_0.IU_start), .A(proc_if_0.IU_A), .B(proc_if_0.IU_B), .op(proc_if_0.op), 
-			 .addr(proc_if_0.addr), .result(proc_if_0.IU_result), .store(proc_if_0.store), .load(proc_if_0.load));
    
-   //TODO: just for fun, remove for testing
-   initial begin
-      m_if.clk = 0;
-      forever begin
-         #10 m_if.clk = ~clk;
-      end
-   end
+   alumifiu_dut PROC1 (
+	   .instr(vif_1.instr),
+	   .clk(vif_1.clk),
+	   .reset_n(vif_1.reset_n),
+	   .done(vif_1.done),
+	   .A(vif_1.A),
+	   .B(vif_1.B),
+	   .result(vif_1.result),
+	   .datatomem(vif_1.datatomem),
+	   .datafrommem(vif_1.datafrommem),
+	   .read_req(vif_1.read_req),
+	   .write_req(vif_1.write_req),
+	   .addrout(vif_1.addrout),
+	   .mem_resp(vif_1.mem_resp),
+	   .cs(vif_1.cs)
+   );
+   
+   alumifiu_dut PROC2 (
+	   .instr(vif_2.instr),
+	   .clk(vif_2.clk),
+	   .reset_n(vif_2.reset_n),
+	   .done(vif_2.done),
+	   .A(vif_2.A),
+	   .B(vif_2.B),
+	   .result(vif_2.result),
+	   .datatomem(vif_2.datatomem),
+	   .datafrommem(vif_2.datafrommem),
+	   .read_req(vif_2.read_req),
+	   .write_req(vif_2.write_req),
+	   .addrout(vif_2.addrout),
+	   .mem_resp(vif_2.mem_resp),
+	   .cs(vif_2.cs)
+   );
+   
+   alumifiu_dut PROC3 (
+	   .instr(vif_3.instr),
+	   .clk(vif_3.clk),
+	   .reset_n(vif_3.reset_n),
+	   .done(vif_3.done),
+	   .A(vif_3.A),
+	   .B(vif_3.B),
+	   .result(vif_3.result),
+	   .datatomem(vif_3.datatomem),
+	   .datafrommem(vif_3.datafrommem),
+	   .read_req(vif_3.read_req),
+	   .write_req(vif_3.write_req),
+	   .addrout(vif_3.addrout),
+	   .mem_resp(vif_3.mem_resp),
+	   .cs(vif_3.cs)
+   );
+
+    memory_subsystem MSS (
+        .clk(vif_0.clk),                 
+        .reset_n(vif_0.reset_n),              
+        .mem_write_data_0(vif_0.datatomem),   
+        .mem_write_data_1(vif_1.datatomem),   
+        .mem_write_data_2(vif_2.datatomem),   
+        .mem_write_data_3(vif_3.datatomem),   
+        .processor_req_0(vif_0.cs),                     	
+        .processor_req_1(vif_1.cs),                     	
+        .processor_req_2(vif_2.cs),                     	
+        .processor_req_3(vif_3.cs),                     	
+        .mem_read_req_0(vif_0.read_req), 
+        .mem_read_req_1(vif_1.read_req), 
+        .mem_read_req_2(vif_2.read_req), 
+        .mem_read_req_3(vif_3.read_req), 
+        .mem_write_req_0(vif_0.write_req),  
+        .mem_write_req_1(vif_1.write_req),  
+        .mem_write_req_2(vif_2.write_req),  
+        .mem_write_req_3(vif_3.write_req),  
+        .addr_0(vif_0.addrout),
+        .addr_1(vif_1.addrout),
+        .addr_2(vif_2.addrout),
+        .addr_3(vif_3.addrout),
+        .mem_read_data_0(vif_0.datafrommem),   
+        .mem_read_data_1(vif_1.datafrommem),   
+        .mem_read_data_2(vif_2.datafrommem),   
+        .mem_read_data_3(vif_3.datafrommem),   
+        .processor_resp_0(vif_0.mem_resp),
+        .processor_resp_1(vif_1.mem_resp),
+        .processor_resp_2(vif_2.mem_resp),
+        .processor_resp_3(vif_3.mem_resp)
+);
+
+
 
    initial begin
-      m_if.reset_n = 1;
-      #50 m_if.reset_n = 0;
+	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_0", vif_0);
+	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_1", vif_1);
+	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_2", vif_2);
+	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_3", vif_3);
    end
 
 endmodule : top_hdl

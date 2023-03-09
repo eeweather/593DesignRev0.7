@@ -2,21 +2,20 @@ module memory_subsystem
 #(
    parameter MEM_SIZE = 16,//*1024,  // 16KB
    parameter DATA_SIZE = 2,       
-   parameter BLOCK_SIZE = 2,     
-   parameter NUM_PROCESSORS = 4  
+   parameter BLOCK_SIZE = 2  
 )(
    input logic clk,                 
    input logic reset_n,               
-   input logic [DATA_SIZE*8-1:0] mem_write_data,   
-   input logic processor_req_0,                     	
+   input logic [DATA_SIZE*8-1:0] mem_write_data_0, mem_write_data_1, mem_write_data_2, mem_write_data_3,  
+   input logic processor_req_0,
    input logic processor_req_1,   
    input logic processor_req_2,  	
    input logic processor_req_3,
-   input logic mem_read_req, 
-   input logic mem_write_req,  
-   input logic [13:0] addr,
+   input logic mem_read_req_0, mem_read_req_1, mem_read_req_2, mem_read_req_3, 
+   input logic mem_write_req_0, mem_write_req_1, mem_write_req_2, mem_write_req_3,
+   input logic [13:0] addr_0, addr_1, addr_2, addr_3,
 
-   output logic [DATA_SIZE*8-1:0] mem_read_data,   
+   output logic [DATA_SIZE*8-1:0] mem_read_data_0, mem_read_data_1, mem_read_data_2, mem_read_data_3,
    output logic processor_resp_0,
    output logic processor_resp_1,
    output logic processor_resp_2,
@@ -38,6 +37,13 @@ logic [1:0] memory_coherency [MEM_SIZE/BLOCK_SIZE];
 //req and resp arrays for easier control
 logic [3:0] current_proc_req;
 logic [3:0] current_proc_resp;
+logic [DATA_SIZE*8-1:0] mem_write_data;
+logic mem_read_req;
+logic mem_write_req;
+logic [13:0] addr;
+logic [DATA_SIZE*8-1:0] mem_read_data;
+
+
 
 assign current_proc_req = {processor_req_3, processor_req_2, processor_req_1, processor_req_0};
 
@@ -51,13 +57,43 @@ always @(posedge clk) begin
    if(current_proc_req != 4'b0000) begin
       grant = current_proc_req[requestor];
       requestor = (requestor + 1) % 4;
+      case (grant)
+	      0: begin
+		mem_write_data = mem_write_data_0;
+		mem_read_req = mem_read_req_0;
+		mem_write_req = mem_write_req_0;
+		addr = addr_0;
+		mem_read_data_0 = mem_read_data;
+	      end
+	      1: begin
+		mem_write_data = mem_write_data_1;
+		mem_read_req = mem_read_req_1;
+		mem_write_req = mem_write_req_1;
+		addr = addr_1;
+		mem_read_data_1 = mem_read_data;
+	      end
+	      2: begin
+		mem_write_data = mem_write_data_2;
+		mem_read_req = mem_read_req_2;
+		mem_write_req = mem_write_req_2;
+		addr = addr_2;
+		mem_read_data_2 = mem_read_data;
+	      end
+	      3: begin
+		mem_write_data = mem_write_data_3;
+		mem_read_req = mem_read_req_3;
+		mem_write_req = mem_write_req_3;
+		addr = addr_3;
+		mem_read_data_3 = mem_read_data;
+	      end
+      endcase
    end else grant = 0;
 end
 
 //memory write/read functionality
 always @(posedge clk) begin
    //reset
-   if (reset_n) initialize_memory();
+   if (!reset_n) initialize_memory();
    //write
    else if (mem_write_req) begin
       memory[addr] = mem_write_data;
@@ -79,7 +115,7 @@ task initialize_memory();
 int i;
 begin
       for (i=0; i<$size(memory); i++) begin
-         memory[i] = i;
+              memory[i] = i+1;
 	      memory_coherency[i] = I;
       end
 end

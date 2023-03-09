@@ -38,8 +38,11 @@ class test_base extends uvm_test;
 
 		agent_cfg.enable_coverage = 1;
 
-		//get the vif (tinycpu_bfm) from the config database
-		if (!uvm_config_db #(virtual tinyalu_bfm)::get(this, "", "vif", agent_cfg.vif)) `uvm_fatal(get_type_name(), "Failed to get vif from uvm_config_db")
+		//get the vifs (processor_if) from the config database
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_0", agent_cfg.vif_0)) `uvm_fatal(get_type_name(), "Failed to get vif_0 from uvm_config_db")
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_1", agent_cfg.vif_1)) `uvm_fatal(get_type_name(), "Failed to get vif_1 from uvm_config_db")
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_2", agent_cfg.vif_2)) `uvm_fatal(get_type_name(), "Failed to get vif_2 from uvm_config_db")
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_3", agent_cfg.vif_3)) `uvm_fatal(get_type_name(), "Failed to get vif_3 from uvm_config_db")
 		
 		//put the env_config in the config database and create env
 		uvm_config_db #(env_config)::set(this, "envt", "env_cfg", env_cfg);

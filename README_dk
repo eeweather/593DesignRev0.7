@@ -1,0 +1,12 @@
+top_hdl instantiates four interfaces and four processors. Memory_subsystem updated to handle traffic from all. Probably has problems, didn't dive too deeply into the debug. Changes UVM files to accomidate new processors and interfaces. They are all correctly setup in the needed places but I are not yet sending transactions. See driver, monitor, agent_config, test_base, etc.
+
+top_hdl is the top file now. currently each processor has its own clock which isnt ideal, will move the clock out of processor_if to only have one.
+
+TODO:
+
+move clock and reset out of processor_if, perhaps into memory_if
+fix memory_subsystem logic
+send traffic on vif_1, vif_2, vif_3
+update driver, monitor, scoreboard, predictor, evaluator, coverage collector, for multiple processors
+run that bitch a bunch
+forget to add a bunch of things to the TODO list so it seems like there is less to do
