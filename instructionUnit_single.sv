@@ -35,15 +35,7 @@ module instructionUnit (
     int fd;                         //file descriptor
     int count;                      //line count for reading file
     int index;                      //instruction array index
- 
 
- 
-    // assign opcode = alu_opcode_t'(instr[18:15]);      //cast to opcode enum
-    
-    // assign decode_addr = instr[14:1];         //get address
-    // assign loadReg = instr[0];         //get reg A or B
-
-    // assign done = mem_done || alu_done;
 
     always_comb begin 
 
@@ -61,7 +53,6 @@ module instructionUnit (
             start ='0;
             load ='0;
             store = '0;
-            //done <= 0;
         end
         else if (mem_done) begin    //load appropriate register when mem_done signal is asserted
                 if (loadReg)              
@@ -70,54 +61,37 @@ module instructionUnit (
                     regA = data;
                 load = 0;       //deassert load/store signals
                 store = 0;
-                //done <= 1;            //increment instruction array index
             end
-        // else if (opcode == op_load) begin   //load operation
-        //         load = 1;  
-        //         store = 1'b0;                 //assert load signal for mem IF
-        //         addr = decode_addr;                   //supply address to mem IF
-		//     end
-        // else if (opcode == op_store) begin  
-        //     store = 1'b1;  
-        //     load = 0;                  //assert store signal for mem IF
-        //     addr = decode_addr;                   //supply address to mem IF
-        //    // result = alu_result;           //results to be stored in mem
-        // end
-        
         else if (alu_done)  begin //alu done signal recieved, send next op
             start = 1'b0;       //assert ALU start signal
-            //done <= 1;             //increment instruction array index
             regA = regA;          //maintain register values?
             regB = regB;
         end
         else begin
-                op <= opcode;
-            //start = 1'b1;          //deassrt alu start
-            //done <=0;
+                op = opcode;
+
         end
-                A <= regA;
-                B <= regB;
+                A = regA;
+                B = regB;
 
 //ew 3/8
 
         if (opcode == op_load) begin   //load operation
-                load <= 1;  
-                store <= 1'b0;                 //assert load signal for mem IF
-                addr <= decode_addr; 
-                start <= 0;                  //supply address to mem IF
+                load = 1;  
+                store = 1'b0;                 //assert load signal for mem IF
+                addr = decode_addr; 
+                start = 0;                  //supply address to mem IF
 		    end
         else if (opcode == op_store) begin  
-            start <= 0;                  //supply address to mem IF
-            store <= 1'b1;  
-            load <= 0;                  //assert store signal for mem IF
-            addr <= decode_addr;                   //supply address to mem IF
-           // result = alu_result;           //results to be stored in mem
+            start = 0;                  //supply address to mem IF
+            store = 1'b1;  
+            load = 0;                  //assert store signal for mem IF
+            addr = decode_addr;                   //supply address to mem IF
         end
          else begin
-            if(!alu_done) start <= 1;
-            load <= 0;                  //assert store signal for mem IF
-            store <= 1'b0;                 //assert load signal for mem IF
-            //done <=0;
+            if(!alu_done) start = 1;
+            load = 0;                  //assert store signal for mem IF
+            store = 1'b0;                 //assert load signal for mem IF
         end
     end 
 
