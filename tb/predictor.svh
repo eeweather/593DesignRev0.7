@@ -33,6 +33,7 @@ virtual function void write(input item_base t);
 	            op_sp1: predicted.result = t.A * 2;
 	            op_sp2: predicted.result = t.A * 3;
 	            op_shl: predicted.result = t.A << 3;
+				op_shr: predicted.result = t.A >> 3;
 		    op_load: begin 
 		    	predicted.result = 1'b1; //hack, fix later!
 			predicted.A = 1'b0;
