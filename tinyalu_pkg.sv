@@ -48,25 +48,35 @@ package tinyalu_pkg;
 	typedef class sequence_base;
 	typedef class test_base;
 	typedef class item_alu;
+	typedef class item_multi;
+	typedef class item_single;
+	typedef class item_load;
+	typedef class item_store;
+	typedef class item_valid;
 	typedef class sequence_alu;
 	typedef class test_alu;
 
-	`include "../tb/agent_config.svh"
-	`include "../tb/agent.svh"
-	`include "../tb/coverage_collector.svh"
-	`include "../tb/driver.svh"
-	`include "../tb/env_config.svh"
-	`include "../tb/env.svh"
-	`include "../tb/evaluator.svh"
-	`include "../tb/item_base.svh"
-	`include "../tb/monitor.svh"
-	`include "../tb/predictor.svh"
-	`include "../tb/scoreboard.svh"
-	`include "../tb/sequence_base.svh"
-	`include "../tb/test_base.svh"
-	`include "../tb/test_alu.svh"
-	`include "../tb/sequence_alu.svh"
-	`include "../tb/item_alu.svh"
+	`include "tb/agent_config.svh"
+	`include "tb/agent.svh"
+	`include "tb/coverage_collector.svh"
+	`include "tb/driver.svh"
+	`include "tb/env_config.svh"
+	`include "tb/env.svh"
+	`include "tb/evaluator.svh"
+	`include "tb/item_base.svh"
+	`include "tb/monitor.svh"
+	`include "tb/predictor.svh"
+	`include "tb/scoreboard.svh"
+	`include "tb/sequence_base.svh"
+	`include "tb/test_base.svh"
+	`include "tb/test_alu.svh"
+	`include "tb/sequence_alu.svh"
+	`include "tb/item_alu.svh"
+	`include "tb/item_load.svh"
+	`include "tb/item_store.svh"
+	`include "tb/item_multi.svh"
+	`include "tb/item_single.svh"
+	`include "tb/item_valid.svh"
 
 
 

@@ -64,7 +64,12 @@ module instructionUnit (
 
  
     assign instr = insArray[index];    //get current instuction from array
+
+
     assign opcode = alu_opcode_t'(instr[18:15]);      //cast to opcode enum
+
+
+
     assign decode_addr = instr[14:1];         //get address
     assign loadReg = instr[0];         //get reg A or B
 
@@ -92,18 +97,17 @@ module instructionUnit (
                 load <= 1'b1;                   //assert load signal for mem IF
                 addr <= decode_addr;                   //supply address to mem IF
 		    end
-            else if (opcode == op_store) begin  
-                store <= 1'b1;                  //assert store signal for mem IF
-                addr <= decode_addr;                   //supply address to mem IF
-                result <= alu_result;           //results to be stored in mem
-            end
+        else if (opcode == op_store) begin  
+            store <= 1'b1;                  //assert store signal for mem IF
+            addr <= decode_addr;                   //supply address to mem IF
+            result <= alu_result;           //results to be stored in mem
+        end
         
-        
-            else if (alu_done)  begin //alu done signal recieved, send next op
-                start <= 1'b0;       //assert ALU start signal
-                index++;             //increment instruction array index
-                regA <= regA;          //maintain register values?
-                regB <= regB;
+        else if (alu_done) begin //alu done signal recieved, send next op
+            start <= 1'b0;       //assert ALU start signal
+            index++;             //increment instruction array index
+            regA <= regA;          //maintain register values?
+            regB <= regB;
         end
         else begin
                 op <= opcode;

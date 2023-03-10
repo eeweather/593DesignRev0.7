@@ -15,11 +15,11 @@
 		super.new(name);
 	endfunction
 
-	//rand instruction_t inst;
+	//a randomized 19 bit instruction
 	rand instruction_t inst;
-	addr_t addr = 1'b1;
-	
-	shortint unsigned result;  //uvm book keeps a result var here, not sure if useful in our approach?
+ 	byte A; //;
+        byte B;
+	logic [15:0] result;	
 
 	//the following virtual functions must be overwritten from uvm_sequence_items and do what their names suggest
 	virtual function void do_copy(uvm_object rhs);
@@ -28,6 +28,9 @@
 
 		super.do_copy(rhs);
 		this.inst = tx_rhs.inst;
+		this.A = tx_rhs.A;
+		this.B = tx_rhs.B;
+		this.result = tx_rhs.result;
 	endfunction : do_copy
 
 	virtual function bit do_compare(uvm_object rhs, uvm_comparer comparer);
@@ -35,16 +38,19 @@
 		if (!$cast(tx_rhs, rhs)) `uvm_fatal(get_type_name(), "Illegal rhs")
 
 		return(super.do_compare(rhs, comparer) &&
-			(this.inst === tx_rhs.inst));
+			(this.inst === tx_rhs.inst) &&
+			(this.A === tx_rhs.A) &&
+			(this.B === tx_rhs.B) &&
+			(this.result === tx_rhs.result));
 
 	endfunction: do_compare
 
 
 	virtual function string convert2string();
 		string s = super.convert2string();
-		$sformat(s, "\n inst: %0b", inst);
+		$sformat(s, "\n inst: %0b \tA: %0h \tB: %0h \tresult: %0h", inst, A, B, result);
 		return s;
-	endfunction
+	endfunction: convert2string
 
 	virtual function void do_print(uvm_printer printer);
 		printer.m_string = convert2string();
@@ -63,7 +69,4 @@
 	endfunction: do_record
 
 endclass: item_base
-
-
-
-
+// :)

@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-interface processor_if;
+interface tinyalu_bfm;
    import tinyalu_pkg::*;
 
    byte        A;
@@ -25,17 +25,6 @@ interface processor_if;
    wire         done;
    logic [15:0]  result;
    instruction_t  instr;
-   
-   //mss
-   logic [15:0] datatomem;
-   //logic [7:0] datafrommem;
-   logic [15:0] datafrommem;
-   logic cs;
-   logic read_req;
-   logic write_req;
-   logic [13:0] addrout;
-   logic mem_resp;
-
 
    bit reset_start;
 
@@ -58,6 +47,21 @@ interface processor_if;
 
    endtask : send_instruction
 
+task get_an_input(tinyalu_pkg::item_base tx);
+	wait(done || reset_start);
+        wait(!done || reset_start);
+	tx.inst = instr;
+    endtask : get_an_input
+
+    
+    task get_an_output(tinyalu_pkg::item_base tx);
+	// wait(done || reset_start);
+   //      wait(!done || reset_start);
+	tx.inst = instr;
+	tx.A = A;
+	tx.B = B;
+	tx.result = result;
+    endtask : get_an_output
 
     task sample_instruction(tinyalu_pkg::item_base tx);
 	if (reset_n) begin
@@ -80,4 +84,4 @@ interface processor_if;
       join_none
    end
 
-endinterface : processor_if
+endinterface : tinyalu_bfm
