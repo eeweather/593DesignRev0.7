@@ -1,6 +1,6 @@
 module memory_subsystem
 #(
-   parameter MEM_SIZE = 16*1024,  // 16KB
+   parameter MEM_SIZE = 100, //16*1024,  // 16KB
    parameter DATA_SIZE = 2,       
    parameter BLOCK_SIZE = 2  
 )(

@@ -86,7 +86,8 @@ always_ff @(posedge clk) begin
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
             // JBFIL: Add read of either byte based on lower address bits.
-            datatoinst <= addr[0] ? datafrommem[15:8] : datafrommem[7:0];
+            //datatoinst <= addr[0] ? datafrommem[15:8] : datafrommem[7:0];
+            datatoinst <= datafrommem[7:0];
             //end with read_req and raise mem_done
             read_req <= 0;
         end

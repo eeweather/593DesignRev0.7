@@ -28,7 +28,8 @@ interface processor_if;
    
    //mss
    logic [15:0] datatomem;
-   logic [7:0] datafrommem;
+   //logic [7:0] datafrommem;
+   logic [15:0] datafrommem;
    logic cs;
    logic read_req;
    logic write_req;

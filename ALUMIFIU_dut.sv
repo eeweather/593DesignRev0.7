@@ -9,7 +9,7 @@ module alumifiu_dut (
     output logic [7:0] A, B,
     output logic [15:0] result,
     output logic [15:0] datatomem,
-    input logic [7:0] datafrommem,
+    input logic [15:0] datafrommem,
     output logic cs,
     output logic read_req,
     output logic write_req,

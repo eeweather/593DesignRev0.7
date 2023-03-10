@@ -47,6 +47,7 @@ virtual task get_sample();
 	forever begin
 		@(posedge vif_0.done) begin
 		@(negedge vif_0.done);
+		@(negedge vif_0.done);
 		tx = item_base::type_id::create("tx");
 		vif_0.sample_instruction(tx);
 //		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
@@ -57,7 +58,7 @@ virtual task get_sample();
 			tx.A = 1'b0;
 			tx.B = 1'b0;
 		end
-	
+			
 		dut_in_tx_port.write(tx);
 		dut_out_tx_port.write(tx);
 		end

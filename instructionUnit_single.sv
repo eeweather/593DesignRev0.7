@@ -35,7 +35,13 @@ module instructionUnit (
     int fd;                         //file descriptor
     int count;                      //line count for reading file
     int index;                      //instruction array index
+    
+    logic [15:0] last_result;
 
+
+    assign A = regA;
+    assign B = regB;
+    assign result = last_result;
 
     always_comb begin 
 
@@ -43,8 +49,8 @@ module instructionUnit (
         decode_addr = instr[14:1];         //get address
         loadReg = instr[0];         //get reg A or B
         done = mem_done || alu_done;
-        result = alu_result;
-
+        //result = alu_result;
+ 	if(alu_result != 1'bx) last_result = alu_result;	
 
         if (!reset_n) begin
             index = '0;
@@ -71,8 +77,8 @@ module instructionUnit (
                 op = opcode;
 
         end
-                A = regA;
-                B = regB;
+//                A = regA;
+//                B = regB;
 
 //ew 3/8
 
