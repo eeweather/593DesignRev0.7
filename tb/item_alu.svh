@@ -9,8 +9,12 @@ class item_alu extends item_base;
 	    super.new(name);
     endfunction
 
-    //constain instruction opcode bits[18:15] to the valid alu operations
-    constraint alu_only {inst[INSTR_WIDTH-1:INSTR_WIDTH-4] inside {[op_add:op_sp2], op_shl, op_shr};}
+    //constain to alu opcodes
+    constraint alu_only {inst[15:12] inside {[op_add:op_sp2], op_or};}
     
- 
+    //constain destination register to be dif than source regs for testing
+    constraint difRegs {inst[11:10] != (inst[9:8] || inst[7:6]);}
+  
+    //potentially add further constraints on other bit field?
+
 endclass : item_alu

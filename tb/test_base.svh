@@ -34,15 +34,12 @@ class test_base extends uvm_test;
 		void'(uvm_config_db#(uvm_bitstream_t)::get(this, "", "num_items", agent_cfg.num_items));
 		`uvm_info(get_type_name(), $sformatf("num_items=%d.", agent_cfg.num_items), UVM_LOW)
 
-//dk3/8		agent_cfg.monitor_verbosity = UVM_LOW;
+		agent_cfg.monitor_verbosity = UVM_LOW;
 
 		agent_cfg.enable_coverage = 1;
 
-		//get the vifs (processor_if) from the config database
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_0", agent_cfg.vif_0)) `uvm_fatal(get_type_name(), "Failed to get vif_0 from uvm_config_db")
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_1", agent_cfg.vif_1)) `uvm_fatal(get_type_name(), "Failed to get vif_1 from uvm_config_db")
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_2", agent_cfg.vif_2)) `uvm_fatal(get_type_name(), "Failed to get vif_2 from uvm_config_db")
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_3", agent_cfg.vif_3)) `uvm_fatal(get_type_name(), "Failed to get vif_3 from uvm_config_db")
+		//get the vif (tinycpu_bfm) from the config database
+		if (!uvm_config_db #(virtual tinycpu_bfm)::get(this, "", "vif", agent_cfg.vif)) `uvm_fatal(get_type_name(), "Failed to get vif from uvm_config_db")
 		
 		//put the env_config in the config database and create env
 		uvm_config_db #(env_config)::set(this, "envt", "env_cfg", env_cfg);
@@ -71,7 +68,7 @@ class test_base extends uvm_test;
 
 		//set_drain_time gives the test a period of time after stimulus is
 		//finished to be processed
-		phase.phase_done.set_drain_time(this, 1000);
+		phase.phase_done.set_drain_time(this, 10);
 
 		phase.raise_objection(this, get_full_name());
 		`uvm_info("TEST", "\n\n\n ***BASE TEST***\n\n\n", UVM_NONE)

@@ -44,7 +44,6 @@ class evaluator extends uvm_component;
 	virtual task run_phase(uvm_phase phase);
 		item_base expected_tx;
 		item_base actual_tx;
-
 		forever begin
 
 			//get the next expected transaction and actual transaction
@@ -52,14 +51,9 @@ class evaluator extends uvm_component;
 			actual_fifo.get(actual_tx);
 			
 			//if they match, party, if not, crash and burn
-			
-				if(actual_tx.compare(expected_tx)) begin
-				`uvm_info("Evaluator", $sformatf("MATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result), UVM_DEBUG)
-					match++;
-				end
-
+			if(actual_tx.compare(expected_tx)) match++;
 			else begin
-				`uvm_error("Evaluator", $sformatf("MISMATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result))
+				`uvm_error("Evaluator", $sformatf("exp: %d does not match act: %d", expected_tx.result, actual_tx.result))
 				mismatch++;
 			end
 		end
