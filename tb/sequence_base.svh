@@ -44,7 +44,7 @@ class sequence_base extends uvm_sequence #(item_base);
 		start_item(alu);
 		finish_item(alu);
 
-		if(!store.randomize()) `uvm_fatal(get_type_name(), "fml.randomize failed")
+		if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
 		start_item(store);
 		finish_item(store);
 
