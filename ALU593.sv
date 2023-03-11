@@ -36,6 +36,7 @@ module ALU593 (
 				done = done_single;
 				result = result_single;
 				error = '0;
+				start_multi = '0;
 			end
 		endcase
 
