@@ -62,6 +62,7 @@ interface processor_if (input clk);
 	   tx.inst = instr;
 	   tx.A = A;
 	   tx.B = B;
+      @(posedge clk);
 	   tx.result = result;
 	end
     endtask : sample_instruction

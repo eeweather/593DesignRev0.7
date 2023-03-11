@@ -46,8 +46,8 @@ virtual task get_sample();
 	item_base tx;
 	forever begin
 		@(posedge vif_0.done) begin
-		@(negedge vif_0.done);
-		@(negedge vif_0.done);
+		//@(negedge vif_0.done);
+		//@(negedge vif_0.clk);
 		tx = item_base::type_id::create("tx");
 		vif_0.sample_instruction(tx);
 //		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
