@@ -3,16 +3,17 @@ import uvm_pkg::*;
 import tinyalu_pkg::*;
 `include "uvm_macros.svh"
 
+    bit clk;
 
    //one interface per processor
-   processor_if vif_0();
-   processor_if vif_1();
-   processor_if vif_2();
-   processor_if vif_3();
+   processor_if vif_0(.clk(clk));
+   processor_if vif_1(.clk(clk));
+   processor_if vif_2(.clk(clk));
+   processor_if vif_3(.clk(clk));
 
    alumifiu_dut PROC0 (
 	   .instr(vif_0.instr),
-	   .clk(vif_0.clk),
+	   .clk(clk),
 	   .reset_n(vif_0.reset_n),
 	   .done(vif_0.done),
 	   .A(vif_0.A),
@@ -30,7 +31,7 @@ import tinyalu_pkg::*;
    
    alumifiu_dut PROC1 (
 	   .instr(vif_1.instr),
-	   .clk(vif_0.clk),
+	   .clk(clk),
 	   .reset_n(vif_1.reset_n),
 	   .done(vif_1.done),
 	   .A(vif_1.A),
@@ -47,7 +48,7 @@ import tinyalu_pkg::*;
    
    alumifiu_dut PROC2 (
 	   .instr(vif_2.instr),
-	   .clk(vif_0.clk),
+	   .clk(clk),
 	   .reset_n(vif_2.reset_n),
 	   .done(vif_2.done),
 	   .A(vif_2.A),
@@ -64,7 +65,7 @@ import tinyalu_pkg::*;
    
    alumifiu_dut PROC3 (
 	   .instr(vif_3.instr),
-	   .clk(vif_0.clk),
+	   .clk(clk),
 	   .reset_n(vif_3.reset_n),
 	   .done(vif_3.done),
 	   .A(vif_3.A),
@@ -80,7 +81,7 @@ import tinyalu_pkg::*;
    );
 
     memory_subsystem MSS (
-        .clk(vif_0.clk),                 
+        .clk(clk),                 
         .reset_n(vif_0.reset_n),              
         .mem_write_data_0(vif_0.datatomem),   
         .mem_write_data_1(vif_1.datatomem),   
@@ -125,5 +126,15 @@ import tinyalu_pkg::*;
 	    $dumpfile("top_hdl.vcd");
 		$dumpvars(0, vif_0, vif_1, vif_2, vif_3, PROC0, PROC1, PROC2, PROC3, MSS );
     end
+
+	initial begin
+      clk = 0;
+      fork
+         forever begin
+            #10;
+            clk = ~clk;
+         end
+      join_none
+   end
 
 endmodule : top_hdl

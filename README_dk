@@ -5,9 +5,9 @@ top_hdl is the top file now. currently each processor has its own clock which is
 TODO:
 
 
-move clock and reset out of processor_if, perhaps into memory_if -Emily
+move clock and reset out of processor_if, perhaps into memory_if -Emily Clk Done, question about reset
 Debug logic as we get stimulus 
-send traffic on vif_1, vif_2, vif_3 -Emily
+send traffic on vif_1, vif_2, vif_3 -Emily DONE
 build 4 agents -Daniel
 Update processor w 4 agents -Daniel
 Update coverage for four processors -Julia

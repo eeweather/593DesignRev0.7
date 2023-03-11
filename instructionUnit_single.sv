@@ -50,7 +50,8 @@ module instructionUnit (
         loadReg = instr[0];         //get reg A or B
         done = mem_done || alu_done;
         //result = alu_result;
- 	if(alu_result != 1'bx) last_result = alu_result;	
+ 	if(alu_result != 1'bx) last_result = alu_result;
+    else if (alu_result == 4'b0000) last_result = alu_result;
 
         if (!reset_n) begin
             index = '0;

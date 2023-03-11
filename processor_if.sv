@@ -13,15 +13,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-interface processor_if;
+interface processor_if (input clk);
    import tinyalu_pkg::*;
 
    byte        A;
    byte        B;
-   bit          clk;
    bit          reset_n;
-   wire [2:0]   op;
-   bit          start;
    wire         done;
    logic [15:0]  result;
    instruction_t  instr;
@@ -46,7 +43,6 @@ interface processor_if;
       @(negedge clk);
       @(negedge clk);
       reset_n = 1'b1;
-      start = 1'b0;
    endtask : reset_alu
    
    task send_instruction (input instruction_t i_instr);
@@ -70,14 +66,5 @@ interface processor_if;
 	end
     endtask : sample_instruction
 
-   initial begin
-      clk = 0;
-      fork
-         forever begin
-            #10;
-            clk = ~clk;
-         end
-      join_none
-   end
 
 endinterface : processor_if

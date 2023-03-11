@@ -41,8 +41,8 @@ virtual task run_phase(uvm_phase phase);
 
 	vif_0.reset_alu();
     vif_1.reset_alu();
-	// vif_2.reset_alu();
-	// vif_3.reset_alu();
+	vif_2.reset_alu();
+	vif_3.reset_alu();
 	
 
 	
@@ -52,6 +52,10 @@ virtual task run_phase(uvm_phase phase);
 		vif_0.send_instruction(inst.inst);
 		inst.inst= inst.inst+2;
 		vif_1.send_instruction(inst.inst); 
+		inst.inst= inst.inst+2;
+		vif_2.send_instruction(inst.inst);
+		inst.inst= inst.inst+2;
+		vif_3.send_instruction(inst.inst);
 		seq_item_port.item_done();
 
 	end
