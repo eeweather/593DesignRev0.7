@@ -5,7 +5,6 @@
 *   Daniel Keller <dk27@pdx.edu>
 *  
 *  C predictor function for final project
-
 needs to:
 intake actual instruction, actual a, actual b, return predicted result 
 */

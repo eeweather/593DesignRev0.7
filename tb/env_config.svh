@@ -16,7 +16,7 @@ function new(string name="env_config");
 	super.new(name);
 endfunction
 
-agent_config agent_cfg;
+//TODO: move some of the static stuff from agent into here :)
 bit enable_scoreboard = 1;
 
 endclass: env_config

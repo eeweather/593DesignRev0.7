@@ -34,7 +34,7 @@ package tinyalu_pkg;
 
 	typedef logic [INSTR_WIDTH-1:0] instruction_t;
 
-	typedef class agent_config;
+//	typedef class agent_config;
 	typedef class agent;
 	typedef class coverage_collector;
 	typedef class driver;
@@ -56,7 +56,7 @@ package tinyalu_pkg;
 	typedef class sequence_alu;
 	typedef class test_alu;
 
-	`include "tb/agent_config.svh"
+//	`include "tb/agent_config.svh"
 	`include "tb/agent.svh"
 	`include "tb/coverage_collector.svh"
 	`include "tb/driver.svh"

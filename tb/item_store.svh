@@ -8,10 +8,6 @@ class item_store extends item_base;
     function new(string name="item_store");
 	    super.new(name);
     endfunction
-
-    //byte A = 1'b0;
-    //byte B = 1'b0; 
-    //logic [15:0] result = 16'b1; 
     
     //constain instruction opcode bits[18:15] to the valid alu operations
     constraint load_only {inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store;}

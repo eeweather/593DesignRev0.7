@@ -116,7 +116,7 @@ import tinyalu_pkg::*;
 
 
    initial begin
-       uvm_config_db #(virtual processor_if)::set(null, "*", "vif_0", vif_0);
+       	   uvm_config_db #(virtual processor_if)::set(null, "", "vif_0", vif_0);
 	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_1", vif_1);
 	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_2", vif_2);
 	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_3", vif_3);

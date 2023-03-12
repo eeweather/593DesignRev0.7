@@ -16,10 +16,7 @@ class sequence_alu extends uvm_sequence #(item_base);
 		super.new(name);
 	endfunction
 
-	agent_config agent_cfg;
-
-	task init_start(input uvm_sequencer #(item_base) sqr, input agent_config agent_cfg);
-		this.agent_cfg = agent_cfg;
+	task init_start(input uvm_sequencer #(item_base) sqr);
 		this.start(sqr);
 	endtask: init_start
 

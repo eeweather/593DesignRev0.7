@@ -18,43 +18,40 @@ class test_base extends uvm_test;
 
 	env envt;
 	env_config env_cfg;
-	agent_config agent_cfg;
+virtual processor_if vif_0, vif_1, vif_2, vif_3;
 
 	virtual function void build_phase(uvm_phase phase);
 
 		//create configuration objects
+		envt = env::type_id::create("envt",this);
 		env_cfg = env_config::type_id::create("env_cfg");
-		agent_cfg = agent_config::type_id::create("agent_cfg");
-
-		//active agent!
-		agent_cfg.active = UVM_ACTIVE;
-		env_cfg.agent_cfg = agent_cfg;
-
-		//prints the number of items, 1 by default, set on command line
-		void'(uvm_config_db#(uvm_bitstream_t)::get(this, "", "num_items", agent_cfg.num_items));
-		`uvm_info(get_type_name(), $sformatf("num_items=%d.", agent_cfg.num_items), UVM_LOW)
-
-//dk3/8		agent_cfg.monitor_verbosity = UVM_LOW;
-
-		agent_cfg.enable_coverage = 1;
-
-		//get the vifs (processor_if) from the config database
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_0", agent_cfg.vif_0)) `uvm_fatal(get_type_name(), "Failed to get vif_0 from uvm_config_db")
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_1", agent_cfg.vif_1)) `uvm_fatal(get_type_name(), "Failed to get vif_1 from uvm_config_db")
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_2", agent_cfg.vif_2)) `uvm_fatal(get_type_name(), "Failed to get vif_2 from uvm_config_db")
-		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_3", agent_cfg.vif_3)) `uvm_fatal(get_type_name(), "Failed to get vif_3 from uvm_config_db")
-		
 		//put the env_config in the config database and create env
 		uvm_config_db #(env_config)::set(this, "envt", "env_cfg", env_cfg);
-		envt = env::type_id::create("envt",this);
+
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_0", vif_0)) `uvm_fatal(get_type_name(), "Failed to get vif_0 from uvm_config_db")
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_1", vif_1)) `uvm_fatal(get_type_name(), "Failed to get vif_1 from uvm_config_db")
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_2", vif_2)) `uvm_fatal(get_type_name(), "Failed to get vif_2 from uvm_config_db")
+		if (!uvm_config_db #(virtual processor_if)::get(this, "", "vif_3", vif_3)) `uvm_fatal(get_type_name(), "Failed to get vif_3 from uvm_config_db")
+		
 
 	endfunction: build_phase
 
 	virtual function void end_of_elaboration_phase(uvm_phase phase);
+
 		//this eoe phase prints some useful information before running, check it out!
 		uvm_factory factory;
 		factory = uvm_factory::get();
 
+		envt.agt_0.drv.vif = vif_0;
+		envt.agt_0.mon.vif = vif_0;
+		envt.agt_1.drv.vif = vif_1;
+		envt.agt_1.mon.vif = vif_1;
+		envt.agt_2.drv.vif = vif_2;
+		envt.agt_2.mon.vif = vif_2;
+		envt.agt_3.drv.vif = vif_3;
+		envt.agt_3.mon.vif = vif_3;
+		
+		
 		`uvm_info("PRINT", "factory.print(1);", UVM_LOW)
 		factory.print(1);
 
@@ -79,7 +76,7 @@ class test_base extends uvm_test;
 
 		//create the sequence and call it's initial start task (sequence_base.svh)
 		seq = sequence_base::type_id::create("seq");
-		seq.init_start(envt.agt.sqr, agent_cfg);
+		seq.init_start(envt.agt_0.sqr);
 
 		phase.drop_objection(this, get_full_name());
 	endtask: run_phase

@@ -1,5 +1,6 @@
 COMMON_VSIM_ARGS += -sv_lib c
 
+
 all: comp opt psim
 
 #comp:  
@@ -13,14 +14,15 @@ comp:
 	vlog ALU593.sv instructionUnit_single.sv memIntUnit.sv memory_subsystem.sv ALUMIFIU_dut.sv
 	vlog tb/top_hvl.sv top_hdl.sv
 opt:    
-	vopt top_hvl top_hdl -novopt -o top_opt -debug +designfile +cover=bcesf -coverexcludedefault
+	vopt top_hvl top_hdl -o top_opt -debug +designfile +cover=bcesf -coverexcludedefault
 
 psim: comp opt
 	vsim +UVM_TESTNAME=test_alu -c -coverage -do "coverage save -onexit coverage.ucdb; run -all; quit" top_opt -qwavedb=+signal+memory +uvm_set_config_int=uvm_test_top,num_items,1 -sv_seed 10 +UVM_VERBOSITY=UVM_DEBUG -dpicpppath /usr/bin/gcc
 lsim: comp opt
-	vsim +UVM_TESTNAME=test_base top_opt +uvm_set_config_int=uvm_test_top,num_items,1 -dpicpppath /usr/bin/gcc
+	vsim +UVM_TESTNAME=test_alu top_opt +uvm_set_config_int=uvm_test_top,num_items,1 -dpicpppath /usr/bin/gcc
 
 lvis: comp opt
-	vsim +UVM_TESTNAME=test_base -coverage top_opt -qwavedb=signal+memory -visualizer="+designfile+design.bin" -dpicpppath /usr/bin/gcc
+	vsim +UVM_TESTNAME=test_alu -coverage top_opt -qwavedb=signal+memory -visualizer="+designfile+design.bin" -dpicpppath /usr/bin/gcc
 
-#	+uvm_set_config_int=uvm_test_top,num_items,1 
+vcov: 
+	visualizer -viewcov coverage.ucdb

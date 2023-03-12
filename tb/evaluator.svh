@@ -54,12 +54,12 @@ class evaluator extends uvm_component;
 			//if they match, party, if not, crash and burn
 			
 				if(actual_tx.compare(expected_tx)) begin
-				`uvm_info("Evaluator", $sformatf("MATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result), UVM_DEBUG)
+				`uvm_info(get_type_name(), $sformatf("MATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result), UVM_DEBUG)
 					match++;
 				end
 
 			else begin
-				`uvm_error("Evaluator", $sformatf("MISMATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result))
+				`uvm_error(get_type_name, $sformatf("MISMATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result))
 				mismatch++;
 			end
 		end
@@ -67,7 +67,16 @@ class evaluator extends uvm_component;
 
 	virtual function void report_phase(uvm_phase phase);
 		//hey evaluator, how many matches and mismatches did I have?
-		`uvm_info("Evaluator", $sformatf("Passed=%0d, Failed =%0d", match, mismatch), UVM_LOW)
+		`uvm_info(get_type_name(), $sformatf("Passed=%0d, Failed =%0d", match, mismatch), UVM_LOW)
 	endfunction: report_phase
+
+	function int get_matches();
+		get_matches = match;
+	endfunction
+
+	function int get_mismatches();
+		get_mismatches = mismatch;
+	endfunction
+
 
 endclass: evaluator
