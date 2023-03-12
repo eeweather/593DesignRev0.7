@@ -27,7 +27,6 @@ virtual processor_if	 	vif;
 uvm_sequencer #(item_base) sqr;
 driver drv;
 monitor mon;
-coverage_collector cov;
 
 virtual function void build_phase(uvm_phase phase);
 
@@ -43,9 +42,6 @@ virtual function void build_phase(uvm_phase phase);
 		drv = driver::type_id::create("drv",this);
 	end
 	
-	if(enable_coverage) cov= coverage_collector::type_id::create("cov", this);
-
-
 endfunction: build_phase
 
 virtual function void connect_phase(uvm_phase phase);
@@ -59,7 +55,6 @@ virtual function void connect_phase(uvm_phase phase);
 
 	//if you want coverage, better connect the monitor to the coverage_collector!
 //	if (enable_coverage) mon.dut_in_tx_port.connect(cov.analysis_export);
-	if (enable_coverage) mon.dut_out_tx_port.connect(cov.analysis_export);
 
 endfunction: connect_phase
 

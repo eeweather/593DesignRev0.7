@@ -27,6 +27,7 @@ virtual processor_if vif_3;
 
 scoreboard scb;
 env_config env_cfg;
+coverage_collector cov;
 
 virtual function void build_phase(uvm_phase phase);
 	super.build_phase(phase);
@@ -40,6 +41,7 @@ virtual function void build_phase(uvm_phase phase);
 		
 	//if you want a scoreboard, create it!
 	if(env_cfg.enable_scoreboard) scb = scoreboard::type_id::create("scb", this);
+	cov = coverage_collector::type_id::create("cov", this);
 
 endfunction: build_phase
 
@@ -53,6 +55,10 @@ virtual function void connect_phase(uvm_phase phase);
 		agt_2.dut_out_tx_port.connect(scb.dut_out_export_2);
 		agt_3.dut_out_tx_port.connect(scb.dut_out_export_3);
 	end
+	agt_0.mon.dut_out_tx_port.connect(cov.analysis_export);
+	agt_1.mon.dut_out_tx_port.connect(cov.analysis_export);
+	agt_2.mon.dut_out_tx_port.connect(cov.analysis_export);
+	agt_3.mon.dut_out_tx_port.connect(cov.analysis_export);
 endfunction: connect_phase
 
 endclass: env 
