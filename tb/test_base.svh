@@ -64,8 +64,10 @@ virtual processor_if vif_0, vif_1, vif_2, vif_3;
 
 	virtual task run_phase(uvm_phase phase);
 		
-		sequence_base seq;
-
+		sequence_base base_0;
+		sequence_base base_1;
+		sequence_base base_2;
+		sequence_base base_3;
 		//set_drain_time gives the test a period of time after stimulus is
 		//finished to be processed
 		phase.phase_done.set_drain_time(this, 1000);
@@ -75,9 +77,16 @@ virtual processor_if vif_0, vif_1, vif_2, vif_3;
 
 
 		//create the sequence and call it's initial start task (sequence_base.svh)
-		seq = sequence_base::type_id::create("seq");
-		seq.init_start(envt.agt_0.sqr);
-
+		base_0 = sequence_base::type_id::create("base_0");
+		base_1 = sequence_base::type_id::create("base_1");
+		base_2 = sequence_base::type_id::create("base_2");
+		base_3 = sequence_base::type_id::create("base_3");
+		fork
+			base_0.init_start(envt.agt_0.sqr);
+			base_1.init_start(envt.agt_1.sqr);
+			base_2.init_start(envt.agt_2.sqr);
+			base_3.init_start(envt.agt_3.sqr);
+		join
 		phase.drop_objection(this, get_full_name());
 	endtask: run_phase
 
