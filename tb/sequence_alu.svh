@@ -7,7 +7,7 @@
 *   ALU sequence for generating ALU sequences 
 */
 
-class sequence_alu extends uvm_sequence #(item_base);
+class sequence_alu extends sequence_base;// #(item_base);
 	`uvm_object_utils(sequence_alu)
 
     item_base tx;
@@ -28,72 +28,27 @@ class sequence_alu extends uvm_sequence #(item_base);
 	//generate a sequence of ALU transactions
 	task body();
 
-		alu = item_alu::type_id::create("alu");
-		store = item_store::type_id::create("store");
-		load = item_load::type_id::create("load");
+		//alu = item_alu::type_id::create("alu");
+		//store = item_store::type_id::create("store");
+		//load = item_load::type_id::create("load");
 			
 		all_alu_ops();
-
-		load_data();
-		get_alu_op();
-		store_data();
+		//get_alu_op();
+	
 	
 	endtask: body
 
 	//iterate through all of the valid ALU operations
 	task all_alu_ops();
-
+		alu = item_alu::type_id::create("alu");
+		store = item_store::type_id::create("store");
+		load = item_load::type_id::create("load");
 		for (int i = 1; i < 8; i++) begin			
-			load_data(); 
-
-			if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
-			alu.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] = i;
-			start_item(alu);
-			finish_item(alu);
-			
-			if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
-			start_item(store);
-			finish_item(store);								
+			get_alu_op(0, alu_opcode_t'(i));					
 		end
-
-		load_data(); 
-
-		if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
-		alu.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] = op_shl;
-		start_item(alu);
-		finish_item(alu);
-
-		store_data();	
-		load_data(); 
-
-		if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
-		alu.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] = op_shr;
-		start_item(alu);
-		finish_item(alu);
-
-		store_data();
+		get_alu_op(0, op_shl);
+		get_alu_op(0, op_shr);
 	endtask
-
-	task load_data();
-		repeat(2) begin
-			if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed")
-			start_item(load);
-			finish_item(load);
-			end
-	endtask
-
-	task store_data();
-		if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
-		start_item(store);
-		finish_item(store);
-	endtask
-
-	task get_alu_op();
-		if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
-		start_item(alu);
-		finish_item(alu);
-	endtask;
-
 
 endclass: sequence_alu
 
