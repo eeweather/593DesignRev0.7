@@ -27,29 +27,61 @@ class sequence_base extends uvm_sequence #(item_base);
 
 	//the body task is where transactions (or sequence items, or whatever) are created, randomized, and started/finished
 	task body();
-		repeat(2) daniel_sucks();
+	
+		//with default args returns a random transaction. 
+		repeat(2) get_alu_op();
+
+		//repeat(2) daniel_sucks();
 	endtask : body
 
-	task daniel_sucks();
-		tx = item_base::type_id::create("tx");
-		alu = item_alu::type_id::create("alu");
-		load = item_load::type_id::create("load");
-		store = item_store::type_id::create("store");
+	// task daniel_sucks();
+	// 	tx = item_base::type_id::create("tx");
+	// 	alu = item_alu::type_id::create("alu");
+	// 	load = item_load::type_id::create("load");
+	// 	store = item_store::type_id::create("store");
+	// 	repeat(2) begin
+	// 		if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed")
+	// 		start_item(load);
+	// 		finish_item(load);
+	// 	end
+	// 	if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
+	// 	start_item(alu);
+	// 	finish_item(alu);
+
+	// 	if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
+	// 	start_item(store);
+	// 	finish_item(store);
+
+	// endtask : daniel_sucks
+
+
+	 task load_data();
+		 load = item_load::type_id::create("load");
 		repeat(2) begin
 			if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed")
 			start_item(load);
 			finish_item(load);
-		end
-		if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
-		start_item(alu);
-		finish_item(alu);
+			end
+	endtask
 
+	 task store_data();
+		store = item_store::type_id::create("store");
 		if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
 		start_item(store);
 		finish_item(store);
+	endtask
 
-	endtask : daniel_sucks
-
-
+	//create a tx. set random to 0 and provide and opcode to recieve a specific op, otherwise it'll randomize opcodes
+	 task get_alu_op(bit random = 1, alu_opcode_t op = op_nop);
+		alu = item_alu::type_id::create("alu");
+		load_data();
+		if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
+		if(random != 1) begin
+			alu.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] = op;
+		end		
+		start_item(alu);
+		finish_item(alu);
+		store_data();
+	endtask
 
 endclass: sequence_base
