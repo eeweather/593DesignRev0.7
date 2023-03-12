@@ -17,12 +17,12 @@ opt:
 	vopt top_hvl top_hdl -o top_opt -debug +designfile +cover=bcesf -coverexcludedefault
 
 psim: comp opt
-	vsim +UVM_TESTNAME=test_alu -c -coverage -do "coverage save -onexit coverage.ucdb; run -all; quit" top_opt -qwavedb=+signal+memory +uvm_set_config_int=uvm_test_top,num_items,1 -sv_seed 10 +UVM_VERBOSITY=UVM_DEBUG -dpicpppath /usr/bin/gcc
+	vsim +UVM_TESTNAME=test_base -c -coverage -do "coverage save -onexit coverage.ucdb; run -all; quit" top_opt -qwavedb=+signal+memory +uvm_set_config_int=uvm_test_top,num_items,1 -sv_seed 10 +UVM_VERBOSITY=UVM_DEBUG -dpicpppath /usr/bin/gcc
 lsim: comp opt
-	vsim +UVM_TESTNAME=test_alu top_opt +uvm_set_config_int=uvm_test_top,num_items,1 -dpicpppath /usr/bin/gcc
+	vsim +UVM_TESTNAME=test_base top_opt +uvm_set_config_int=uvm_test_top,num_items,1 -dpicpppath /usr/bin/gcc
 
 lvis: comp opt
-	vsim +UVM_TESTNAME=test_alu -coverage top_opt -qwavedb=signal+memory -visualizer="+designfile+design.bin" -dpicpppath /usr/bin/gcc
+	vsim +UVM_TESTNAME=test_base -coverage top_opt -qwavedb=signal+memory -visualizer="+designfile+design.bin" -dpicpppath /usr/bin/gcc
 
 vcov: 
 	visualizer -viewcov coverage.ucdb

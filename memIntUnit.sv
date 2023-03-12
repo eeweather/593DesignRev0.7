@@ -51,17 +51,18 @@ module memInerf (
 logic [3:0] counter;
 
 assign cs = (write_req || read_req);
+assign addrout = (!reset_n)? 0 : addr;
 
 
 //assign datatofrommem = (!reset_n)? '0 : 16'bz;
 //assign datatofrommem = (store)? result: 16'hz;
 
-always_ff @(posedge clk) begin
+always @(posedge clk) begin
     //if reset reset
     if (!reset_n) begin
         //TODO:  what needs to be reset
         mem_done<=0;
-        addrout<= 0;
+        //addrout<= 0;
         write_req <= 0;
         read_req <=0;
         datatoinst <= 0;
@@ -70,19 +71,17 @@ always_ff @(posedge clk) begin
     end
     // load signal comes in
     else if (load) begin
-        counter++;
 	    mem_done <=0;
 	if (counter>9) begin
 	    counter<=0;
-            mem_done <=1; 
+        mem_done <=1; 
 	end
         // read addr, put on addrout
 	//mem_done <=0;
-        addrout<=addr;
+        //addrout<=addr;
         //set read_req
-	if (counter == 2) begin
-        read_req<=1;
-	end
+        counter++;
+	
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
             // JBFIL: Add read of either byte based on lower address bits.
@@ -96,7 +95,7 @@ always_ff @(posedge clk) begin
     else if (store) begin
 	    mem_done<=0;
         counter++;
-	if (counter>9) begin
+	if (counter>10) begin
 	    counter<=0;
         mem_done<=1;
 	end
@@ -104,11 +103,11 @@ always_ff @(posedge clk) begin
         // put result onto datatofrommem
         //set write_req
 	//mem_done <=0;
-        addrout<=addr;
+        //addrout<=addr;
         datatomem<=result;
-	if (counter == 2) begin
-        write_req<=1;
-	end
+	// if (counter == 1) begin
+    //     write_req<=1;
+	// end
         // when mem_resp goes high raise mem_done and lower all else
         if (mem_resp) begin
             write_req<=0;
@@ -120,6 +119,20 @@ always_ff @(posedge clk) begin
         //read_req<=0;
     end     
 end
+
+always @(negedge clk) begin
+    if (load) begin
+        if (counter == 1) begin
+        read_req<=1;
+	end    
+    end
+    if (store) begin
+        if (counter == 1) begin
+        write_req<=1;
+	end    
+    end
+end
+
 
 
 endmodule : memInerf

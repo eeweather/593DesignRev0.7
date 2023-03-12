@@ -47,84 +47,47 @@ logic [DATA_SIZE*8-1:0] mem_read_data;
 
 assign current_proc_req = {processor_req_3, processor_req_2, processor_req_1, processor_req_0};
 
+
+
 //assign {processor_resp_3, processor_resp_2, processor_resp_1, processor_resp_0} = current_proc_resp;
 
 //arbitration interstitial signals
 reg [3:0] requestor=0, grant;
 
-//rr arbitration
-always @(posedge clk) begin
+//priority arbitration
+//always @(posedge clk) begin
+always_comb begin
    if(current_proc_req[0]) begin
-      mem_read_req <= mem_read_req_0;
-      mem_write_req <= mem_write_req_0;
-      addr <= addr_0;
-      grant <= 0;
+      mem_read_req = mem_read_req_0;
+      mem_write_req = mem_write_req_0;
+      addr = addr_0;
+      grant = 0;
    end
    else if(current_proc_req[1]) begin
-      mem_read_req <= mem_read_req_1;
-      mem_write_req <= mem_write_req_1;
-      addr <= addr_1;
-      grant <= 1;
+      mem_read_req = mem_read_req_1;
+      mem_write_req = mem_write_req_1;
+      addr = addr_1;
+      grant = 1;
    end
    else if(current_proc_req[2]) begin
-	mem_read_req <= mem_read_req_2;
-	mem_write_req <= mem_write_req_2;
-	addr <= addr_2;
-      grant <= 2;
+	mem_read_req = mem_read_req_2;
+	mem_write_req = mem_write_req_2;
+	addr = addr_2;
+      grant = 2;
    end
    else if(current_proc_req[3]) begin
-      mem_read_req <= mem_read_req_3;
-      mem_write_req <= mem_write_req_3;
-      addr <= addr_3;
-      grant <= 3;
+      mem_read_req = mem_read_req_3;
+      mem_write_req = mem_write_req_3;
+      addr = addr_3;
+      grant = 3;
    end
    else begin
-      mem_read_req <= 0;
-      mem_write_req <= 0;
-      addr <= '0;
-      grant <= 4;
+      mem_read_req = 0;
+      mem_write_req = 0;
+      addr = '0;
+      grant = 4;
    end
 
-
-   //if(current_proc_req != 4'b0000) begin
-      
-      
-      
-      // grant <= current_proc_req[requestor];
-      // requestor <= (requestor + 1) % 4;
-     
-
-      // case (grant)
-	//       0: begin
-	// 	//mem_write_data = mem_write_data_0;
-	// 	mem_read_req <= mem_read_req_0;
-	// 	mem_write_req <= mem_write_req_0;
-	// 	addr <= addr_0;
-	// 	//mem_read_data_0 = mem_read_data;
-	//       end
-	//       1: begin
-	// 	//mem_write_data = mem_write_data_1;
-	// 	mem_read_req <= mem_read_req_1;
-	// 	mem_write_req <= mem_write_req_1;
-	// 	addr <= addr_1;
-	// 	//mem_read_data_1 = mem_read_data;
-	//       end
-	//       2: begin
-	// 	//mem_write_data = mem_write_data_2;
-	// 	mem_read_req <= mem_read_req_2;
-	// 	mem_write_req <= mem_write_req_2;
-	// 	addr <= addr_2;
-	// 	//mem_read_data_2 = mem_read_data;
-	//       end
-	//       3: begin
-	// 	//mem_write_data = mem_write_data_3;
-	// 	mem_read_req <= mem_read_req_3;
-	// 	mem_write_req <= mem_write_req_3;
-	// 	addr <= addr_3;
-	// 	//mem_read_data_3 = mem_read_data;
-	//       end
-      // endcase
-   //end else grant <= 0;
 end
 
 always @(negedge clk) begin
@@ -184,14 +147,14 @@ always @(posedge clk) begin
       memory_coherency[addr] <= M;
  //     current_proc_resp <= current_proc_req;
       //UNIT TEST DEBUG MESSAGE VV
-      $display("write: memory[%0d] = %d \tmem_write_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_write_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
+      //$display("write: memory[%0d] = %d \tmem_write_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_write_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
    //read
    end else if (mem_read_req) begin
       //TODO: determine what to do for reads of M memory and when to update
 	      mem_read_data <= memory[addr];
 //	      current_proc_resp <= current_proc_req;
      //UNIT TEST DEBUG MESSAGE VV 
-     $display("read: memory[%0d] = %d \tmem_read_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_read_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
+     //$display("read: memory[%0d] = %d \tmem_read_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_read_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
    end
 end
 
