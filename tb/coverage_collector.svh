@@ -13,7 +13,7 @@ class coverage_collector extends uvm_subscriber #(item_base);
 
 	item_base tx;
 	covergroup op_cov; 
-		coverpoint tx.inst[15:12] { 
+		coverpoint tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] { 
 			bins single_cycle[] = {[op_add:op_xor], op_nop, op_nop1, op_shl, op_shr};
        			bins multi_cycle[] = {[op_mul:op_sp2]};
          		bins io_cycle[] = {op_load, op_store};
@@ -33,7 +33,7 @@ class coverage_collector extends uvm_subscriber #(item_base);
 	endgroup : op_cov
 
 	covergroup zero_or_ones_on_ops;
-		all_ops : coverpoint tx.inst[15:12] {
+		all_ops : coverpoint tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] {
          	 	ignore_bins null_ops = {op_nop, op_nop1, op_res1, op_res2, op_res3};
 		}
 
