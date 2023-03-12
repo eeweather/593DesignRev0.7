@@ -38,11 +38,12 @@ class test_alu extends test_base;
 		alu_1 = sequence_alu::type_id::create("alu_1");
 		alu_2 = sequence_alu::type_id::create("alu_2");
 		alu_3 = sequence_alu::type_id::create("alu_3");
-		alu_0.init_start(envt.agt_0.sqr);
-		alu_1.init_start(envt.agt_1.sqr);
-		alu_2.init_start(envt.agt_2.sqr);
-		alu_3.init_start(envt.agt_3.sqr);
-
+		fork
+			alu_0.init_start(envt.agt_0.sqr);
+			alu_1.init_start(envt.agt_1.sqr);
+			alu_2.init_start(envt.agt_2.sqr);
+			alu_3.init_start(envt.agt_3.sqr);
+		join
 		phase.drop_objection(this, get_full_name());
 	endtask: run_phase
 
