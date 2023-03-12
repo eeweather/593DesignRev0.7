@@ -46,7 +46,9 @@ package tinyalu_pkg;
 	typedef class predictor;
 	typedef class scoreboard;
 	typedef class sequence_base;
+	typedef class sequence_load;
 	typedef class test_base;
+	typedef class test_load;
 	typedef class item_alu;
 	typedef class item_multi;
 	typedef class item_single;
@@ -68,8 +70,10 @@ package tinyalu_pkg;
 	`include "tb/predictor.svh"
 	`include "tb/scoreboard.svh"
 	`include "tb/sequence_base.svh"
+	`include "tb/sequence_load.svh"
 	`include "tb/test_base.svh"
 	`include "tb/test_alu.svh"
+	`include "tb/test_load.svh"
 	`include "tb/sequence_alu.svh"
 	`include "tb/item_alu.svh"
 	`include "tb/item_load.svh"
