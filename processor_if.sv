@@ -60,9 +60,9 @@ interface processor_if (input clk);
 	   // wait(done || reset_start);
       //      wait(!done || reset_start);
 	   tx.inst = instr;
+      @(posedge clk);
 	   tx.A = A;
 	   tx.B = B;
-      @(posedge clk);
 	   tx.result = result;
 	end
     endtask : sample_instruction

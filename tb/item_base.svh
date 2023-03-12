@@ -18,7 +18,7 @@
 	//a randomized 19 bit instruction
 	rand instruction_t inst;
  	byte A; //;
-        byte B;
+    byte B;
 	logic [15:0] result;	
 
 	//the following virtual functions must be overwritten from uvm_sequence_items and do what their names suggest

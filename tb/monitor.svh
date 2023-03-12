@@ -53,11 +53,12 @@ virtual task get_sample();
 //		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
 	
 		//load hack, fix later!
-		if(tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load) begin
-			tx.result = 1'b1;
-			tx.A = 1'b0;
-			tx.B = 1'b0;
-		end
+		//it is later, ew 
+		// if(tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load) begin
+		// 	tx.result = 1'b1;
+		// 	tx.A = 1'b0;
+		// 	tx.B = 1'b0;
+		// end
 			
 		dut_in_tx_port.write(tx);
 		dut_out_tx_port.write(tx);
