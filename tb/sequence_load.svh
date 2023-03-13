@@ -32,8 +32,8 @@ class sequence_load extends sequence_base;// #(item_base);
         store = item_store::type_id::create("store");
 		alu = item_alu::type_id::create("alu");
 		
-		all_load_ops();
-		//load_store_load();
+		//all_load_ops();
+		load_store_load(3);
 		
 	
 	endtask: body
@@ -51,8 +51,11 @@ class sequence_load extends sequence_base;// #(item_base);
 	endtask
 
 	//all procs store to same location and then load from it
-	task load_store_load();
-		
+	task load_store_load(logic [13:0] addr = 'x);
+
+		if(addr === 'x) 
+			addr = $urandom_range(0,16);
+			
 		//load register A in all 4 procs
 		if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed");
         load.inst[0] = 0;
@@ -67,13 +70,14 @@ class sequence_load extends sequence_base;// #(item_base);
         
 		//store to the same memory location
 		if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
-        store.inst[14:0] = 3;
+        store.inst[14:1] = addr;
 		start_item(store);
 		finish_item(store);
         
 		//load from the same memory location
         if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed");
-        load.inst[14:0] = 3;
+        load.inst[14:1] = addr;
+		load.inst[0] = 1;
 	    start_item(load);
     	finish_item(load);	 
 
