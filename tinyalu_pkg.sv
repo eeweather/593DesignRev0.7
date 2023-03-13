@@ -48,6 +48,8 @@ package tinyalu_pkg;
 	typedef class sequence_base;
 	typedef class sequence_load;
 	typedef class test_base;
+	typedef class sequence_add;
+	typedef class test_add;
 	typedef class test_load;
 	typedef class item_alu;
 	typedef class item_multi;
@@ -75,6 +77,8 @@ package tinyalu_pkg;
 	`include "tb/test_alu.svh"
 	`include "tb/test_load.svh"
 	`include "tb/sequence_alu.svh"
+	`include "tb/test_add.svh"
+	`include "tb/sequence_add.svh"
 	`include "tb/item_alu.svh"
 	`include "tb/item_load.svh"
 	`include "tb/item_store.svh"
