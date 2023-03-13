@@ -10,7 +10,10 @@
 class sequence_load extends sequence_base;// #(item_base);
 	`uvm_object_utils(sequence_load)
 
-    item_base tx;
+   	item_base tx;	
+	item_alu alu;
+	item_load load;
+	item_store store;
 
 	function new(string name="sequence_load");
 		super.new(name);
@@ -20,15 +23,21 @@ class sequence_load extends sequence_base;// #(item_base);
 		this.start(sqr);
 	endtask: init_start
 
-	item_load load;
+	
 	
 	//generate a sequence of ALU transactions
 	task body();
-			
+		
+		load = item_load::type_id::create("load");
+        store = item_store::type_id::create("store");
+		alu = item_alu::type_id::create("alu");
+		
 		all_load_ops();
+		//load_store_load();
 		
 	
 	endtask: body
+
 
 	//load from all the places
 	task all_load_ops();
@@ -39,6 +48,36 @@ class sequence_load extends sequence_base;// #(item_base);
 			start_item(load);
 			finish_item(load);				
 		end
+	endtask
+
+	//all procs store to same location and then load from it
+	task load_store_load();
+		
+		//load register A in all 4 procs
+		if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed");
+        load.inst[0] = 0;
+        start_item(load);
+        finish_item(load);	
+
+		//Perorm and add operation
+		if(!alu.randomize()) `uvm_fatal(get_type_name(), "alu.randomize failed")
+		alu.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] = op_add;			
+		start_item(alu);
+		finish_item(alu);
+        
+		//store to the same memory location
+		if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
+        store.inst[14:0] = 3;
+		start_item(store);
+		finish_item(store);
+        
+		//load from the same memory location
+        if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed");
+        load.inst[14:0] = 3;
+	    start_item(load);
+    	finish_item(load);	 
+
+        
 	endtask
 
 
