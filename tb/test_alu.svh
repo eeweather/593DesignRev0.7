@@ -28,7 +28,7 @@ class test_alu extends test_base;
 
 		//set_drain_time gives the test a period of time after stimulus is
 		//finished to be processed
-		phase.phase_done.set_drain_time(this, 10);
+		phase.phase_done.set_drain_time(this, 1000);
 
 		phase.raise_objection(this, get_full_name());
 		`uvm_info("TEST", "\n\n\n ***ALU TEST***\n\n\n", UVM_NONE)
