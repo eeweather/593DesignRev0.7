@@ -11,7 +11,7 @@ class item_store extends item_base;
     
     //constain instruction opcode bits[18:15] to the valid alu operations
     constraint load_only {inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store;}
-    constraint temp_valid_address {inst[14:1] < 16384;}
+    constraint temp_valid_address {inst[14:1] < MAX_ADDR;}
 
  
 endclass : item_store

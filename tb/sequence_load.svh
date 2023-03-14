@@ -42,14 +42,14 @@ class sequence_load extends sequence_base;// #(item_base);
 
 	//load from all the places
 	task all_load_ops();
-		for (int i = 0; i < 16384; i++) begin			
+		for (int i = 0; i < MAX_ADDR; i++) begin			
 		   load_addr(i);		
 		end
 	endtask
 
-	//load, alu op, then store to all the places
+	//load, random alu op, then store to all the places
 	task all_load_store();
-		for (int i = 0; i < 16384; i++) begin			
+		for (int i = 0; i < MAX_ADDR; i++) begin			
 			load_addr(i);	
 			get_alu();
 			store_data(i);
