@@ -9,7 +9,7 @@
 
 
 class item_single extends item_base;
-    `uvm_object_utils(item_alu);
+    `uvm_object_utils(item_single);
 
     function new(string name="item_single");
 	    super.new(name);
