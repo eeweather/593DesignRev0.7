@@ -28,26 +28,23 @@ class sequence_alu extends sequence_base;// #(item_base);
 	//generate a sequence of ALU transactions
 	task body();
 
-		//alu = item_alu::type_id::create("alu");
-		//store = item_store::type_id::create("store");
-		//load = item_load::type_id::create("load");
+		alu = item_alu::type_id::create("alu");
+		store = item_store::type_id::create("store");
+		load = item_load::type_id::create("load");
 			
-		all_alu_ops();
-		//get_alu_op();
+		//all_alu_ops();
+		repeat(5) get_alu_tx();
 	
 	
 	endtask: body
 
 	//iterate through all of the valid ALU operations
 	task all_alu_ops();
-		alu = item_alu::type_id::create("alu");
-		store = item_store::type_id::create("store");
-		load = item_load::type_id::create("load");
 		for (int i = 1; i < 8; i++) begin			
-			get_alu_op(0, alu_opcode_t'(i));					
+			get_alu_tx(0, alu_opcode_t'(i));					
 		end
-		get_alu_op(0, op_shl);
-		get_alu_op(0, op_shr);
+		get_alu_tx(0, op_shl);
+		get_alu_tx(0, op_shr);
 	endtask
 
 endclass: sequence_alu

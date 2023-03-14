@@ -27,21 +27,19 @@ class sequence_add extends sequence_base;// #(item_base);
 
 	//generate a sequence of ALU transactions
 	task body();
+		alu = item_alu::type_id::create("alu");
+		store = item_store::type_id::create("store");
+		load = item_load::type_id::create("load");
 
-        all_add_ops(10);
+        all_add_ops(100);
 	
 	endtask: body
 
 	//all adds all the time. Input: Repeat Val = # of adds you wanna do
 	task all_add_ops(int repeat_val);
-		alu = item_alu::type_id::create("alu");
-		store = item_store::type_id::create("store");
-		load = item_load::type_id::create("load");
-		
         for (int i = 0; i < repeat_val; i++) begin			
-			get_alu_op(0, op_add);					
-		end
-		
+			get_alu_tx(0, op_add);					
+		end	
 	endtask
 
 endclass: sequence_add
