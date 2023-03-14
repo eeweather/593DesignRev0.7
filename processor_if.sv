@@ -67,5 +67,27 @@ interface processor_if (input clk);
 	end
     endtask : sample_instruction
 
+   //SUPER AWESOME TOTALY FUNCTIONAL, LOGICALLY SOUND ASSERTIONS. ITS TRUE CUZ I ASSERT IT
+   one_cycle_assert : assert property(
+	@(posedge clk) disable iff(!reset_n || done || !(instr[18:15] inside {[op_add:op_xor], op_shl, op_shr}))
+        instr[18:15] inside {[op_add:op_xor], op_shl, op_shr} |-> ##1 done
+	) else $error ("one cycle timing violation with op = %b", instr[18:15]);	
+
+   three_cycle_assert : assert property(
+	@(posedge clk) disable iff(!reset_n || done || !(instr[18:15] inside {op_mul, op_sp1, op_sp2}))
+         instr[18:15] inside {op_mul, op_sp1, op_sp2} |-> ##3 done
+	) else $error ("three cycle timing violation with op = %b", instr[18:15]);	
+
+   four_cycle_assert : assert property(
+	@(posedge clk) disable iff(!reset_n || done || !(instr[18:15] inside {op_sp0}))
+        instr[18:15] inside {op_sp0} |-> ##4 done
+	) else $error ("four cycle timing violation with op = %b", instr[18:15]);
+
+   ten_cycle_assert : assert property(
+	@(posedge clk) disable iff(!reset_n || done || !(instr[18:15] inside {op_store, op_load}))
+        instr[18:15] inside {op_store, op_load} |-> ##10 done
+	) else $error ("Ten cycle timing violation with op = %b", instr[18:15]);
+
+
 
 endinterface : processor_if
