@@ -43,25 +43,16 @@ class sequence_load extends sequence_base;// #(item_base);
 	//load from all the places
 	task all_load_ops();
 		for (int i = 0; i < 16384; i++) begin			
-		    if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed");
-            load.inst[14:1] = i;
-			start_item(load);
-			finish_item(load);				
+		   load_addr(i);		
 		end
 	endtask
 
 	//load, alu op, then store to all the places
 	task all_load_store();
 		for (int i = 0; i < 16384; i++) begin			
-		    if(!load.randomize()) `uvm_fatal(get_type_name(), "load.randomize failed");
-            load.inst[14:1] = i;
-			start_item(load);
-			finish_item(load);		
+			load_addr(i);	
 			get_alu();
-			if(!store.randomize()) `uvm_fatal(get_type_name(), "store.randomize failed")
-			store.inst[14:1] = i;
-			start_item(store);
-			finish_item(store);
+			store_data(i);
 		end
 	endtask
 
