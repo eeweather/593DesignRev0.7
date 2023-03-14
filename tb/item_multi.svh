@@ -9,7 +9,7 @@
 
 
 class item_multi extends item_base;
-    `uvm_object_utils(item_alu);
+    `uvm_object_utils(item_multi);
 
     function new(string name="item_multi");
 	    super.new(name);
