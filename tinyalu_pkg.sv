@@ -12,6 +12,7 @@ package tinyalu_pkg;
 	import uvm_pkg::*;
 
 	parameter INSTR_WIDTH = 19; // Width of Instruction
+	parameter MAX_ADDR = 16384;
 
     typedef enum logic [3:0] {
 		op_nop    = 4'b0000,
