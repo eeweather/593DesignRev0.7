@@ -52,6 +52,7 @@ module instructionUnit (
         //result = alu_result;
  	if(alu_result != 1'bx) last_result = alu_result;
     else if (alu_result == 4'b0000) last_result = alu_result;
+    else if (alu_result == 4'b0001) last_result = alu_result;
 
         if (!reset_n) begin
             index = '0;

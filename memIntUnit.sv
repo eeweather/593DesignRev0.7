@@ -52,6 +52,7 @@ logic [3:0] counter;
 
 assign cs = (write_req || read_req);
 assign addrout = (!reset_n)? 0 : addr;
+assign datatomem = (store)? result: 0;
 
 
 //assign datatofrommem = (!reset_n)? '0 : 16'bz;
@@ -67,7 +68,7 @@ always @(posedge clk) begin
         read_req <=0;
         datatoinst <= 0;
         counter <= 0;
-        datatomem <= 0;
+        //datatomem <= 0;
     end
     // load signal comes in
     else if (load) begin
@@ -94,17 +95,17 @@ always @(posedge clk) begin
     // store signal comes in
     else if (store) begin
 	    mem_done<=0;
-        counter++;
-	if (counter>10) begin
+	if (counter>9) begin
 	    counter<=0;
         mem_done<=1;
 	end
+        counter++;
         // read addr onto addrout
         // put result onto datatofrommem
         //set write_req
 	//mem_done <=0;
         //addrout<=addr;
-        datatomem<=result;
+        //datatomem<=result;
 	// if (counter == 1) begin
     //     write_req<=1;
 	// end

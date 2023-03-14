@@ -1,11 +1,14 @@
 /*UVM predictor (predictor.svh)
  */
 
-import "DPI-C" function shortint c_predictor(byte unsigned a, byte unsigned b, instruction_t instruction, logic [15:0] resultInput);
+import "DPI-C" function shortint c_predictor(byte unsigned a, byte unsigned b, instruction_t instruction, logic [15:0] resultInput, string agentName, logic [15:0] calltime);
 
 
 class predictor extends uvm_subscriber #(item_base);
 	`uvm_component_utils(predictor)
+
+// realtime t;
+// shortreal sr;
 
 function new(string name, uvm_component parent);
 	super.new(name, parent);
@@ -28,19 +31,19 @@ virtual function void write(input item_base t);
 	predicted.A = t.A;
 	predicted.B = t.B;
 
-
+    $timeformat(-9, 3, "", 4);
 	if(t.inst[18:15]==op_load) begin
-	    if(t.inst[0]==0) predicted.A = c_predictor(t.A, t.B, t.inst, t.result);
-		else predicted.B = c_predictor(t.A, t.B, t.inst, t.result);
+	    if(t.inst[0]==0) predicted.A = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
+		else predicted.B = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
 		predicted.result = t.result;
 	end 
 	else if(t.inst[18:15]==op_store) begin
 		//need to call function so store is logged in tb memory
-		predicted.result = c_predictor(t.A, t.B, t.inst, t.result);
+		predicted.result = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
 		//only way to check store is with a load, so dont trigger mismatch
 		predicted = t;
 	end 
-	else predicted.result = c_predictor(t.A, t.B, t.inst, t.result);
+	else predicted.result = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
 
 
 /*
