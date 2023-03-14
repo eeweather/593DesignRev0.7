@@ -24,6 +24,8 @@ class sequence_alu extends sequence_base;// #(item_base);
 	item_alu alu;
 	item_load load;
 	item_store store;
+	item_multi multiOp;
+	item_single singleOp;
 
 	//generate a sequence of ALU transactions
 	task body();
@@ -31,10 +33,14 @@ class sequence_alu extends sequence_base;// #(item_base);
 		alu = item_alu::type_id::create("alu");
 		store = item_store::type_id::create("store");
 		load = item_load::type_id::create("load");
+		multiOp = item_multi::type_id::create("multiOp");
+		singleOp = item_single::type_id::create("singleOp");
 			
-		//all_alu_ops();
-		repeat(5) get_alu_tx();
-	
+		all_alu_ops();
+		repeat(1000) get_alu_tx();
+		//repeat(500) multicycle_tx();
+	 	//repeat(500) singlecycle_tx;
+
 	
 	endtask: body
 
@@ -45,6 +51,24 @@ class sequence_alu extends sequence_base;// #(item_base);
 		end
 		get_alu_tx(0, op_shl);
 		get_alu_tx(0, op_shr);
+	endtask
+
+	//get a randomized multicyle tx 
+	task multicycle_tx;
+		load_data();
+		if(!multiOp.randomize()) `uvm_fatal(get_type_name(), "multiOp.randomize failed")
+		start_item(multiOp);
+		finish_item(multiOp);
+		store_data();
+	endtask
+
+	//get a randomized single cycle tx 
+	task singlecycle_tx;
+		load_data();
+		if(!singleOp.randomize()) `uvm_fatal(get_type_name(), "singleOp.randomize failed")
+		start_item(singleOp);
+		finish_item(singleOp);
+		store_data();
 	endtask
 
 endclass: sequence_alu
