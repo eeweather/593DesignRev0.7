@@ -11,45 +11,96 @@
 class coverage_collector extends uvm_subscriber #(item_base);
 	`uvm_component_utils(coverage_collector)
 
-	item_base tx;
-	covergroup op_cov; 
-		coverpoint tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] { 
-			bins single_cycle[] = {[op_add:op_xor], op_nop, op_nop1, op_shl, op_shr};
-       			bins multi_cycle[] = {[op_mul:op_sp2]};
-         		bins io_cycle[] = {op_load, op_store};
-         		bins illegal_cycle[] = {[op_res1:op_res3]};
-
-         		bins opn_rst[] = ([op_add:op_res3] => (op_res1 || op_res2 || op_res3));
-         		bins rst_opn[] = (op_res1 || op_res2 || op_res3 => [op_nop:op_shr]);
-
-         		bins twoops[] = ([op_add:op_nop1] [* 2]);
-         		bins manyillegal = ([op_res1:op_res3] [* 3:5]);
-
-         		bins wr[] = (op_load,op_store => op_load,op_store);
-         		bins wwr[] = (op_store[* 2] => op_load);
-         		bins rrw[] = (op_load[* 2] => op_store);
-  
+	item_base tx, pv;
+	covergroup cg; 
+		ops: coverpoint tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] { 
+			bins b_nop = {op_nop};
+			bins b_add = {op_add};
+			bins b_and = {op_and};
+			bins b_xor = {op_xor};
+			bins b_mul = {op_mul};
+			bins b_sp0 = {op_sp0};
+			bins b_sp1 = {op_sp1};
+			bins b_sp2 = {op_sp2};
+			bins b_load = {op_load};
+			bins b_store = {op_store};
+			bins b_shl = {op_shl};
+			bins b_shr = {op_shr};
+			bins b_res1 = {op_res1};
+			bins b_res2 = {op_res2};
+			bins b_res3 = {op_res3};
+			bins nop1 = {op_nop1};
 			}
-	endgroup : op_cov
 
-	covergroup zero_or_ones_on_ops;
-		all_ops : coverpoint tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] {
-         	 	ignore_bins null_ops = {op_nop, op_nop1, op_res1, op_res2, op_res3};
+		procs: coverpoint tx.mon_num {
+			bins b_proc0 = {0};
+			bins b_proc1 = {1};
+			bins b_proc2 = {2};
+			bins b_proc3 = {3};
+			bins b_error = default;
 		}
 
-      		a_leg: coverpoint tx.A {
-         		bins zeros = {'h00};
-		        bins others= {['h01:'hFE]};
-         		bins ones  = {'hFF};
+
+      		ALU_A: coverpoint tx.A {
+         		bins b_zero = {'h00};
+			bins b_single_dig = {['h01:'hF]};
+			bins b_double_dig = {['h10:'hFE]};
+		        bins b_max = {'hFF};
       		}
 
-     		b_leg: coverpoint tx.B {
-         		bins zeros = {'h00};
-         		bins others= {['h01:'hFE]};
-         		bins ones  = {'hFF};
+     		ALU_B: coverpoint tx.B {
+         		bins b_zero = {'h00};
+			bins b_single_dig = {['h01:'hF]};
+			bins b_double_dig = {['h10:'hFE]};
+		        bins b_max = {'hFF};
       		}
 
-      		op_00_FF:  cross a_leg, b_leg, all_ops {
+
+		io: coverpoint tx.inst[14:1] {
+			bins b_addrs[] = {[0:$]};
+		}
+
+		mem_prio_0: coverpoint((pv.mon_num == 0 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
+				   &&   tx.mon_num != 0 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				   &&   tx.inst[14:1] == pv.inst[14:1])
+				   ||  (pv.mon_num == 0 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
+				   &&   tx.mon_num != 0 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
+				   &&   tx.inst[14:1] == pv.inst[14:1])){
+			bins caught = {'h1};	
+      			ignore_bins ignore = {'h0};		
+		}	
+
+		mem_prio_1: coverpoint((pv.mon_num == 1 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
+				   &&   tx.mon_num != 1 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				   &&   tx.inst[14:1] == pv.inst[14:1])
+				   ||  (pv.mon_num == 1 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
+				   &&   tx.mon_num != 1 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
+				   &&   tx.inst[14:1] == pv.inst[14:1])){
+			bins caught = {'h1};	
+      			ignore_bins ignore = {'h0};		
+		}
+
+		mem_prio_2: coverpoint((pv.mon_num == 2 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
+				   &&   tx.mon_num != 2 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				   &&   tx.inst[14:1] == pv.inst[14:1])
+				   ||  (pv.mon_num == 2 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
+				   &&   tx.mon_num != 2 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
+				   &&   tx.inst[14:1] == pv.inst[14:1])){
+			bins caught = {'h1};	
+      			ignore_bins ignore = {'h0};		
+		}	
+
+		mem_prio_3: coverpoint((pv.mon_num == 3 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
+				   &&   tx.mon_num != 3 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				   &&   tx.inst[14:1] == pv.inst[14:1])
+				   ||  (pv.mon_num == 3 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
+				   &&   tx.mon_num != 3 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
+				   &&   tx.inst[14:1] == pv.inst[14:1])){
+			bins caught = {'h1};	
+      			ignore_bins ignore = {'h0};		
+		}	
+		
+/*      		op_00_FF:  cross a_leg, b_leg, all_ops {
          		bins add_00 = binsof (all_ops) intersect {op_add} &&
                        (binsof (a_leg.zeros) || binsof (b_leg.zeros));
 
@@ -107,23 +158,22 @@ class coverage_collector extends uvm_subscriber #(item_base);
 			ignore_bins others_only = binsof(a_leg.others) && binsof(b_leg.others);
 
       }
-	endgroup : zero_or_ones_on_ops
-
+*/ 
+	endgroup : cg
 
 function new(string name, uvm_component parent);
 	super.new(name, parent);
-	op_cov = new();
-	zero_or_ones_on_ops = new();
+	cg = new();
 endfunction
 
 virtual function void write(input item_base t);
 	this.tx = t;
-	op_cov.sample();
-	zero_or_ones_on_ops.sample();
+	pv = tx;
+	cg.sample();
 endfunction: write
 
 virtual function void report_phase(uvm_phase phase);
-	`uvm_info("COVERAGE", $sformatf("\n\nFUNCTIONAL COVERAGE:\n  op_cov = %2.2f%%\tzero_or_ones_on_ops = %2.2f%%\n", op_cov.get_coverage, zero_or_ones_on_ops.get_coverage()), UVM_NONE)
+	`uvm_info("COVERAGE", $sformatf("\n\nFUNCTIONAL COVERAGE: = %2.2f%%\n", cg.get_coverage()), UVM_NONE)
 endfunction: report_phase
 
 endclass : coverage_collector

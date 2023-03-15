@@ -18,13 +18,11 @@ endfunction
 
 virtual processor_if vif;
 
-//uvm_analysis_port #(item_base) dut_in_tx_port;
 uvm_analysis_port #(item_base) dut_out_tx_port;
 
 function void build_phase(uvm_phase phase);
 	
 	//create ports, get virtual interface from agent_config if it exists
-//	dut_in_tx_port = new("dut_in_tx_port", this);
 	dut_out_tx_port = new("dut_out_tx_port", this);
 
 endfunction: build_phase
@@ -38,17 +36,14 @@ virtual task get_sample();
 	forever begin
 		@(posedge vif.done) begin
 		tx = item_base::type_id::create("tx");
+		if(get_full_name() == "uvm_test_top.envt.agt_0.mon") tx.mon_num = 0;
+		else if(get_full_name() == "uvm_test_top.envt.agt_1.mon") tx.mon_num = 1;
+		else if(get_full_name() == "uvm_test_top.envt.agt_2.mon") tx.mon_num = 2;
+		else if(get_full_name() == "uvm_test_top.envt.agt_3.mon") tx.mon_num = 3;
+		else tx.mon_num = 99;
 		vif.sample_instruction(tx);
 //		`uvm_info("TX_IN", tx.convert2string(), UVM_DEBUG)
 	
-		//load hack, fix later!
-		// if(tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load) begin
-		// 	tx.result = 1'b1;
-		// 	tx.A = 1'b0;
-		// 	tx.B = 1'b0;
-		// end
-			
-//		dut_in_tx_port.write(tx);
 		dut_out_tx_port.write(tx);
 		end
 	end

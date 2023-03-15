@@ -21,6 +21,9 @@
         byte B;
 	logic [15:0] result;	
 
+	int mon_num;
+
+
 	//the following virtual functions must be overwritten from uvm_sequence_items and do what their names suggest
 	virtual function void do_copy(uvm_object rhs);
 		item_base tx_rhs;
