@@ -29,13 +29,12 @@ class sequence_load extends sequence_base;// #(item_base);
 	task body();
 		
 		load = item_load::type_id::create("load");
-        store = item_store::type_id::create("store");
+        	store = item_store::type_id::create("store");
 		alu = item_alu::type_id::create("alu");
 		
 		//all_load_ops();
-		load_store_load(3);
-		//all_load_store();
-		
+	//	load_store_load(3);
+		all_load_store();
 	
 	endtask: body
 
@@ -68,6 +67,12 @@ class sequence_load extends sequence_base;// #(item_base);
 		//4 procs load from the same memory location that was just stored
 		load_addr(addr);
       
+	endtask
+
+	task specific_addr();
+		logic [13:0] addr = 1'b1;
+		load_addr(addr);
+		store_data(addr);
 	endtask
 
 

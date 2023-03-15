@@ -11,7 +11,8 @@
 class coverage_collector extends uvm_subscriber #(item_base);
 	`uvm_component_utils(coverage_collector)
 
-	item_base tx, pv;
+	item_base tx, pv_0, pv_1, pv_2, pv_3;
+	int start = 0;
 	covergroup cg; 
 		ops: coverpoint tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] { 
 			bins b_nop = {op_nop};
@@ -59,62 +60,100 @@ class coverage_collector extends uvm_subscriber #(item_base);
 		io: coverpoint tx.inst[14:1] {
 			bins b_addrs[] = {[0:$]};
 		}
-
-		mem_prio_0: coverpoint((pv.mon_num == 0 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
-				   &&   tx.mon_num != 0 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
-				   &&   tx.inst[14:1] == pv.inst[14:1])
-				   ||  (pv.mon_num == 0 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
-				   &&   tx.mon_num != 0 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
-				   &&   tx.inst[14:1] == pv.inst[14:1])){
-			bins caught = {'h1};	
-      			ignore_bins ignore = {'h0};		
-		}	
-
-		mem_prio_1: coverpoint((pv.mon_num == 1 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
-				   &&   tx.mon_num != 1 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
-				   &&   tx.inst[14:1] == pv.inst[14:1])
-				   ||  (pv.mon_num == 1 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
-				   &&   tx.mon_num != 1 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
-				   &&   tx.inst[14:1] == pv.inst[14:1])){
-			bins caught = {'h1};	
-      			ignore_bins ignore = {'h0};		
-		}
-
-		mem_prio_2: coverpoint((pv.mon_num == 2 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
-				   &&   tx.mon_num != 2 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
-				   &&   tx.inst[14:1] == pv.inst[14:1])
-				   ||  (pv.mon_num == 2 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
-				   &&   tx.mon_num != 2 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
-				   &&   tx.inst[14:1] == pv.inst[14:1])){
-			bins caught = {'h1};	
-      			ignore_bins ignore = {'h0};		
-		}	
-
-		mem_prio_3: coverpoint((pv.mon_num == 3 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load 
-				   &&   tx.mon_num != 3 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
-				   &&   tx.inst[14:1] == pv.inst[14:1])
-				   ||  (pv.mon_num == 3 && pv.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store 
-				   &&   tx.mon_num != 3 && tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_store
-				   &&   tx.inst[14:1] == pv.inst[14:1])){
-			bins caught = {'h1};	
-      			ignore_bins ignore = {'h0};		
-		}	
 		
+		mem_prio_0: coverpoint(
+				          (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_1.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_1.inst[14:1]) 
+				    
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_2.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_2.inst[14:1]) 
+				      
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_3.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_3.inst[14:1]) 
+				       ){
+				       bins caught = {1'h1};
+				       ignore_bins ignore = {1'h0};
+	       }
+
+		mem_prio_1: coverpoint(
+				          (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_0.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_0.inst[14:1]) 
+				    
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_2.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_2.inst[14:1]) 
+				      
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_3.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_3.inst[14:1]) 
+				       ){
+				       bins caught = {1'h1};
+				       ignore_bins ignore = {1'h0};
+	       }
+
+		mem_prio_2: coverpoint(
+				          (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_0.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_0.inst[14:1]) 
+				    
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_1.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_1.inst[14:1]) 
+				      
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_3.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_3.inst[14:1]) 
+				       ){
+				       bins caught = {1'h1};
+				       ignore_bins ignore = {1'h0};
+	       }
+
+		mem_prio_3: coverpoint(
+				          (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_0.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_0.inst[14:1]) 
+				    
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_1.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_1.inst[14:1]) 
+				      
+				      ||  (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && pv_2.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
+				      && tx.inst[14:1] == pv_2.inst[14:1]) 
+				       ){
+				       bins caught = {1'h1};
+				       ignore_bins ignore = {1'h0};
+	       }
+
+
 	endgroup : cg
 
 function new(string name, uvm_component parent);
 	super.new(name, parent);
 	cg = new();
+	pv_0 = item_base::type_id::create("pv_0");
+	pv_1 = item_base::type_id::create("pv_1");
+	pv_2 = item_base::type_id::create("pv_2");
+	pv_3 = item_base::type_id::create("pv_3");
 endfunction
 
 virtual function void write(input item_base t);
 	this.tx = t;
-	pv = tx;
+	case(tx.mon_num)
+		0: pv_0 = tx;
+		1: pv_1 = tx;
+		2: pv_2 = tx;
+		3: pv_3 = tx;
+	endcase
 	cg.sample();
 endfunction: write
 
 virtual function void report_phase(uvm_phase phase);
-	`uvm_info("COVERAGE", $sformatf("\n\nFUNCTIONAL COVERAGE: = %2.2f%%\n", cg.get_coverage()), UVM_NONE)
+	`uvm_info(get_type_name(), $sformatf("\n\nFUNCTIONAL COVERAGE: = %2.2f%%\n", cg.get_coverage()), UVM_NONE)
 endfunction: report_phase
 
 endclass : coverage_collector
