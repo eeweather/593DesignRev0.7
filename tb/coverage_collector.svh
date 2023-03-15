@@ -26,9 +26,9 @@ class coverage_collector extends uvm_subscriber #(item_base);
 			bins b_store = {op_store};
 			bins b_shl = {op_shl};
 			bins b_shr = {op_shr};
-			bins b_res1 = {op_res1};
-			bins b_res2 = {op_res2};
-			bins b_res3 = {op_res3};
+			ignore_bins b_res1 = {op_res1};
+			ignore_bins b_res2 = {op_res2};
+			ignore_bins b_res3 = {op_res3};
 			bins nop1 = {op_nop1};
 			}
 
@@ -100,65 +100,6 @@ class coverage_collector extends uvm_subscriber #(item_base);
       			ignore_bins ignore = {'h0};		
 		}	
 		
-/*      		op_00_FF:  cross a_leg, b_leg, all_ops {
-         		bins add_00 = binsof (all_ops) intersect {op_add} &&
-                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
-
-         		bins add_FF = binsof (all_ops) intersect {op_add} &&
-                       (binsof (a_leg.ones) || binsof (b_leg.ones));
-
-         		bins and_00 = binsof (all_ops) intersect {op_and} &&
-                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
-
-         		bins and_FF = binsof (all_ops) intersect {op_and} &&
-                       (binsof (a_leg.ones) || binsof (b_leg.ones));
-
-         		bins xor_00 = binsof (all_ops) intersect {op_xor} &&
-                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
-
-         		bins xor_FF = binsof (all_ops) intersect {op_xor} &&
-                       (binsof (a_leg.ones) || binsof (b_leg.ones));
-
-         		bins mul_00 = binsof (all_ops) intersect {op_mul} &&
-                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
-
-         		bins mul_FF = binsof (all_ops) intersect {op_mul} &&
-                       (binsof (a_leg.ones) || binsof (b_leg.ones));
-
-         		bins sp0_00 = binsof (all_ops) intersect {op_sp0} &&
-                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
-
-         		bins sp0_FF = binsof (all_ops) intersect {op_sp0} &&
-                       (binsof (a_leg.ones) || binsof (b_leg.ones));
-
-         		bins sp1_00 = binsof (all_ops) intersect {op_sp1} &&
-                        binsof (a_leg.zeros);
-
-         		bins sp1_FF = binsof (all_ops) intersect {op_sp1} &&
-                        binsof (a_leg.ones);
-
-         		bins sp2_00 = binsof (all_ops) intersect {op_sp2} &&
-                        binsof (a_leg.zeros);
-
-         		bins sp2_FF = binsof (all_ops) intersect {op_sp2} &&
-                        binsof (a_leg.ones);
-         		
-	       		bins shl_00 = binsof (all_ops) intersect {op_shl} &&
-                        binsof (a_leg.zeros);
-
-         		bins shl_FF = binsof (all_ops) intersect {op_shl} &&
-                        binsof (a_leg.ones);
-	       		
-			bins shr_00 = binsof (all_ops) intersect {op_shr} &&
-                        binsof (a_leg.zeros);
-
-         		bins shr_FF = binsof (all_ops) intersect {op_shr} &&
-                        binsof (a_leg.ones);
-		
-			ignore_bins others_only = binsof(a_leg.others) && binsof(b_leg.others);
-
-      }
-*/ 
 	endgroup : cg
 
 function new(string name, uvm_component parent);
