@@ -22,6 +22,8 @@ interface processor_if (input clk);
    wire         done;
    logic [15:0]  result;
    instruction_t  instr;
+   logic error;
+
    
    //mss
    logic [15:0] datatomem;
@@ -44,26 +46,29 @@ interface processor_if (input clk);
       @(negedge clk);
       reset_n = 1'b1;
    endtask : reset_alu
-   
+    
    task send_instruction (input instruction_t i_instr);
         @(negedge clk);
         wait(done || reset_start);
         wait(!done || reset_start);
 	instr = i_instr;
 	reset_start = 1'b0;
-
    endtask : send_instruction
+
 
 
     task sample_instruction(tinyalu_pkg::item_base tx);
 	if (reset_n) begin
 	   // wait(done || reset_start);
       //      wait(!done || reset_start);
+        if(error) $fatal("ERROR SIGNAL IS HIGH, CHECK FOR RESERVE OPCODE");
+        else begin
 	   tx.inst = instr;
 	   tx.A = A;
 	   tx.B = B;
       @(posedge clk);
 	   tx.result = result;
+        end
 	end
     endtask : sample_instruction
 
@@ -91,3 +96,4 @@ interface processor_if (input clk);
 
 
 endinterface : processor_if
+

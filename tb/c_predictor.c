@@ -16,7 +16,7 @@ intake actual instruction, actual a, actual b, return predicted result
 #define MEMSIZE 16*1024
 
 short c_predictor (svBitVecVal a, svBitVecVal b, svBitVecVal* instruction, svBitVecVal* resultInput, char* agentName, svBitVecVal* calltime){
-    short result = 1;
+    short result = 0;
     int inst = 0;
     int addr = 0;
     int i;
@@ -91,7 +91,7 @@ short c_predictor (svBitVecVal a, svBitVecVal b, svBitVecVal* instruction, svBit
             result = a>>3; 
             break;
         case 0b1000:
-            printf("load, agentnum: %d, mem[addr]: %x, addr: %d \n", agentNum, mem[addr], addr);
+            //printf("load, agentnum: %d, mem[addr]: %x, addr: %d \n", agentNum, mem[addr], addr);
             switch(agentNum){
                 case 3:
                 case 2:
@@ -101,7 +101,7 @@ short c_predictor (svBitVecVal a, svBitVecVal b, svBitVecVal* instruction, svBit
             break;
         case 0b1001:
             //printf("store, agentnum: %d, resultInput: %x, addr: %d, lastinst: %d,\n inst: %d, lastagent: %d, lastaddr: %d, owf: %d \n calltime: %d last call time: %d\n", agentNum, *resultInput, addr, lastinst, inst, lastagent, lastaddr, overWriteFlag, *calltime, lastcalltime);
-            printf("store, agentnum: %d, resultInput: %x, addr: %d \n", agentNum, *resultInput, addr);
+            //printf("store, agentnum: %d, resultInput: %x, addr: %d \n", agentNum, *resultInput, addr);
             if(!overWriteFlag){
             switch(agentNum){
                 case 3:

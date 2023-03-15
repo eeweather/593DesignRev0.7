@@ -25,7 +25,8 @@ import tinyalu_pkg::*;
 	   .write_req(vif_0.write_req),
 	   .addrout(vif_0.addrout),
 	   .mem_resp(vif_0.mem_resp),
-	   .cs(vif_0.cs)
+	   .cs(vif_0.cs),
+	   .error(vif_0.error)
    );
 
    
@@ -43,7 +44,8 @@ import tinyalu_pkg::*;
 	   .write_req(vif_1.write_req),
 	   .addrout(vif_1.addrout),
 	   .mem_resp(vif_1.mem_resp),
-	   .cs(vif_1.cs)
+	   .cs(vif_1.cs),
+	   .error(vif_1.error)
    );
    
    alumifiu_dut PROC2 (
@@ -60,7 +62,8 @@ import tinyalu_pkg::*;
 	   .write_req(vif_2.write_req),
 	   .addrout(vif_2.addrout),
 	   .mem_resp(vif_2.mem_resp),
-	   .cs(vif_2.cs)
+	   .cs(vif_2.cs),
+	   .error(vif_2.error)
    );
    
    alumifiu_dut PROC3 (
@@ -77,7 +80,8 @@ import tinyalu_pkg::*;
 	   .write_req(vif_3.write_req),
 	   .addrout(vif_3.addrout),
 	   .mem_resp(vif_3.mem_resp),
-	   .cs(vif_3.cs)
+	   .cs(vif_3.cs),
+	   .error(vif_3.error)
    );
 
     memory_subsystem MSS (
@@ -116,7 +120,7 @@ import tinyalu_pkg::*;
 
 
    initial begin
-       	   uvm_config_db #(virtual processor_if)::set(null, "", "vif_0", vif_0);
+       	uvm_config_db #(virtual processor_if)::set(null, "", "vif_0", vif_0);
 	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_1", vif_1);
 	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_2", vif_2);
 	   uvm_config_db #(virtual processor_if)::set(null, "*", "vif_3", vif_3);

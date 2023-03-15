@@ -43,6 +43,10 @@ virtual function void write(input item_base t);
 		//only way to check store is with a load, so dont trigger mismatch
 		predicted = t;
 	end 
+	else if(t.inst[18:15] == op_nop || t.inst[18:15] == op_nop1 || t.inst[18:15] == op_res1 || t.inst[18:15] == op_res2 || t.inst[18:15] == op_res3) begin
+	    //nothing happens on nop, nothing to check
+		predicted = t;
+	end
 	else predicted.result = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
 
 

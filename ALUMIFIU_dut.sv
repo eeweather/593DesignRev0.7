@@ -14,22 +14,25 @@ module alumifiu_dut (
     output logic read_req,
     output logic write_req,
     output logic [13:0] addrout,
-    input logic mem_resp
+    input logic mem_resp,
+    output logic error
 );
 
 
     logic [7:0] A_in, B_in;
     alu_opcode_t  op;
-    logic start, alu_done, mem_done, error, preload;
+    logic start, alu_done, mem_done, preload;
     logic [15:0] alu_result;
     reg store, load;
     reg [15:0] result_in;
     reg [13:0] addr;
     reg [7:0] datatoinst;
 
+
 assign A = A_in;
 assign B = B_in;
 assign result = result_in;
+
 
  ALU593 ALU (
     .clk(clk), 
