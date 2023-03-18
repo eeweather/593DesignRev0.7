@@ -43,6 +43,12 @@ package tinyalu_pkg;
 	typedef class env;
 	typedef class evaluator;
 	typedef class item_base;
+	typedef class item_alu;
+	typedef class item_multi;
+	typedef class item_single;
+	typedef class item_load;
+	typedef class item_store;
+	typedef class item_valid;
 	typedef class monitor;
 	typedef class predictor;
 	typedef class scoreboard;
@@ -52,14 +58,9 @@ package tinyalu_pkg;
 	typedef class sequence_add;
 	typedef class test_add;
 	typedef class test_load;
-	typedef class item_alu;
-	typedef class item_multi;
-	typedef class item_single;
-	typedef class item_load;
-	typedef class item_store;
-	typedef class item_valid;
 	typedef class sequence_alu;
 	typedef class test_alu;
+	typedef class test_full;
 
 //	`include "tb/agent_config.svh"
 	`include "tb/agent.svh"
@@ -77,6 +78,7 @@ package tinyalu_pkg;
 	`include "tb/test_base.svh"
 	`include "tb/test_alu.svh"
 	`include "tb/test_load.svh"
+	`include "tb/test_full.svh"
 	`include "tb/sequence_alu.svh"
 	`include "tb/test_add.svh"
 	`include "tb/sequence_add.svh"

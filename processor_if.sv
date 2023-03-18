@@ -66,6 +66,7 @@ interface processor_if (input clk);
 	   tx.inst = instr;
 	   tx.A = A;
 	   tx.B = B;
+      tx.mem_data = (instr[18:15]==4'b1000)? datafrommem: datatomem;
       @(posedge clk);
 	   tx.result = result;
         end

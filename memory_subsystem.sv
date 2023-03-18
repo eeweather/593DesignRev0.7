@@ -64,7 +64,7 @@ assign mem_read_data = (!reset_n)? '0: (mem_read_req)? memory[addr]: '0;
 //priority arbitration
 //always @(posedge clk) begin
 always_comb begin
-   if(current_proc_req[0]) begin
+   if(current_proc_req[0] && mem_read_req_0) begin
       addr = addr_0;
       grant = 0;
       mem_write_data = mem_write_data_0;
@@ -72,7 +72,7 @@ always_comb begin
       //mem_write_req = mem_write_req_0;
       if(mem_write_req_0) memory[addr] = mem_write_data;
    end
-   else if(current_proc_req[1]) begin
+   else if(current_proc_req[1] && mem_read_req_1) begin
       addr = addr_1;
       grant = 1;
       mem_write_data = mem_write_data_1;
@@ -80,7 +80,7 @@ always_comb begin
       //mem_write_req = mem_write_req_1;
       if(mem_write_req_1) memory[addr] = mem_write_data;
    end
-   else if(current_proc_req[2]) begin
+   else if(current_proc_req[2] && mem_read_req_2) begin
 	addr = addr_2;
       grant = 2;
       mem_write_data = mem_write_data_2;
@@ -88,7 +88,39 @@ always_comb begin
 	//mem_write_req = mem_write_req_2;
       if(mem_write_req_2) memory[addr] = mem_write_data;
    end
-   else if(current_proc_req[3]) begin
+   else if(current_proc_req[3] && mem_read_req_3) begin
+      addr = addr_3;
+      grant = 3;
+      mem_write_data = mem_write_data_3;
+      mem_read_req = mem_read_req_3;
+      //mem_write_req = mem_write_req_3;
+      if(mem_write_req_3) memory[addr] = mem_write_data;
+   end
+   else if(current_proc_req[0] && mem_write_req_0) begin
+      addr = addr_0;
+      grant = 0;
+      mem_write_data = mem_write_data_0;
+      mem_read_req = mem_read_req_0;
+      //mem_write_req = mem_write_req_0;
+      if(mem_write_req_0) memory[addr] = mem_write_data;
+   end
+   else if(current_proc_req[1] && mem_write_req_1) begin
+      addr = addr_1;
+      grant = 1;
+      mem_write_data = mem_write_data_1;
+      mem_read_req = mem_read_req_1;
+      //mem_write_req = mem_write_req_1;
+      if(mem_write_req_1) memory[addr] = mem_write_data;
+   end
+   else if(current_proc_req[2] && mem_write_req_2) begin
+	addr = addr_2;
+      grant = 2;
+      mem_write_data = mem_write_data_2;
+	mem_read_req = mem_read_req_2;
+	//mem_write_req = mem_write_req_2;
+      if(mem_write_req_2) memory[addr] = mem_write_data;
+   end
+   else if(current_proc_req[3] && mem_write_req_3) begin
       addr = addr_3;
       grant = 3;
       mem_write_data = mem_write_data_3;

@@ -54,7 +54,7 @@ class evaluator extends uvm_component;
 			//if they match, party, if not, crash and burn
 			
 				if(actual_tx.compare(expected_tx)) begin
-				`uvm_info(get_type_name(), $sformatf("MATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result), UVM_DEBUG)
+				//`uvm_info(get_type_name(), $sformatf("MATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result), UVM_DEBUG)
 					match++;
 				end
 

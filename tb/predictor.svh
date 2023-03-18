@@ -1,7 +1,7 @@
 /*UVM predictor (predictor.svh)
  */
 
-import "DPI-C" function shortint c_predictor(byte unsigned a, byte unsigned b, instruction_t instruction, logic [15:0] resultInput, string agentName, logic [15:0] calltime);
+import "DPI-C" function shortint c_predictor(byte unsigned a, byte unsigned b, instruction_t instruction, logic [15:0] resultInput, logic [15:0] mem_data);
 
 
 class predictor extends uvm_subscriber #(item_base);
@@ -16,6 +16,7 @@ endfunction
 
 
 uvm_analysis_port #(item_base) expected_port;
+int resultpre;
 
 
 virtual function void build_phase(uvm_phase phase);
@@ -30,24 +31,29 @@ virtual function void write(input item_base t);
 	predicted.inst = t.inst;
 	predicted.A = t.A;
 	predicted.B = t.B;
+	predicted.mem_data = t.mem_data;
+	//predicted.result = t.result;
 
     $timeformat(-9, 3, "", 4);
 	if(t.inst[18:15]==op_load) begin
-	    if(t.inst[0]==0) predicted.A = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
-		else predicted.B = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
+	    // if(t.inst[0]==0) predicted.A = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime, t.mem_time);
+		// else predicted.B = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime,  t.mem_time);
+		predicted.mem_data= c_predictor(t.A, t.B, t.inst, t.result, t.mem_data);
 		predicted.result = t.result;
+	
 	end 
 	else if(t.inst[18:15]==op_store) begin
 		//need to call function so store is logged in tb memory
-		predicted.result = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
+		resultpre = c_predictor(t.A, t.B, t.inst, t.result, t.mem_data);
+		//predicted.result = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime, t.mem_time, t.mem_data);
 		//only way to check store is with a load, so dont trigger mismatch
-		predicted = t;
+		if(resultpre != -1) predicted = t;
 	end 
 	else if(t.inst[18:15] == op_nop || t.inst[18:15] == op_nop1 || t.inst[18:15] == op_res1 || t.inst[18:15] == op_res2 || t.inst[18:15] == op_res3) begin
 	    //nothing happens on nop, nothing to check
 		predicted = t;
 	end
-	else predicted.result = c_predictor(t.A, t.B, t.inst, t.result, get_full_name, $realtime);
+	else predicted.result = c_predictor(t.A, t.B, t.inst, t.result, t.mem_data);
 
 
 /*
