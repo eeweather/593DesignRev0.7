@@ -1,3 +1,18 @@
+// ECE593 Project 2023wi
+//  Victoria Van Gaasbeck <vvan@pdx.edu>
+//  Julia Filipchuk <bfilipc2@pdx.edu>
+//  Emily Weatherford <ew22@pdx.edu>
+//  Daniel Keller <dk27@pdx.edu>
+//
+//
+// Memory subystem, at write request or ready request, reads in data or write out
+// data from correct processor. Processors are prioritized by number, 0 first, 3 last.
+// Loads are processed before stores
+// All actions take a max of two cycles, allowing all requests to process in the 
+// 10 cycle mem time.
+// grant given to processor at its turn.
+//
+
 module memory_subsystem
 #(
    parameter MEM_SIZE = 16*1024,  // 16KB
@@ -49,27 +64,13 @@ reg [3:0] requestor=0, grant;
 assign current_proc_req = {processor_req_3, processor_req_2, processor_req_1, processor_req_0};
 
 assign mem_read_data = (!reset_n)? '0: (mem_read_req)? memory[addr]: '0;
-// assign mem_write_data = (!reset_n)? '0: 
-// (grant == 0)? mem_write_data_0: 
-// (grant == 1)? mem_write_data_1:
-// (grant == 2)? mem_write_data_2:
-// (grant == 3)? mem_write_data_3: '0;
 
-
-
-//assign {processor_resp_3, processor_resp_2, processor_resp_1, processor_resp_0} = current_proc_resp;
-
-//arbitration interstitial signals
-
-//priority arbitration
-//always @(posedge clk) begin
 always_comb begin
    if(current_proc_req[0] && mem_read_req_0) begin
       addr = addr_0;
       grant = 0;
       mem_write_data = mem_write_data_0;
       mem_read_req = mem_read_req_0;
-      //mem_write_req = mem_write_req_0;
       if(mem_write_req_0) memory[addr] = mem_write_data;
    end
    else if(current_proc_req[1] && mem_read_req_1) begin
@@ -77,7 +78,6 @@ always_comb begin
       grant = 1;
       mem_write_data = mem_write_data_1;
       mem_read_req = mem_read_req_1;
-      //mem_write_req = mem_write_req_1;
       if(mem_write_req_1) memory[addr] = mem_write_data;
    end
    else if(current_proc_req[2] && mem_read_req_2) begin
@@ -85,7 +85,6 @@ always_comb begin
       grant = 2;
       mem_write_data = mem_write_data_2;
 	mem_read_req = mem_read_req_2;
-	//mem_write_req = mem_write_req_2;
       if(mem_write_req_2) memory[addr] = mem_write_data;
    end
    else if(current_proc_req[3] && mem_read_req_3) begin
@@ -93,7 +92,6 @@ always_comb begin
       grant = 3;
       mem_write_data = mem_write_data_3;
       mem_read_req = mem_read_req_3;
-      //mem_write_req = mem_write_req_3;
       if(mem_write_req_3) memory[addr] = mem_write_data;
    end
    else if(current_proc_req[0] && mem_write_req_0) begin
@@ -101,7 +99,6 @@ always_comb begin
       grant = 0;
       mem_write_data = mem_write_data_0;
       mem_read_req = mem_read_req_0;
-      //mem_write_req = mem_write_req_0;
       if(mem_write_req_0) memory[addr] = mem_write_data;
    end
    else if(current_proc_req[1] && mem_write_req_1) begin
@@ -109,7 +106,6 @@ always_comb begin
       grant = 1;
       mem_write_data = mem_write_data_1;
       mem_read_req = mem_read_req_1;
-      //mem_write_req = mem_write_req_1;
       if(mem_write_req_1) memory[addr] = mem_write_data;
    end
    else if(current_proc_req[2] && mem_write_req_2) begin
@@ -117,7 +113,6 @@ always_comb begin
       grant = 2;
       mem_write_data = mem_write_data_2;
 	mem_read_req = mem_read_req_2;
-	//mem_write_req = mem_write_req_2;
       if(mem_write_req_2) memory[addr] = mem_write_data;
    end
    else if(current_proc_req[3] && mem_write_req_3) begin
@@ -125,7 +120,6 @@ always_comb begin
       grant = 3;
       mem_write_data = mem_write_data_3;
       mem_read_req = mem_read_req_3;
-      //mem_write_req = mem_write_req_3;
       if(mem_write_req_3) memory[addr] = mem_write_data;
    end
    else begin
@@ -140,36 +134,28 @@ end
 always @(negedge clk) begin
     case (grant)
 	      0: begin
-		//mem_write_data = mem_write_data_0;
 		mem_read_data_0 = mem_read_data;
-            //@(posedge clk);
             processor_resp_0 <= 1;
             processor_resp_1 <= 0;
             processor_resp_2 <= 0;
             processor_resp_3 <= 0;
 	      end
 	      1: begin
-		//mem_write_data = mem_write_data_1;
 		mem_read_data_1 = mem_read_data;
-            //@(posedge clk);
             processor_resp_1 <= 1;
             processor_resp_0 <= 0;
             processor_resp_2 <= 0;
             processor_resp_3 <= 0;
 	      end
 	      2: begin
-		//mem_write_data = mem_write_data_2;
 		mem_read_data_2 = mem_read_data;
-            //@(posedge clk);
             processor_resp_2 <= 1;
             processor_resp_0 <= 0;
             processor_resp_1 <= 0;
             processor_resp_3 <= 0;
 	      end
 	      3: begin
-		//mem_write_data = mem_write_data_3;
 		mem_read_data_3 = mem_read_data;
-            //@(posedge clk);
             processor_resp_3 <= 1;
             processor_resp_0 <= 0;
             processor_resp_1 <= 0;
@@ -184,35 +170,8 @@ always @(negedge clk) begin
       endcase
 end
 
-//memory write/read functionality
 always @(posedge clk) begin
-   //reset
    if (!reset_n) initialize_memory();
-   //write
-   else begin
-      // case (grant)
-      //       0: mem_write_data = mem_write_data_0;
-      //       1: mem_write_data = mem_write_data_1;
-      //       2: mem_write_data = mem_write_data_2;
-      //       3: mem_write_data = mem_write_data_3;
-      //       4: mem_write_data = 0;
-      // endcase
-
-      if (mem_write_req) begin
-         //memory[addr] <= mem_write_data;
-         memory_coherency[addr] <= M;
-   //     current_proc_resp <= current_proc_req;
-         //UNIT TEST DEBUG MESSAGE VV
-         //$display("write: memory[%0d] = %d \tmem_write_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_write_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
-      //read
-      end else if (mem_read_req) begin
-         //TODO: determine what to do for reads of M memory and when to update
-            //mem_read_data <= memory[addr];
-   //	      current_proc_resp <= current_proc_req;
-      //UNIT TEST DEBUG MESSAGE VV 
-      //$display("read: memory[%0d] = %d \tmem_read_data = %d \tmemory_coherency[%0d] = %b \t requestor = %b grant = %b \tcurrent_proc_req = %b", addr, memory[addr], mem_read_data, addr, memory_coherency[addr], requestor, grant, current_proc_req);
-      end
-   end
 end
 
 task initialize_memory();

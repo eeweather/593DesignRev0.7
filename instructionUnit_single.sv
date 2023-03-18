@@ -4,7 +4,9 @@
 //  Emily Weatherford <ew22@pdx.edu>
 //  Daniel Keller <dk27@pdx.edu>
 //
-// Instruction Unit
+// Instruction Unit, intakes next instruct from proc interface and sends to 
+// correct unit, after  unit finishes it task, stores result, or passes data 
+// to memory, or next unit
 //
 
 
@@ -49,7 +51,6 @@ module instructionUnit (
         decode_addr = instr[14:1];         //get address
         loadReg = instr[0];         //get reg A or B
         done = mem_done || alu_done;
-        //result = alu_result;
  	if(alu_result != 1'bx) last_result = alu_result;
     else if (alu_result == 4'b0000) last_result = alu_result;
     else if (alu_result == 4'b0001) last_result = alu_result;
@@ -74,34 +75,29 @@ module instructionUnit (
             end
         else if (alu_done)  begin //alu done signal recieved, send next op
             start = 1'b0;       //assert ALU start signal
-            regA = regA;          //maintain register values?
+            regA = regA;          //maintain register values
             regB = regB;
         end
         else begin
                 op = opcode;
-
         end
-//                A = regA;
-//                B = regB;
-
-//ew 3/8
 
         if (opcode == op_load) begin   //load operation
-                load = 1;  
-                store = 1'b0;                 //assert load signal for mem IF
-                addr = decode_addr; 
-                start = 0;                  //supply address to mem IF
+                load = 1;              //assert load signal for mem IF
+                store = 1'b0;                 
+                addr = decode_addr;          //supply address to mem IF
+                start = 0;                  
 		    end
         else if (opcode == op_store) begin  
-            start = 0;                  //supply address to mem IF
-            store = 1'b1;  
-            load = 0;                  //assert store signal for mem IF
+            start = 0;                  //deassert start
+            store = 1'b1;              //assert store signal for mem IF
+            load = 0;                  
             addr = decode_addr;                   //supply address to mem IF
         end
          else begin
             if(!alu_done) start = 1;
-            load = 0;                  //assert store signal for mem IF
-            store = 1'b0;                 //assert load signal for mem IF
+            load = 0;                  //assert deassert signal for mem IF
+            store = 1'b0;                 //assert store signal for mem IF
         end
     end 
 

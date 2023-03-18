@@ -1,3 +1,13 @@
+/*  ECE593 Project 2023wi
+*   Victoria Van Gaasbeck <vvan@pdx.edu>
+*   Julia Filipchuk <bfilipc2@pdx.edu>
+*   Emily Weatherford <ew22@pdx.edu>
+*   Daniel Keller <dk27@pdx.edu>
+*
+*   ALU593, ALU based of Ray Salemi's ALU from The UVM Primer,
+*   adapeted for PSU ECE 593
+*/
+
 import tinyalu_pkg::*;
 
 module ALU593 (
@@ -66,7 +76,6 @@ module single_cycle (input [7:0] A,
 				op_xor : result <= A ^ B;
 				op_shl : result <= A << 3;
 				op_shr : result <= A >> 3;
-//				op_nop : //do nothing
 				default : result <= 'x;
 			endcase // case (op)
 	end
@@ -75,7 +84,6 @@ module single_cycle (input [7:0] A,
     	if (!reset_n)
        		done <= 0;
      	else
-      		// done =  ((start == 1'b1) && (op != op_nop) && (op != op_nop1));
       		done =  ((start == 1'b1));
 	end
 endmodule : single_cycle

@@ -2,7 +2,6 @@ import tinyalu_pkg::*;
 
 module alu_top();
 
-
    byte         unsigned        A;
    byte         unsigned        B;
    bit          clk;
@@ -16,7 +15,6 @@ module alu_top();
 
    assign op = op_set;
 
- 
    ALU593 DUT (.clk(clk), .reset_n(reset_n), .A(A), .B(B), .op(op), .start(start), .done(done), .result(result), .error(error));
 
 

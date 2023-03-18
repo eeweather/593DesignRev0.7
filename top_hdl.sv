@@ -1,3 +1,13 @@
+/*  ECE593 Project 2023wi
+*   Victoria Van Gaasbeck <vvan@pdx.edu>
+*   Julia Filipchuk <bfilipc2@pdx.edu>
+*   Emily Weatherford <ew22@pdx.edu>
+*   Daniel Keller <dk27@pdx.edu>
+*
+*   top hdl, top level used to connect four processors to single memory subsystem
+*/
+
+
 module top_hdl;
 import uvm_pkg::*;
 import tinyalu_pkg::*;

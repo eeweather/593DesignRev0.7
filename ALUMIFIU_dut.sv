@@ -1,6 +1,15 @@
+/*  ECE593 Project 2023wi
+*   Victoria Van Gaasbeck <vvan@pdx.edu>
+*   Julia Filipchuk <bfilipc2@pdx.edu>
+*   Emily Weatherford <ew22@pdx.edu>
+*   Daniel Keller <dk27@pdx.edu>
+*
+*   alumifiu_dut, top level used to cluster test a single processor, 
+*   then repurposed to be a reusable processor for multiproc top
+*/
+
+
 import tinyalu_pkg::*;
-
-
 
 module alumifiu_dut ( 
     input instruction_t instr,

@@ -1,26 +1,9 @@
 /*
---Inputs:
-o Reset
-o Clk
-o Result[15:0];
-o Store;
-o Load;
-o Addr[13:0]
-o Mem_resp;
--- Inout:
-o DATA[15:0]; // Writes use 15:0/ reads use 7:0
--- Output:
-o Done; NOT on drawing
-o Data[7:0]
-o Write_req; to SMM
-o READ_REQ; to SMM
-o ADDROUT[13:0]; to SMM 
-
-Purpose of Module
-
-Consists of a memory interface that is connected to a system memory. 
-o  The processor should fetch data from the system memory of size 16 KBytes. 
-o  The data size should be 2 Bytes. Max operand size is 8 bits. 
+// ECE593 Project 2023wi
+//  Victoria Van Gaasbeck <vvan@pdx.edu>
+//  Julia Filipchuk <bfilipc2@pdx.edu>
+//  Emily Weatherford <ew22@pdx.edu>
+//  Daniel Keller <dk27@pdx.edu>
 
 Memory Interface Unit: 
 o  16 KBytes system memory interface 
@@ -52,47 +35,36 @@ logic [3:0] counter;
 
 assign cs = (write_req || read_req);
 assign addrout = (!reset_n)? 0 : addr;
+
+//handle store data
 assign datatomem = (store)? result: 0;
 
-
-//assign datatofrommem = (!reset_n)? '0 : 16'bz;
-//assign datatofrommem = (store)? result: 16'hz;
 
 always @(posedge clk) begin
     //if reset reset
     if (!reset_n) begin
-        //TODO:  what needs to be reset
         mem_done<=0;
-        //addrout<= 0;
         write_req <= 0;
         read_req <=0;
         datatoinst <= 0;
         counter <= 0;
-        //datatomem <= 0;
     end
-    // load signal comes in
+    // load signal comes in, set counter
     else if (load) begin
 	    mem_done <=0;
 	if (counter>9) begin
 	    counter<=0;
         mem_done <=1; 
 	end
-        // read addr, put on addrout
-	//mem_done <=0;
-        //addrout<=addr;
-        //set read_req
         counter++;
-	
         if (mem_resp) begin
             //when mem_resp goes high, put data on datatofrommem onto datatoinst
-            // JBFIL: Add read of either byte based on lower address bits.
-            //datatoinst <= addr[0] ? datafrommem[15:8] : datafrommem[7:0];
             datatoinst <= datafrommem[7:0];
-            //end with read_req and raise mem_done
+            //end with read_req low
             read_req <= 0;
         end
     end
-    // store signal comes in
+    // store signal comes in, set counter
     else if (store) begin
 	    mem_done<=0;
 	if (counter>9) begin
@@ -100,24 +72,13 @@ always @(posedge clk) begin
         mem_done<=1;
 	end
         counter++;
-        // read addr onto addrout
-        // put result onto datatofrommem
-        //set write_req
-	//mem_done <=0;
-        //addrout<=addr;
-        //datatomem<=result;
-	// if (counter == 1) begin
-    //     write_req<=1;
-	// end
-        // when mem_resp goes high raise mem_done and lower all else
+        // when mem_resp set write req low, store data handled in assign above
         if (mem_resp) begin
             write_req<=0;
         end
     end 
     else begin
         mem_done<=0;
-        //write_req<=0;
-        //read_req<=0;
     end     
 end
 
@@ -133,7 +94,5 @@ always @(negedge clk) begin
 	end    
     end
 end
-
-
 
 endmodule : memInerf
