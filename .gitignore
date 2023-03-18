@@ -8,7 +8,7 @@
 _info
 _vmake
 *.tfdb
-*.vcd
+
 *.visc*
 transcript
 *.ucdb
