@@ -4,9 +4,8 @@
 *   Emily Weatherford <ew22@pdx.edu>
 *   Daniel Keller <dk27@pdx.edu>
 *  
-*  C predictor function for final project
-needs to:
-intake actual instruction, actual a, actual b, return predicted result 
+*  C predictor function for final project needs to:
+*  intake actual instruction, actual a, actual b, return predicted result 
 */
 #include <stdio.h>
 #include <ctype.h>

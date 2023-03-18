@@ -1,5 +1,10 @@
-/* 
-* class for an ALU type ssequence item
+/*  ECE593 Project 2023wi
+*   Victoria Van Gaasbeck <vvan@pdx.edu>
+*   Julia Filipchuk <bfilipc2@pdx.edu>
+*   Emily Weatherford <ew22@pdx.edu>
+*   Daniel Keller <dk27@pdx.edu>
+*
+*   item store constrains to store operation with valid address
 */
 
 class item_store extends item_base;

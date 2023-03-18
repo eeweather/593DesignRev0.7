@@ -15,10 +15,9 @@
 		super.new(name);
 	endfunction
 
-	//a randomized 19 bit instruction
 	rand instruction_t inst;
- 	byte A; //;
-    byte B;
+ 	byte A;
+        byte B;
 	logic [15:0] result;	
 	int mem_data;
 

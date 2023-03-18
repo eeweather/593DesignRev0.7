@@ -7,7 +7,7 @@
 *   ALU sequence for generating ALU sequences 
 */
 
-class sequence_add extends sequence_base;// #(item_base);
+class sequence_add extends sequence_base;
 	`uvm_object_utils(sequence_add)
 
     item_base tx;

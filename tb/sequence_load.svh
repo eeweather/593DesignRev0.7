@@ -7,7 +7,7 @@
 *   Load sequence 
 */
 
-class sequence_load extends sequence_base;// #(item_base);
+class sequence_load extends sequence_base;
 	`uvm_object_utils(sequence_load)
 
    	item_base tx;	
@@ -32,8 +32,6 @@ class sequence_load extends sequence_base;// #(item_base);
         	store = item_store::type_id::create("store");
 		alu = item_alu::type_id::create("alu");
 		
-		//all_load_ops();
-	//	load_store_load(3);
 		all_load_store();
 	
 	endtask: body

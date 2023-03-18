@@ -16,12 +16,9 @@ function new(string name, uvm_component parent);
 	super.new(name, parent);
 endfunction
 
-//uvm_analysis_port #(item_base) dut_in_tx_port;
 uvm_analysis_port #(item_base) dut_out_tx_port;
 
 uvm_active_passive_enum  	active			= UVM_ACTIVE;
-bit			 	enable_coverage		= 1;
-int			 	num_items		= 1;
 virtual processor_if	 	vif;
 
 uvm_sequencer #(item_base) sqr;
@@ -30,8 +27,7 @@ monitor mon;
 
 virtual function void build_phase(uvm_phase phase);
 
-	//create ports for interfacing with DUT
-//	dut_in_tx_port = new("dut_in_tx_port", this);
+	//create port for interfacing with DUT
 	dut_out_tx_port = new("dut_out_tx_port", this);
 	
 	mon = monitor::type_id::create("mon", this);
@@ -46,16 +42,12 @@ endfunction: build_phase
 
 virtual function void connect_phase(uvm_phase phase);
 
-	//connect the DUT interfacing ports to the monitor
-//	mon.dut_in_tx_port.connect(dut_in_tx_port);
+	//connect the DUT interfacing port to the monitor
 	mon.dut_out_tx_port.connect(dut_out_tx_port);
 
 	//if active agent, connect driver to sequencer
 	if (active == UVM_ACTIVE) drv.seq_item_port.connect(sqr.seq_item_export);
 
-	//if you want coverage, better connect the monitor to the coverage_collector!
-//	if (enable_coverage) mon.dut_in_tx_port.connect(cov.analysis_export);
-
 endfunction: connect_phase
 
-endclass: agent //this line ends the agent clas
+endclass: agent //this line ends the agent class :)

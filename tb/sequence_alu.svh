@@ -4,10 +4,10 @@
 *   Emily Weatherford <ew22@pdx.edu>
 *   Daniel Keller <dk27@pdx.edu>
 *
-*   ALU sequence for generating ALU sequences 
+*   ALU sequence for generating ALU sequence items
 */
 
-class sequence_alu extends sequence_base;// #(item_base);
+class sequence_alu extends sequence_base;
 	`uvm_object_utils(sequence_alu)
 
     item_base tx;
@@ -38,9 +38,6 @@ class sequence_alu extends sequence_base;// #(item_base);
 			
 		all_alu_ops();
 		repeat(1000) get_alu_tx();
-		//repeat(500) multicycle_tx();
-	 	//repeat(500) singlecycle_tx;
-
 	
 	endtask: body
 

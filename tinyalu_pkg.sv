@@ -35,7 +35,6 @@ package tinyalu_pkg;
 
 	typedef logic [INSTR_WIDTH-1:0] instruction_t;
 
-//	typedef class agent_config;
 	typedef class agent;
 	typedef class coverage_collector;
 	typedef class driver;
@@ -48,46 +47,43 @@ package tinyalu_pkg;
 	typedef class item_single;
 	typedef class item_load;
 	typedef class item_store;
-	typedef class item_valid;
 	typedef class monitor;
 	typedef class predictor;
 	typedef class scoreboard;
+	typedef class sequence_add;
+	typedef class sequence_alu;
 	typedef class sequence_base;
 	typedef class sequence_load;
-	typedef class test_base;
-	typedef class sequence_add;
 	typedef class test_add;
-	typedef class test_load;
-	typedef class sequence_alu;
 	typedef class test_alu;
+	typedef class test_base;
+	typedef class test_load;
 	typedef class test_full;
 
-//	`include "tb/agent_config.svh"
 	`include "tb/agent.svh"
 	`include "tb/coverage_collector.svh"
 	`include "tb/driver.svh"
 	`include "tb/env_config.svh"
 	`include "tb/env.svh"
 	`include "tb/evaluator.svh"
+	`include "tb/item_alu.svh"
 	`include "tb/item_base.svh"
+	`include "tb/item_load.svh"
+	`include "tb/item_multi.svh"
+	`include "tb/item_single.svh"
+	`include "tb/item_store.svh"
 	`include "tb/monitor.svh"
 	`include "tb/predictor.svh"
 	`include "tb/scoreboard.svh"
+	`include "tb/sequence_add.svh"
+	`include "tb/sequence_alu.svh"
 	`include "tb/sequence_base.svh"
 	`include "tb/sequence_load.svh"
-	`include "tb/test_base.svh"
+	`include "tb/test_add.svh"
 	`include "tb/test_alu.svh"
+	`include "tb/test_base.svh"
 	`include "tb/test_load.svh"
 	`include "tb/test_full.svh"
-	`include "tb/sequence_alu.svh"
-	`include "tb/test_add.svh"
-	`include "tb/sequence_add.svh"
-	`include "tb/item_alu.svh"
-	`include "tb/item_load.svh"
-	`include "tb/item_store.svh"
-	`include "tb/item_multi.svh"
-	`include "tb/item_single.svh"
-	`include "tb/item_valid.svh"
 
 
 

@@ -27,10 +27,10 @@ class sequence_base extends uvm_sequence #(item_base);
 	//the body task is where transactions (or sequence items, or whatever) are created, randomized, and started/finished
 	task body();
 
-		repeat(3) daniel_sucks();
+		repeat(3) basic_transfer();
 	endtask : body
 
-	task daniel_sucks();
+	task basic_transfer();
 		tx = item_base::type_id::create("tx");
 		alu = item_alu::type_id::create("alu");
 		load = item_load::type_id::create("load");
@@ -48,7 +48,7 @@ class sequence_base extends uvm_sequence #(item_base);
 		start_item(store);
 		finish_item(store);
 
-	endtask : daniel_sucks
+	endtask : basic_transfer
 
 	/**********************HELPER TASKS*******************************************************/
 	 

@@ -12,8 +12,8 @@ class coverage_collector extends uvm_subscriber #(item_base);
 	`uvm_component_utils(coverage_collector)
 
 	item_base tx, pv_0, pv_1, pv_2, pv_3;
-	int start = 0;
-	covergroup cg; 
+	covergroup cg;
+	        //coverpoint for opcodes	
 		ops: coverpoint tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] { 
 			bins b_nop = {op_nop};
 			bins b_add = {op_add};
@@ -32,7 +32,7 @@ class coverage_collector extends uvm_subscriber #(item_base);
 			ignore_bins b_res3 = {op_res3};
 			bins nop1 = {op_nop1};
 			}
-
+		//coverpoint for processors
 		procs: coverpoint tx.mon_num {
 			bins b_proc0 = {0};
 			bins b_proc1 = {1};
@@ -41,7 +41,7 @@ class coverage_collector extends uvm_subscriber #(item_base);
 			bins b_error = default;
 		}
 
-
+		//coverpoints for operand variety
       		ALU_A: coverpoint tx.A {
          		bins b_zero = {'h00};
 			bins b_single_dig = {['h01:'hF]};
@@ -56,11 +56,13 @@ class coverage_collector extends uvm_subscriber #(item_base);
 		        bins b_max = {'hFF};
       		}
 
-
+		//coverpoint for addresses
 		io: coverpoint tx.inst[14:1] {
 			bins b_addrs[] = {[0:$]};
 		}
 		
+		//four coverpoints for memory accesses to same addresses,
+		//ensuring memory priority is tested
 		mem_prio_0: coverpoint(
 				          (tx.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
 				      && pv_1.inst[INSTR_WIDTH-1:INSTR_WIDTH-4] == op_load
@@ -135,6 +137,7 @@ class coverage_collector extends uvm_subscriber #(item_base);
 function new(string name, uvm_component parent);
 	super.new(name, parent);
 	cg = new();
+	//create the pv items so no segfault when comparing first few
 	pv_0 = item_base::type_id::create("pv_0");
 	pv_1 = item_base::type_id::create("pv_1");
 	pv_2 = item_base::type_id::create("pv_2");
@@ -143,6 +146,7 @@ endfunction
 
 virtual function void write(input item_base t);
 	this.tx = t;
+	//set previous transactions for mem_prio coverpoints
 	case(tx.mon_num)
 		0: pv_0 = tx;
 		1: pv_1 = tx;

@@ -17,7 +17,6 @@ class scoreboard extends uvm_scoreboard;
 		super.new(name, parent);
 	endfunction
 
-//	uvm_analysis_export #(item_base) dut_in_export;
 	uvm_analysis_export #(item_base) dut_out_export_0;
 	uvm_analysis_export #(item_base) dut_out_export_1;
 	uvm_analysis_export #(item_base) dut_out_export_2;
@@ -28,7 +27,6 @@ class scoreboard extends uvm_scoreboard;
 
 	virtual function void build_phase(uvm_phase phase);
 		//create ports, predictor, and evaluator
-//		dut_in_export = new("dut_in_export", this);
 		dut_out_export_0 = new("dut_out_export_0", this);
 		dut_out_export_1 = new("dut_out_export_1", this);
 		dut_out_export_2 = new("dut_out_export_2", this);
@@ -45,7 +43,6 @@ class scoreboard extends uvm_scoreboard;
 
 	virtual function void connect_phase(uvm_phase phase);
 		//connect predictor to DUT interfacing input port and evaluator port
-//		dut_in_export.connect(pred.analysis_export);
 		dut_out_export_0.connect(pred_0.analysis_export);
 		dut_out_export_1.connect(pred_1.analysis_export);
 		dut_out_export_2.connect(pred_2.analysis_export);
@@ -54,6 +51,7 @@ class scoreboard extends uvm_scoreboard;
 		pred_1.expected_port.connect(eval_1.expected_export);
 		pred_2.expected_port.connect(eval_2.expected_export);
 		pred_3.expected_port.connect(eval_3.expected_export);
+		
 		//connect evaluator to DUT interfacing output port
 		dut_out_export_0.connect(eval_0.actual_export);
 		dut_out_export_1.connect(eval_1.actual_export);

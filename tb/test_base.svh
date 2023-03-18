@@ -4,8 +4,7 @@
 *   Emily Weatherford <ew22@pdx.edu>
 *   Daniel Keller <dk27@pdx.edu>
 *
-*   test_base creates the configs, sets the number of items to test, creates
-*   the environment, then creates and runs the base sequence.
+*   test_base creates the env config, the environment, then creates and runs the base sequence.
 */
 
 
@@ -42,6 +41,9 @@ virtual processor_if vif_0, vif_1, vif_2, vif_3;
 		uvm_factory factory;
 		factory = uvm_factory::get();
 
+		//assign the virtual interface gotten by the build phase to
+		//the monitors and drivers, future work would put this in
+		//a loop to allow for dynamically creating more agents
 		envt.agt_0.drv.vif = vif_0;
 		envt.agt_0.mon.vif = vif_0;
 		envt.agt_1.drv.vif = vif_1;

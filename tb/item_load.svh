@@ -1,7 +1,11 @@
-/* 
-* class for an ALU type ssequence item
+/*  ECE593 Project 2023wi
+*   Victoria Van Gaasbeck <vvan@pdx.edu>
+*   Julia Filipchuk <bfilipc2@pdx.edu>
+*   Emily Weatherford <ew22@pdx.edu>
+*   Daniel Keller <dk27@pdx.edu>
+*
+*   item load parameterized to load op and only valid addresses
 */
-
 class item_load extends item_base;
     `uvm_object_utils(item_load);
 

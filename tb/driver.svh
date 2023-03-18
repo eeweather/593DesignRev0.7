@@ -18,10 +18,6 @@ endfunction
 
 virtual processor_if vif;
 
-virtual function void build_phase(uvm_phase phase);
-//I build nothing and like it
-endfunction: build_phase
-
 virtual task run_phase(uvm_phase phase);
 	item_base inst;
 

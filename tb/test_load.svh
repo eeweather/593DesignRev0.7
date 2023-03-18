@@ -4,7 +4,7 @@
 *   Emily Weatherford <ew22@pdx.edu>
 *   Daniel Keller <dk27@pdx.edu>
 *
-*   test_alu for testing alu sequence
+*   test_load for testing the load sequence
 */
 
 

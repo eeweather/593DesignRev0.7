@@ -4,6 +4,9 @@
 *   Emily Weatherford <ew22@pdx.edu>
 *   Daniel Keller <dk27@pdx.edu>
 *
+*
+*   top_hvl sets the time format and starts the test
+*
 */
 
 module top_hvl;

@@ -51,14 +51,9 @@ class evaluator extends uvm_component;
 			expected_fifo.get(expected_tx);
 			actual_fifo.get(actual_tx);
 			
-			//if they match, party, if not, crash and burn
-			
-				if(actual_tx.compare(expected_tx)) begin
-				//`uvm_info(get_type_name(), $sformatf("MATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result), UVM_DEBUG)
-					match++;
-				end
-
-			else begin
+			if(actual_tx.compare(expected_tx)) begin
+				match++;
+			end else begin
 				`uvm_error(get_type_name, $sformatf("MISMATCH!\nexp: inst = %b \tA = %0h \tB = %0h \tresult = %0h \nact: inst = %b \tA = %0h \tB = %0h \tresult = %0h", expected_tx.inst, expected_tx.A, expected_tx.B, expected_tx.result, actual_tx.inst, actual_tx.A, actual_tx.B, actual_tx.result))
 				mismatch++;
 			end

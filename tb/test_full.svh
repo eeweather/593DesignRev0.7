@@ -4,7 +4,7 @@
 *   Emily Weatherford <ew22@pdx.edu>
 *   Daniel Keller <dk27@pdx.edu>
 *
-*   test_full for testing 
+*   test_full for running all major sequences and their tasks 
 */
 
 
